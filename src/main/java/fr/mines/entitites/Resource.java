@@ -1,0 +1,110 @@
+package fr.mines.entitites;
+
+import java.util.Collection;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="RESOURCE")
+public class Resource {
+	@Id
+	@Column(name="ID")
+	private int id;
+	
+	@Column(name="NAME")
+	private String name;
+	
+	@Column(name="DESCRIPTION")
+	private String description;
+	
+	@Column(name="LOCALISATION")
+	private String localisation;
+	
+	@OneToOne
+	@JoinColumn(name="USER_ID")
+	private User manager;
+	
+	@OneToOne
+	@JoinColumn(name="RESOURCE_TYPE_ID")
+	private ResourceType resourceType;
+	
+	@OneToMany(mappedBy="resource")
+	private Collection<Reservation> reservations;
+
+	public Resource() {
+	}
+	
+	public Resource(int id, String name, String description, String localisation, User manager,
+			ResourceType resourceType, Collection<Reservation> reservations) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.localisation = localisation;
+		this.manager = manager;
+		this.resourceType = resourceType;
+		this.reservations = reservations;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getLocalisation() {
+		return localisation;
+	}
+
+	public void setLocalisation(String localisation) {
+		this.localisation = localisation;
+	}
+
+	public User getManager() {
+		return manager;
+	}
+
+	public void setManager(User manager) {
+		this.manager = manager;
+	}
+
+	public ResourceType getResourceType() {
+		return resourceType;
+	}
+
+	public void setResourceType(ResourceType resourceType) {
+		this.resourceType = resourceType;
+	}
+
+	public Collection<Reservation> getReservations() {
+		return reservations;
+	}
+
+	public void setReservations(Collection<Reservation> reservations) {
+		this.reservations = reservations;
+	}
+	
+}
