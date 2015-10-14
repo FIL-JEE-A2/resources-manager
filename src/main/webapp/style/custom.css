@@ -16,6 +16,10 @@
     padding:15px; 
 }
 
+.main-content {
+	 padding:10px;
+}
+
 .footer {
     clear:both;
     text-align:center;

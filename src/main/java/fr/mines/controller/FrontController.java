@@ -18,6 +18,7 @@ import fr.mines.RMConstant;
 import fr.mines.controller.actions.DisconnectAction;
 import fr.mines.controller.actions.HomeAction;
 import fr.mines.controller.actions.LoginAction;
+import fr.mines.controller.actions.UserListAction;
 import fr.mines.entitites.User;
 
 /**
@@ -37,6 +38,7 @@ public class FrontController extends HttpServlet {
 		addAction(new LoginAction());
 		addAction(new HomeAction());
 		addAction(new DisconnectAction());
+		addAction(new UserListAction());
 	}
 
 	static void addAction(FrontActionI action) {
@@ -46,12 +48,12 @@ public class FrontController extends HttpServlet {
 	// ===========================
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String actionName = this.getActionName(request.getPathInfo());
-		FrontActionI action = actions.get(actionName);
+		String actionId = this.getActionId(request.getPathInfo());
+		FrontActionI action = actions.get(actionId);
 		if (action != null) {
 			executeAction(request, response, action);
 		} else {
-			//TODO : error unknown action + log
+			LOGGER.info("Unknown action id {}", actionId);
 		}
 	}
 
@@ -81,7 +83,7 @@ public class FrontController extends HttpServlet {
 				}
 			} else {
 				LOGGER.info("The action {} is not authorized, redirect to login page", action.getID());
-				response.sendRedirect(request.getContextPath()+"/pages/login?unauthorizedAction=true");
+				response.sendRedirect(request.getContextPath() + "/pages/login?unauthorizedAction=true");
 			}
 		} catch (Exception e) {
 			//TODO : log + error page
@@ -94,7 +96,7 @@ public class FrontController extends HttpServlet {
 	 * @param pathInfo the complete path to analyze
 	 * @return the action from the path, or null if action was not found
 	 */
-	private String getActionName(String pathInfo) {
+	private String getActionId(String pathInfo) {
 		if (pathInfo != null) {
 			if (pathInfo.startsWith("/"))
 				pathInfo = pathInfo.substring(1, pathInfo.length());

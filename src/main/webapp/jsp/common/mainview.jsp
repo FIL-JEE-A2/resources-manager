@@ -10,7 +10,7 @@
 	<div class="menu">
 		<jsp:include page="/jsp/common/menu.jsp" />
 	</div>
-	<div class="main-content" class="centered-hori">
+	<div class="main-content">
 		<jsp:include page="${pageUrl}" />
 	</div>
 	<div class="footer"></div>
