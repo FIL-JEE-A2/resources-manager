@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -13,6 +15,7 @@ import javax.persistence.Table;
 @Table(name="RESOURCE_TYPE")
 public class ResourceType {
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="ID")
 	private int id;
 	
@@ -26,9 +29,8 @@ public class ResourceType {
 	public ResourceType() {
 	}
 
-	public ResourceType(int id, String type, Collection<Resource> resources) {
+	public ResourceType( String type, Collection<Resource> resources) {
 		super();
-		this.id = id;
 		this.type = type;
 		this.resources = resources;
 	}

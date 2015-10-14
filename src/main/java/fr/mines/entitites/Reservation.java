@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -13,6 +15,7 @@ import javax.persistence.Table;
 @Table(name="RESERVATION")
 public class Reservation {
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="ID")
 	private int id;
 	
@@ -33,8 +36,7 @@ public class Reservation {
 	public Reservation() {
 	}
 	
-	public Reservation(int id, Date reservationStart, Date reservationStop, User user, Resource resource) {
-		this.id = id;
+	public Reservation( Date reservationStart, Date reservationStop, User user, Resource resource) {
 		this.reservationStart = reservationStart;
 		this.reservationStop = reservationStop;
 		this.user = user;

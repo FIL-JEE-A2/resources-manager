@@ -9,9 +9,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import fr.mines.RMConstant;
+import fr.mines.controller.actions.DisconnectAction;
+import fr.mines.controller.actions.HomeAction;
+import fr.mines.controller.actions.LoginAction;
+import fr.mines.entitites.User;
 
 /**
  * Test front controller
@@ -24,37 +31,61 @@ public class FrontController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	// ======== PAGES ============
-	private static final Map<String, String> pages = new HashMap<>();
+	private static final Map<String, FrontActionI> actions = new HashMap<>();
 
 	static {
-		pages.put("login", "/jsp/pages/login.jsp");
+		addAction(new LoginAction());
+		addAction(new HomeAction());
+		addAction(new DisconnectAction());
 	}
 
-	public FrontController() {}
+	static void addAction(FrontActionI action) {
+		actions.put(action.getID(), action);
+	}
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+	// ===========================
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String actionName = this.getActionName(request.getPathInfo());
-		String pageUrl = pages.get(actionName);
-		request.setAttribute("pageUrl", pageUrl);
-		executerAction(actionName, request, response);
-		getServletContext().getRequestDispatcher("/jsp/common/mainview.jsp").forward(request, response);
+		FrontActionI action = actions.get(actionName);
+		if (action != null) {
+			executeAction(request, response, action);
+		} else {
+			//TODO : error unknown action + log
+		}
 	}
 
-	private void executerAction(String actionId, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		switch (actionId) {
-		case "login":
-			String userID = request.getParameter("userId");
-			System.out.println(userID);
-			String userPassword = request.getParameter("userPassword");
-			if ("mathieu".equals(userID) && "admin".equals(userPassword)) {
-				request.setAttribute("loginFailed", false);
-			} else {
-				request.setAttribute("loginFailed", true);
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
+	}
+
+	private void executeAction(HttpServletRequest request, HttpServletResponse response, FrontActionI action) {
+		LOGGER.info("Execute the action {}", action.getID());
+		try {
+			String dispatchUrl = action.handle(request, response);
+			//Check security
+			boolean authorizedAction = true;
+			if (action.isSecured()) {
+				HttpSession session = request.getSession(true);
+				User user = (User) session.getAttribute("user");
+				if (user == null) {
+					authorizedAction = false;
+				}
 			}
-			break;
+			if (authorizedAction) {
+				if (action.isTemplateView()) {
+					request.setAttribute("pageUrl", dispatchUrl);
+					getServletContext().getRequestDispatcher(RMConstant.MAIN_TEMPLATE_JSP).forward(request, response);
+				} else {
+					getServletContext().getRequestDispatcher(dispatchUrl).forward(request, response);
+				}
+			} else {
+				LOGGER.info("The action {} is not authorized, redirect to login page", action.getID());
+				response.sendRedirect(request.getContextPath()+"/pages/login?unauthorizedAction=true");
+			}
+		} catch (Exception e) {
+			//TODO : log + error page
+			e.printStackTrace();
 		}
 	}
 

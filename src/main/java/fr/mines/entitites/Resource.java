@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -14,6 +16,7 @@ import javax.persistence.Table;
 @Table(name="RESOURCE")
 public class Resource {
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="ID")
 	private int id;
 	
@@ -40,9 +43,8 @@ public class Resource {
 	public Resource() {
 	}
 	
-	public Resource(int id, String name, String description, String localisation, User manager,
+	public Resource( String name, String description, String localisation, User manager,
 			ResourceType resourceType, Collection<Reservation> reservations) {
-		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.localisation = localisation;

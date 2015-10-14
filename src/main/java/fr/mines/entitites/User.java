@@ -4,48 +4,50 @@ import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="USER")
+@Table(name = "USER")
 public class User {
-	@Id
-	@Column(name="ID")
-	private int id;
-	
-	@Column(name="FIRST_NAME")
-	private String firstName;
-	
-	@Column(name="LAST_NAME")
-	private String lastName;
-	
-	@Column(name="MAIL")
-	private String mail;
-	
-	@Column(name="PHONE")
-	private String phone;
-	
-	@Column(name="LOGIN")
-	private String login;
-	
-	@Column(name="PASSWORD")
-	private String password;
-	
-	@Column(name="ADMIN")
-	private boolean admin;
-	
-	@OneToMany(mappedBy="user")
-	private Collection<Reservation> reservations;
-	
-	public User(){
-	}
 
-	public User(int id, String firstName, String lastName, String mail, String phone, String login, String password,
-			boolean admin, Collection<Reservation> reservations) {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ID")
+	private int id;
+
+	@Column(name = "FIRST_NAME")
+	private String firstName;
+
+	@Column(name = "LAST_NAME")
+	private String lastName;
+
+	@Column(name = "MAIL")
+	private String mail;
+
+	@Column(name = "PHONE")
+	private String phone;
+
+	@Column(name = "LOGIN")
+	private String login;
+
+	@Column(name = "PASSWORD")
+	private String password;
+
+	@Column(name = "ADMIN")
+	private boolean admin;
+
+	@OneToMany(mappedBy = "user")
+	private Collection<Reservation> reservations;
+
+	public User() {}
+
+	public User(String firstName, String lastName, String mail, String phone, String login, String password, boolean admin,
+			Collection<Reservation> reservations) {
 		super();
-		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.mail = mail;
@@ -127,5 +129,5 @@ public class User {
 	public void setReservations(Collection<Reservation> reservations) {
 		this.reservations = reservations;
 	}
-	
+
 }
