@@ -18,7 +18,8 @@ import fr.mines.RMConstant;
 import fr.mines.controller.actions.DisconnectAction;
 import fr.mines.controller.actions.HomeAction;
 import fr.mines.controller.actions.LoginAction;
-import fr.mines.controller.actions.UserListAction;
+import fr.mines.controller.actions.user.AddUserAction;
+import fr.mines.controller.actions.user.ListUserAction;
 import fr.mines.entitites.User;
 
 /**
@@ -38,7 +39,8 @@ public class FrontController extends HttpServlet {
 		addAction(new LoginAction());
 		addAction(new HomeAction());
 		addAction(new DisconnectAction());
-		addAction(new UserListAction());
+		addAction(new ListUserAction());
+		addAction(new AddUserAction());
 	}
 
 	static void addAction(FrontActionI action) {

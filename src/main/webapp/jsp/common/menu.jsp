@@ -14,12 +14,13 @@
 <div class="panel panel-default">
 	<div class="panel-heading">Menu</div>
 	<div class="panel-body">
+	<!-- TODO : set the active tab -->
 		<ul class="nav nav-pills nav-stacked">
 			<li role="presentation" class="active"><a href="home">Accueil</a></li>
 			<li role="presentation"><a href="reservations">Réservations</a></li>
 			<c:if test="${sessionScope.user.admin}">
 				<li role="presentation"><a href="resources">Ressources</a></li>
-				<li role="presentation"><a href="users">Utilisateurs</a></li>
+				<li role="presentation"><a href="list-user">Utilisateurs</a></li>
 				<li role="presentation"><a href="type-resources">Types de
 						ressources</a></li>
 			</c:if>

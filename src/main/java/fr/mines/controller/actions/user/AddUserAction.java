@@ -1,20 +1,20 @@
-package fr.mines.controller.actions;
+package fr.mines.controller.actions.user;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.mines.controller.FrontActionI;
 
-public class UserListAction implements FrontActionI {
+public class AddUserAction implements FrontActionI {
 
 	@Override
 	public String handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		return "/jsp/pages/users/list-user.jsp";
+		return "/jsp/pages/users/add-user.jsp";
 	}
 
 	@Override
 	public String getID() {
-		return "users";
+		return "add-user";
 	}
 
 	@Override
@@ -26,4 +26,5 @@ public class UserListAction implements FrontActionI {
 	public boolean isSecured() {
 		return true;
 	}
+
 }

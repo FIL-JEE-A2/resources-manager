@@ -4,5 +4,9 @@
 	${sessionScope.user.lastName}</h4>
 <p>TODO : tableaux des réservations</p>
 <button class="btn btn-primary" type="button">
-  Vous avez des réservations <span class="badge">4</span>
+	Vous avez des réservations <span class="badge">4</span>
+
 </button>
+<p>
+	BOnjour <i class="fa fa-camera-retro fa-3x"></i>
+</p>

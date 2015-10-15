@@ -13,6 +13,8 @@
 	<div class="main-content">
 		<jsp:include page="${pageUrl}" />
 	</div>
-	<div class="footer"></div>
+	<div class="footer bg-primary">
+		<p>Ressource manager - 2015</p>
+	</div>
 </body>
 </html>

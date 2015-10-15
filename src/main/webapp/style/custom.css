@@ -1,4 +1,4 @@
-.single-content{
+.single-content {
 	margin-top: 20px;
 	margin-left: auto;
 	margin-right: auto;
@@ -6,22 +6,24 @@
 }
 
 .header {
-    text-align:center;
-    padding:5px;
+	text-align: center;
+	padding: 5px;
 }
 
 .menu {
-    width:230px;
-    float:left;
-    padding:15px; 
+	width: 20%;
+	float: left;
+	padding: 15px;
 }
 
 .main-content {
-	 padding:10px;
+	padding: 10px;
+	float: left;
+	width: 80%;
 }
 
 .footer {
-    clear:both;
-    text-align:center;
-    padding:5px; 
+	clear: both;
+	text-align: center;
+	padding: 5px;
 }

@@ -7,5 +7,7 @@
 	href="${pageContext.request.contextPath}/style/bootstrap.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/style/custom.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/style/font-awesome/css/font-awesome.min.css">
 <title>Resources Manager</title>
 </head>
