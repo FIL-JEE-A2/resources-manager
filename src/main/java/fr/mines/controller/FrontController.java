@@ -11,7 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import fr.mines.controller.actions.resourceType.AddResourceTypeAction;
+import fr.mines.controller.actions.resourceType.DeleteResourceTypeAction;
 import fr.mines.controller.actions.resourceType.ListResourceTypeAction;
+import fr.mines.controller.actions.resourceType.ModifyResourceTypeAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +61,11 @@ public class FrontController extends HttpServlet {
 		addAction(new AddResourceAction());
 		addAction(new DeleteResourceAction());
 		addAction(new ModifyResourceAction());
+		//ResourceType
 		addAction(new ListResourceTypeAction());
+		addAction(new AddResourceTypeAction());
+		addAction(new ModifyResourceTypeAction());
+		addAction(new DeleteResourceTypeAction());
 	}
 
 	static void addAction(FrontActionI action) {
@@ -85,6 +92,7 @@ public class FrontController extends HttpServlet {
 		LOGGER.info("Execute the action {}", action.getID());
 		try {
 			String dispatchUrl = action.handle(request, response);
+			LOGGER.debug(dispatchUrl);
 			//Check security
 			boolean authorizedAction = true;
 			if (action.isSecured()) {

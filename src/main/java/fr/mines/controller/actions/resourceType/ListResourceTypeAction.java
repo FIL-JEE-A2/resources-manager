@@ -18,7 +18,7 @@ public class ListResourceTypeAction implements FrontActionI {
     @Override
     public String handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
         List<ResourceType> resourceTypesList = ResourceTypeService.getInstance().getAll();
-        request.setAttribute("uresourceTypeList", resourceTypesList);
+        request.setAttribute("resourceTypeList", resourceTypesList);
         return "/jsp/pages/resource-type/list-resource-type.jsp";
     }
 
