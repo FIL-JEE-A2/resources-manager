@@ -1,5 +1,5 @@
 package fr.mines.entitites;
 
-public interface MergableEntity<T> {
+public interface MergeableEntity<T> {
 	public void copyIn(T other);
 }

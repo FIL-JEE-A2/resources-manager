@@ -110,8 +110,14 @@ public class FrontController extends HttpServlet {
 				response.sendRedirect(request.getContextPath() + "/pages/login?unauthorizedAction=true");
 			}
 		} catch (Exception e) {
-			//TODO : log + error page
-			e.printStackTrace();
+			LOGGER.warn("Redirect user to error page", e);
+			try {
+				request.setAttribute("errorType", e.getClass().getName());
+				request.setAttribute("errorMessage", e.getMessage());
+				getServletContext().getRequestDispatcher("/jsp/pages/error-report.jsp").forward(request, response);
+			} catch (Exception e1) {
+				LOGGER.error("Couldn't redirect to error page", e1);
+			}
 		}
 	}
 
