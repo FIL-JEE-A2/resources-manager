@@ -29,7 +29,7 @@ public class AddResourceAction implements FrontActionI {
 			try {
 				ResourceService.getInstance().create(resource, managerID);
 				request.setAttribute("resourceAdded", true);
-				request.setAttribute("resourceAddedName", "nom");
+				request.setAttribute("resourceAddedName", resource.getName());
 			} catch (ServiceExecutionException e) {
 				LOGGER.warn("Problem while adding the resource", e);
 				request.setAttribute("resourceAddError", true);

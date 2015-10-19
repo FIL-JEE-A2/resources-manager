@@ -39,6 +39,7 @@ public class ResourceService {
 
 	public Resource get(Long id) throws ServiceExecutionException {
 		return this.resourceDao.get(id);
+		
 	}
 
 	public Resource remove(Long id) throws ServiceExecutionException {
