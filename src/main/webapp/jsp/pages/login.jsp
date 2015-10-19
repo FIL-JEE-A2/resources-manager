@@ -24,9 +24,6 @@
 		</c:if>
 
 		<c:if test="${loginSuccess}">
-			<div
-				class="alert alert-danger"
-				role="alert">Connexion ok</div>
 			<c:redirect url="home" />
 		</c:if>
 

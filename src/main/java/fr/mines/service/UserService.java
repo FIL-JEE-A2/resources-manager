@@ -2,7 +2,11 @@ package fr.mines.service;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
+import fr.mines.dao.ResourceDao;
 import fr.mines.dao.UserDao;
+import fr.mines.entitites.Resource;
 import fr.mines.entitites.User;
 
 /**
@@ -33,7 +37,22 @@ public class UserService {
 	}
 
 	public User remove(Long id) throws ServiceExecutionException {
+		checkRemove(id);
 		return this.userDao.remove(id);
+	}
+
+	public void checkRemove(Long userID) throws ServiceExecutionException {
+		List<Resource> resourceByManager = ResourceDao.getInstance().getResourceByManager(userID);
+		if (!resourceByManager.isEmpty()) {
+			StringBuilder msg = new StringBuilder();
+			msg.append("L'utilisateur ne peut pas être supprimé car il est le responsable des ressources :");
+			msg.append("<ul>");
+			for (Resource resource : resourceByManager) {
+				msg.append("<li>").append(resource.getName()).append("</li>");
+			}
+			msg.append("</ul>");
+			throw new ServiceExecutionException(msg.toString());
+		}
 	}
 
 	public User checkPassword(String login, String password) {
@@ -53,7 +72,12 @@ public class UserService {
 	}
 
 	private void checkUserConstraint(User user, Long id) throws ServiceExecutionException {
-		//TODO : check empty on login,mail,password
+		if (StringUtils.isEmpty(user.getLogin())) {
+			throw new ServiceExecutionException("Le login de l'utilisateur ne peut pas être vide");
+		}
+		if (StringUtils.isEmpty(user.getPassword())) {
+			throw new ServiceExecutionException("Le mot de passe de l'utilisateur ne peut pas être vide");
+		}
 		User byLogin = this.userDao.getByLogin(user.getLogin());
 		if (byLogin != null && (id == null || !id.equals(byLogin.getId()))) {
 			throw new ServiceExecutionException("Il existe déjà un utilisateur avec le login \"" + user.getLogin() + "\"");
