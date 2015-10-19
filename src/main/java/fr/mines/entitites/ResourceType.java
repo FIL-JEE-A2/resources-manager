@@ -1,5 +1,6 @@
 package fr.mines.entitites;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Column;
@@ -29,10 +30,15 @@ public class ResourceType implements MergeableEntity<ResourceType> {
 	public ResourceType() {
 	}
 
-	public ResourceType( String type, Collection<Resource> resources) {
+	public ResourceType(String type, Collection<Resource> resources) {
 		super();
 		this.type = type;
 		this.resources = resources;
+	}
+
+	public ResourceType(String type)
+	{
+		this(type, new ArrayList<Resource>());
 	}
 
 	public Long getId() {
@@ -61,7 +67,6 @@ public class ResourceType implements MergeableEntity<ResourceType> {
 
 	public void copyIn(ResourceType resourceType)
 	{
-		resourceType.setResources(resources);
 		resourceType.setType(type);
 	}
 }

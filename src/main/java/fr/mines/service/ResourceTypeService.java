@@ -1,6 +1,7 @@
 package fr.mines.service;
 
 import fr.mines.dao.ResourceTypeDao;
+import fr.mines.entitites.Resource;
 import fr.mines.entitites.ResourceType;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class ResourceTypeService {
     }
 
     public ResourceType remove(Long id) throws ServiceExecutionException {
+        checkResourceTypeRemoveConstraint(id);
         return resourceTypeDao.remove(id);
     }
 
@@ -46,5 +48,14 @@ public class ResourceTypeService {
         ResourceType byTypeName = resourceTypeDao.getByTypeName(resourceType.getType());
         if(byTypeName != null && (id == null || id.equals(byTypeName.getId())))
             throw new ServiceExecutionException("Le type de ressource " + resourceType.getType() + " existe déjà !");
+    }
+
+    private void checkResourceTypeRemoveConstraint(Long id) throws ServiceExecutionException
+    {
+        ResourceType rt = get(id);
+        if(rt == null)
+            throw new ServiceExecutionException("Aucun type de resource ne corespond à l'identifiant "+id+".");
+        if(rt.getResources().size() > 0)
+            throw new ServiceExecutionException("Il existe des resource du type "+rt.getType()+". Impossible de le supprimer.");
     }
 }
