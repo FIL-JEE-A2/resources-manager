@@ -13,51 +13,61 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="RESOURCE")
+@Table(name = "RESOURCE")
 public class Resource {
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="ID")
-	private int id;
-	
-	@Column(name="NAME")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ID")
+	private Long id;
+
+	@Column(name = "NAME")
 	private String name;
-	
-	@Column(name="DESCRIPTION")
+
+	@Column(name = "DESCRIPTION")
 	private String description;
-	
-	@Column(name="LOCALISATION")
+
+	@Column(name = "LOCALISATION")
 	private String localisation;
-	
+
 	@OneToOne
-	@JoinColumn(name="USER_ID")
+	@JoinColumn(name = "USER_ID")
 	private User manager;
-	
+
+	//TODO : delete
 	@OneToOne
-	@JoinColumn(name="RESOURCE_TYPE_ID")
+	@JoinColumn(name = "RESOURCE_TYPE_ID")
 	private ResourceType resourceType;
-	
-	@OneToMany(mappedBy="resource")
+
+	@OneToMany(mappedBy = "resource")
 	private Collection<Reservation> reservations;
 
 	public Resource() {
+		//JPA
 	}
-	
-	public Resource( String name, String description, String localisation, User manager,
-			ResourceType resourceType, Collection<Reservation> reservations) {
+
+	public Resource(String name, String description, String localisation, User manager, ResourceType resourceType) {
+		super();
 		this.name = name;
 		this.description = description;
 		this.localisation = localisation;
 		this.manager = manager;
 		this.resourceType = resourceType;
-		this.reservations = reservations;
 	}
 
-	public int getId() {
+	public void copyIn(Resource previousUser) {
+		previousUser.setName(name);
+		previousUser.setDescription(description);
+		previousUser.setLocalisation(localisation);
+		previousUser.setResourceType(resourceType);
+		previousUser.setManager(manager);
+	}
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -108,5 +118,4 @@ public class Resource {
 	public void setReservations(Collection<Reservation> reservations) {
 		this.reservations = reservations;
 	}
-	
 }

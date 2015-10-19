@@ -42,6 +42,7 @@ public class User {
 	private boolean admin;
 
 	@OneToMany(mappedBy = "user")
+	//TODO : delete
 	private List<Reservation> reservations = new ArrayList<>();;
 
 	public User() {

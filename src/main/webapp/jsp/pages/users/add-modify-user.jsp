@@ -29,7 +29,7 @@
 			role="alert">
 			<strong>Erreur à la modification de l'utilisateur</strong><br>${userModifyErrorMessage}</div>
 	</c:if>
-	<h2>Ajouter un utilisateur</h2>
+	<h2>${modifyUser?'Modifier':'Ajouter'} un utilisateur</h2>
 	<form
 		method="post"
 		action="">

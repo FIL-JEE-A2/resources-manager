@@ -18,6 +18,10 @@ import fr.mines.RMConstant;
 import fr.mines.controller.actions.DisconnectAction;
 import fr.mines.controller.actions.HomeAction;
 import fr.mines.controller.actions.LoginAction;
+import fr.mines.controller.actions.resource.AddResourceAction;
+import fr.mines.controller.actions.resource.DeleteResourceAction;
+import fr.mines.controller.actions.resource.ListResourceAction;
+import fr.mines.controller.actions.resource.ModifyResourceAction;
 import fr.mines.controller.actions.user.AddUserAction;
 import fr.mines.controller.actions.user.DeleteUserAction;
 import fr.mines.controller.actions.user.ListUserAction;
@@ -38,13 +42,21 @@ public class FrontController extends HttpServlet {
 	private static final Map<String, FrontActionI> actions = new HashMap<>();
 
 	static {
+		//Login
 		addAction(new LoginAction());
-		addAction(new HomeAction());
 		addAction(new DisconnectAction());
+		//Home
+		addAction(new HomeAction());
+		//User
 		addAction(new ListUserAction());
 		addAction(new AddUserAction());
 		addAction(new ModifyUserAction());
 		addAction(new DeleteUserAction());
+		//Resource
+		addAction(new ListResourceAction());
+		addAction(new AddResourceAction());
+		addAction(new DeleteResourceAction());
+		addAction(new ModifyResourceAction());
 	}
 
 	static void addAction(FrontActionI action) {
