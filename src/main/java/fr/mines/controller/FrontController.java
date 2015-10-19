@@ -11,10 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import fr.mines.controller.actions.resourceType.AddResourceTypeAction;
-import fr.mines.controller.actions.resourceType.DeleteResourceTypeAction;
-import fr.mines.controller.actions.resourceType.ListResourceTypeAction;
-import fr.mines.controller.actions.resourceType.ModifyResourceTypeAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,10 +18,18 @@ import fr.mines.RMConstant;
 import fr.mines.controller.actions.DisconnectAction;
 import fr.mines.controller.actions.HomeAction;
 import fr.mines.controller.actions.LoginAction;
+import fr.mines.controller.actions.reservation.AddReservationAction;
+import fr.mines.controller.actions.reservation.DeleteReservationAction;
+import fr.mines.controller.actions.reservation.ListReservationAction;
+import fr.mines.controller.actions.reservation.ModifyReservationAction;
 import fr.mines.controller.actions.resource.AddResourceAction;
 import fr.mines.controller.actions.resource.DeleteResourceAction;
 import fr.mines.controller.actions.resource.ListResourceAction;
 import fr.mines.controller.actions.resource.ModifyResourceAction;
+import fr.mines.controller.actions.resourceType.AddResourceTypeAction;
+import fr.mines.controller.actions.resourceType.DeleteResourceTypeAction;
+import fr.mines.controller.actions.resourceType.ListResourceTypeAction;
+import fr.mines.controller.actions.resourceType.ModifyResourceTypeAction;
 import fr.mines.controller.actions.user.AddUserAction;
 import fr.mines.controller.actions.user.DeleteUserAction;
 import fr.mines.controller.actions.user.ListUserAction;
@@ -66,6 +70,11 @@ public class FrontController extends HttpServlet {
 		addAction(new AddResourceTypeAction());
 		addAction(new ModifyResourceTypeAction());
 		addAction(new DeleteResourceTypeAction());
+		//Reservation
+		addAction(new ListReservationAction());
+		addAction(new AddReservationAction());
+		addAction(new ModifyReservationAction());
+		addAction(new DeleteReservationAction());
 	}
 
 	static void addAction(FrontActionI action) {
