@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import fr.mines.controller.actions.resourceType.ListResourceTypeAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,6 +58,7 @@ public class FrontController extends HttpServlet {
 		addAction(new AddResourceAction());
 		addAction(new DeleteResourceAction());
 		addAction(new ModifyResourceAction());
+		addAction(new ListResourceTypeAction());
 	}
 
 	static void addAction(FrontActionI action) {
