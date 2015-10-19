@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "USER")
-public class User implements MergableEntity<User> {
+public class User implements MergeableEntity<User> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

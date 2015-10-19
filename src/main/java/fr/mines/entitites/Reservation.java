@@ -12,42 +12,41 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="RESERVATION")
-public class Reservation {
+@Table(name = "RESERVATION")
+public class Reservation implements MergeableEntity<Reservation> {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="ID")
-	private int id;
-	
-	@Column(name="RESERVATION_START")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ID")
+	private Long id;
+
+	@Column(name = "RESERVATION_START")
 	private Date reservationStart;
-	
-	@Column(name="RESERVATION_STOP")
+
+	@Column(name = "RESERVATION_STOP")
 	private Date reservationStop;
-	
+
 	@OneToOne
-	@JoinColumn(name="USER_ID")
+	@JoinColumn(name = "USER_ID")
 	private User user;
-	
+
 	@OneToOne
-	@JoinColumn(name="RESOURCE_ID")
+	@JoinColumn(name = "RESOURCE_ID")
 	private Resource resource;
 
-	public Reservation() {
-	}
-	
-	public Reservation( Date reservationStart, Date reservationStop, User user, Resource resource) {
+	public Reservation() {}
+
+	public Reservation(Date reservationStart, Date reservationStop, User user, Resource resource) {
 		this.reservationStart = reservationStart;
 		this.reservationStop = reservationStop;
 		this.user = user;
 		this.resource = resource;
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -82,6 +81,12 @@ public class Reservation {
 	public void setResource(Resource resource) {
 		this.resource = resource;
 	}
-	
-	
+
+	@Override
+	public void copyIn(Reservation other) {
+		other.setReservationStart(this.reservationStart);
+		other.setReservationStop(this.reservationStop);
+		other.setResource(this.resource);
+		other.setUser(this.user);
+	}
 }

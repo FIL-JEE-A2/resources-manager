@@ -5,10 +5,10 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-import fr.mines.entitites.MergableEntity;
+import fr.mines.entitites.MergeableEntity;
 import fr.mines.persistence.JPAUtils;
 
-public abstract class AbstractDao<T extends MergableEntity<T>, K> {
+public abstract class AbstractDao<T extends MergeableEntity<T>, K> {
 	private Class<T> type;
 	private ThreadLocal<EntityManager> entityManagerThreadLocal;
 

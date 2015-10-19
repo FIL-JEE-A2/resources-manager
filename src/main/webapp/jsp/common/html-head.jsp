@@ -18,5 +18,23 @@
 <link
 	rel="stylesheet"
 	href="${pageContext.request.contextPath}/style/font-awesome/css/font-awesome.min.css">
+<link
+	rel="stylesheet"
+	href="${pageContext.request.contextPath}/style/datetimepicker/css/bootstrap-datetimepicker-standalone.css">
+<link
+	rel="stylesheet"
+	href="${pageContext.request.contextPath}/style/datetimepicker/css/bootstrap-datetimepicker.min.css">
+<script
+	type="text/javascript"
+	src="${pageContext.request.contextPath}/style/datetimepicker/js/jquery-2.1.4.min.js"></script>
+<script
+	type="text/javascript"
+	src="${pageContext.request.contextPath}/style/datetimepicker/js/moment.min.js"></script>
+<script
+	type="text/javascript"
+	src="${pageContext.request.contextPath}/style/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script
+	type="text/javascript"
+	src="${pageContext.request.contextPath}/style/datetimepicker/js/bootstrap.min.js"></script>
 <title>Resources Manager</title>
 </head>

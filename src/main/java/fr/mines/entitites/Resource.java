@@ -14,7 +14,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "RESOURCE")
-public class Resource implements MergableEntity<Resource> {
+public class Resource implements MergeableEntity<Resource> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
