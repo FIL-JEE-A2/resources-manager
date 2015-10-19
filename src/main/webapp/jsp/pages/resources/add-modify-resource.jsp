@@ -44,6 +44,18 @@
 				value="${previousResource.name}">
 		</div>
 		<div class="form-group">
+			<label for="resourceType">Type de ressource</label> <br> <select
+				name="resourceType">
+				<c:forEach
+					items="${resourceTypeList}"
+					var="resourceType">
+					<option
+						value="${resourceType.id}"
+						${(resourceType.id==previousResource.resourceType.id)?'selected="selected"':''}>${resourceType.type}</option>
+				</c:forEach>
+			</select>
+		</div>
+		<div class="form-group">
 			<label for="resourceDescription">Description</label>
 			<textarea
 				form="addmodifyresource"

@@ -4,6 +4,7 @@ import java.util.List;
 
 import fr.mines.dao.ResourceDao;
 import fr.mines.entitites.Resource;
+import fr.mines.entitites.ResourceType;
 import fr.mines.entitites.User;
 
 public class ResourceService {
@@ -21,9 +22,11 @@ public class ResourceService {
 		return instance;
 	}
 
-	public Resource create(Resource resource, Long managerID) throws ServiceExecutionException {
+	public Resource create(Resource resource, Long managerID, Long resourceTypeId) throws ServiceExecutionException {
 		User user = UserService.getInstance().get(managerID);
 		resource.setManager(user);
+		ResourceType resourceType = ResourceTypeService.getInstance().get(resourceTypeId);
+		resource.setResourceType(resourceType);
 		return this.resourceDao.create(resource);
 	}
 
@@ -31,19 +34,19 @@ public class ResourceService {
 		return this.resourceDao.getAll();
 	}
 
-	public Resource update(Long id, Resource toUpdate, Long managerId) throws ServiceExecutionException {
+	public Resource update(Long id, Resource toUpdate, Long managerId, Long resourceTypeId) throws ServiceExecutionException {
 		User user = UserService.getInstance().get(managerId);
 		toUpdate.setManager(user);
+		ResourceType resourceType = ResourceTypeService.getInstance().get(resourceTypeId);
+		toUpdate.setResourceType(resourceType);
 		return this.resourceDao.update(id, toUpdate);
 	}
 
 	public Resource get(Long id) throws ServiceExecutionException {
 		return this.resourceDao.get(id);
-		
 	}
 
 	public Resource remove(Long id) throws ServiceExecutionException {
 		return this.resourceDao.remove(id);
 	}
-
 }

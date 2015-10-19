@@ -11,8 +11,10 @@ import org.slf4j.LoggerFactory;
 import fr.mines.controller.ActionCategory;
 import fr.mines.controller.FrontActionI;
 import fr.mines.entitites.Resource;
+import fr.mines.entitites.ResourceType;
 import fr.mines.entitites.User;
 import fr.mines.service.ResourceService;
+import fr.mines.service.ResourceTypeService;
 import fr.mines.service.ServiceExecutionException;
 import fr.mines.service.UserService;
 
@@ -31,11 +33,12 @@ public class ModifyResourceAction implements FrontActionI {
 			//Update in DB
 			if (request.getParameter("resourceName") != null) {
 				Long managerID = Long.parseLong(request.getParameter("managerUser"));
+				Long resourceTypeID = Long.parseLong(request.getParameter("resourceType"));
 				LOGGER.info("Will update the resource \"{}\"", request.getParameter("id"));
 				Resource updateResource = new Resource(request.getParameter("resourceName"), request.getParameter("resourceDescription"),
 						request.getParameter("resourceLocalisation"), null, null);
 				try {
-					ResourceService.getInstance().update(resourceID, updateResource, managerID);
+					ResourceService.getInstance().update(resourceID, updateResource, managerID, resourceTypeID);
 					request.setAttribute("resourceModified", true);
 					request.setAttribute("resourceModifiedName", updateResource.getName());
 				} catch (ServiceExecutionException e) {
@@ -47,6 +50,8 @@ public class ModifyResourceAction implements FrontActionI {
 		}
 		List<User> userList = UserService.getInstance().getAll();
 		request.setAttribute("userList", userList);
+		List<ResourceType> resourceTypeList = ResourceTypeService.getInstance().getAll();
+		request.setAttribute("resourceTypeList", resourceTypeList);
 		return "/jsp/pages/resources/add-modify-resource.jsp";
 	}
 
