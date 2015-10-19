@@ -35,7 +35,7 @@
 					${userCategory?'class="active"':''}><a href="list-user">Utilisateurs</a></li>
 				<li
 					role="presentation"
-					${ressourceTypeCateogory?'class="active"':''}><a href="type-resources">Types
+					${ressourceTypeCateogory?'class="active"':''}><a href="list-resource-type">Types
 						de ressources</a></li>
 			</c:if>
 		</ul>

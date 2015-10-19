@@ -17,9 +17,9 @@ public class ResourceType {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="ID")
-	private int id;
+	private Long id;
 	
-	@Column(name="TYPE")
+	@Column(name="TYPE", unique = true)
 	private String type;
 	
 	@OneToMany
@@ -35,11 +35,11 @@ public class ResourceType {
 		this.resources = resources;
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -58,5 +58,10 @@ public class ResourceType {
 	public void setResources(Collection<Resource> resources) {
 		this.resources = resources;
 	}
-	
+
+	public void copyIn(ResourceType resourceType)
+	{
+		resourceType.setResources(resources);
+		resourceType.setType(type);
+	}
 }
