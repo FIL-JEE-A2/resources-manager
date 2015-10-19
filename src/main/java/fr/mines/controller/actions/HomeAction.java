@@ -3,6 +3,7 @@ package fr.mines.controller.actions;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.mines.controller.ActionCategory;
 import fr.mines.controller.FrontActionI;
 
 public class HomeAction implements FrontActionI {
@@ -26,6 +27,9 @@ public class HomeAction implements FrontActionI {
 	public boolean isSecured() {
 		return true;
 	}
-
+	@Override
+	public ActionCategory getCategory() {
+		return ActionCategory.HOME;
+	}
 
 }

@@ -1,6 +1,7 @@
 package fr.mines.entitites;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +18,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID")
-	private int id;
+	private Long id;
 
 	@Column(name = "FIRST_NAME")
 	private String firstName;
@@ -25,13 +26,13 @@ public class User {
 	@Column(name = "LAST_NAME")
 	private String lastName;
 
-	@Column(name = "MAIL")
+	@Column(name = "MAIL", unique = true)
 	private String mail;
 
 	@Column(name = "PHONE")
 	private String phone;
 
-	@Column(name = "LOGIN")
+	@Column(name = "LOGIN", unique = true)
 	private String login;
 
 	@Column(name = "PASSWORD")
@@ -41,12 +42,13 @@ public class User {
 	private boolean admin;
 
 	@OneToMany(mappedBy = "user")
-	private Collection<Reservation> reservations;
+	private List<Reservation> reservations = new ArrayList<>();;
 
-	public User() {}
+	public User() {
+		//JPA
+	}
 
-	public User(String firstName, String lastName, String mail, String phone, String login, String password, boolean admin,
-			Collection<Reservation> reservations) {
+	public User(String firstName, String lastName, String mail, String phone, String login, String password, boolean admin) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -55,15 +57,16 @@ public class User {
 		this.login = login;
 		this.password = password;
 		this.admin = admin;
-		this.reservations = reservations;
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
+	public void copyIn(User user) {
+		user.setAdmin(admin);
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
+		user.setLogin(login);
+		user.setPassword(password);
+		user.setPhone(phone);
+		user.setMail(mail);
 	}
 
 	public String getFirstName() {
@@ -72,6 +75,14 @@ public class User {
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getLastName() {
@@ -122,11 +133,11 @@ public class User {
 		this.admin = admin;
 	}
 
-	public Collection<Reservation> getReservations() {
+	public List<Reservation> getReservations() {
 		return reservations;
 	}
 
-	public void setReservations(Collection<Reservation> reservations) {
+	public void setReservations(List<Reservation> reservations) {
 		this.reservations = reservations;
 	}
 

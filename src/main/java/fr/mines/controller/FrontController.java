@@ -19,7 +19,9 @@ import fr.mines.controller.actions.DisconnectAction;
 import fr.mines.controller.actions.HomeAction;
 import fr.mines.controller.actions.LoginAction;
 import fr.mines.controller.actions.user.AddUserAction;
+import fr.mines.controller.actions.user.DeleteUserAction;
 import fr.mines.controller.actions.user.ListUserAction;
+import fr.mines.controller.actions.user.ModifyUserAction;
 import fr.mines.entitites.User;
 
 /**
@@ -41,6 +43,8 @@ public class FrontController extends HttpServlet {
 		addAction(new DisconnectAction());
 		addAction(new ListUserAction());
 		addAction(new AddUserAction());
+		addAction(new ModifyUserAction());
+		addAction(new DeleteUserAction());
 	}
 
 	static void addAction(FrontActionI action) {
@@ -77,6 +81,10 @@ public class FrontController extends HttpServlet {
 				}
 			}
 			if (authorizedAction) {
+				ActionCategory category = action.getCategory();
+				if (category.getTabId() != null) {
+					request.setAttribute(category.getTabId(), true);
+				}
 				if (action.isTemplateView()) {
 					request.setAttribute("pageUrl", dispatchUrl);
 					getServletContext().getRequestDispatcher(RMConstant.MAIN_TEMPLATE_JSP).forward(request, response);

@@ -3,6 +3,7 @@ package fr.mines.controller.actions;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.mines.controller.ActionCategory;
 import fr.mines.controller.FrontActionI;
 
 public class DisconnectAction implements FrontActionI {
@@ -26,5 +27,10 @@ public class DisconnectAction implements FrontActionI {
 	@Override
 	public boolean isSecured() {
 		return false;
+	}
+
+	@Override
+	public ActionCategory getCategory() {
+		return ActionCategory.NONE;
 	}
 }

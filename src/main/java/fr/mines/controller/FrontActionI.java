@@ -31,4 +31,10 @@ public interface FrontActionI {
 	 */
 	public boolean isSecured();
 	
+	/**
+	 * @return the action category : use to select active tab
+	 */
+	public ActionCategory getCategory();
+
+	
 }
