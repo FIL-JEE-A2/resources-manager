@@ -36,6 +36,7 @@ public class AddResourceTypeAction extends AbstractFrontAction
             } catch (ServiceExecutionException e) {
                 LOGGER.warn("Problem while adding the resource type", e);
                 rq.attr("error", true);
+                rq.attr("resourceType", rt);
                 rq.attr("errorMessage", e.getMessage());
             }
         }
