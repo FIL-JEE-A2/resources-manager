@@ -1,5 +1,6 @@
 package fr.mines.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -28,6 +29,19 @@ public class ReservationDao extends AbstractDao<Reservation, Long> {
 	public List<Reservation> getReservationByUser(Long userID) {
 		Query selectQuery = this.getEntityManager().createQuery("SELECT r FROM Reservation r JOIN r.user m WHERE m.id=:userID");
 		selectQuery.setParameter("userID", userID);
+		return selectQuery.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Reservation> getReservationByDateAndResource(Long resourceID, Date startDate, Date stopDate) {
+		Query selectQuery = this.getEntityManager()
+				.createQuery("SELECT r FROM Reservation r JOIN r.resource res WHERE "//
+						+ "res.id=:resourceID AND "//
+						+ "((r.reservationStart >= :startDate AND r.reservationStart <= :stopDate)"//
+						+ "OR r.reservationStop <= :stopDate)");
+		selectQuery.setParameter("resourceID", resourceID);
+		selectQuery.setParameter("startDate", startDate);
+		selectQuery.setParameter("stopDate", stopDate);
 		return selectQuery.getResultList();
 	}
 }

@@ -16,13 +16,42 @@ public class ReservationService {
 	private ReservationService() {
 		reservationDao = ReservationDao.getInstance();
 	}
-	
+
 	public Reservation create(Reservation reservation, Long userID, Long resourceID) throws ServiceExecutionException {
 		User user = UserService.getInstance().get(userID);
 		reservation.setUser(user);
 		Resource resource = ResourceService.getInstance().get(resourceID);
 		reservation.setResource(resource);
+		checkReservationCreate(reservation);
 		return this.reservationDao.create(reservation);
+	}
+
+	private void checkReservationCreate(Reservation reservation) throws ServiceExecutionException {
+		checkReservationDate(reservation);
+		checkReservationConflict(reservation);
+	}
+
+	private void checkReservationDate(Reservation reservation) throws ServiceExecutionException {
+		if(!reservation.getReservationStart().before(reservation.getReservationStop())){
+			throw new ServiceExecutionException("La date du début de réservation doit être avant la date de fin de réservation");
+		}
+	}
+
+	private void checkReservationConflict(Reservation reservation) throws ServiceExecutionException {
+		List<Reservation> conflictReservations = ReservationDao.getInstance().getReservationByDateAndResource(reservation.getResource().getId(),
+				reservation.getReservationStart(), reservation.getReservationStop());
+		if (!conflictReservations.isEmpty()) {
+			StringBuilder msg = new StringBuilder();
+			msg.append("La réservation ne peut pas être effectuée, car la ressource est déjà réservée sur ce créneau :");
+			msg.append("<ul>");
+			for (Reservation conflictRes : conflictReservations) {
+				msg.append("<li>").append("Du ").append(conflictRes.getReservationStartLabel()).append(" au ")
+						.append(conflictRes.getReservationStopLabel()).append(" (par ").append(conflictRes.getUser().getFullname()).append(" )")
+						.append("</li>");
+			}
+			msg.append("</ul>");
+			throw new ServiceExecutionException(msg.toString());
+		}
 	}
 
 	public Reservation update(Long id, Reservation toUpdate, Long userId, Long resourceId) throws ServiceExecutionException {

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import fr.mines.controller.ActionCategory;
 import fr.mines.controller.FrontActionI;
+import fr.mines.controller.HttpServletRequestDecorator;
 import fr.mines.entitites.Reservation;
 import fr.mines.entitites.Resource;
 import fr.mines.entitites.ResourceType;
@@ -24,7 +25,6 @@ import fr.mines.service.UserService;
 public class ModifyReservationAction implements FrontActionI {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ModifyReservationAction.class);
 
-	@Override
 	public String handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		if (request.getParameter("id") != null) {
 			request.setAttribute("modifyReservation", true);
@@ -34,16 +34,17 @@ public class ModifyReservationAction implements FrontActionI {
 			Reservation reservation = ReservationService.getInstance().get(reservationID);
 			request.setAttribute("previousReservation", reservation);
 			//Update in DB
-			if (request.getParameter("reservationStart") != null && request.getParameter("reservationStop") != null && request.getParameter("resource") != null ) {
+			if (request.getParameter("reservationStart") != null && request.getParameter("reservationStop") != null
+					&& request.getParameter("resource") != null) {
 				Long userID = Long.parseLong(request.getParameter("user"));
 				Long resourceID = Long.parseLong(request.getParameter("resource"));
 				LOGGER.info("Will update the reservation \"{}\"", request.getParameter("id"));
-				
+
 				Date reservationStart = new Date(request.getParameter("reservationStart"));
 				Date reservationStop = new Date(request.getParameter("reservationStop"));
-				
-				Reservation updateReservation = new Reservation(reservationStart, reservationStop,
-						(User) request.getAttribute("user"), (Resource) request.getAttribute("resource"));
+
+				Reservation updateReservation = new Reservation(reservationStart, reservationStop, (User) request.getAttribute("user"),
+						(Resource) request.getAttribute("resource"));
 				try {
 					ReservationService.getInstance().update(reservationID, updateReservation, userID, resourceID);
 					request.setAttribute("reservationModified", true);
@@ -82,6 +83,12 @@ public class ModifyReservationAction implements FrontActionI {
 	@Override
 	public ActionCategory getCategory() {
 		return ActionCategory.RESERVATION;
+	}
+
+	@Override
+	public String handle(HttpServletRequestDecorator request, HttpServletResponse response) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

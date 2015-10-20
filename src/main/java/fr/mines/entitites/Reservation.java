@@ -16,7 +16,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "RESERVATION")
 public class Reservation implements MergeableEntity<Reservation> {
-	private final static DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
+	public final static DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
+	public final static DateFormat FIELD_DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID")
@@ -38,11 +40,9 @@ public class Reservation implements MergeableEntity<Reservation> {
 
 	public Reservation() {}
 
-	public Reservation(Date reservationStart, Date reservationStop, User user, Resource resource) {
+	public Reservation(Date reservationStart, Date reservationStop) {
 		this.reservationStart = reservationStart;
 		this.reservationStop = reservationStop;
-		this.user = user;
-		this.resource = resource;
 	}
 
 	public Long getId() {

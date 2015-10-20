@@ -19,6 +19,7 @@
 		<thead>
 			<tr>
 				<th>Nom</th>
+				<th>Type</th>
 				<th>Description</th>
 				<th>Localisation</th>
 				<th>Responsable</th>
@@ -31,6 +32,7 @@
 				var="resource">
 				<tr>
 					<td>${resource.name}</td>
+					<td>${resource.resourceType.type}</td>
 					<td>${resource.description}</td>
 					<td>${resource.localisation}</td>
 					<td>${resource.manager.firstName} ${resource.manager.lastName}</td>

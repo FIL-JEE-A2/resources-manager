@@ -1,16 +1,23 @@
 package fr.mines;
 
-import fr.mines.entitites.User;
-import fr.mines.service.ServiceExecutionException;
-import fr.mines.service.UserService;
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import fr.mines.entitites.Reservation;
+import fr.mines.service.ReservationService;
+import fr.mines.service.ServiceExecutionException;
 
 public class TestLauncher {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TestLauncher.class);
 
 	public static void main(String[] args) throws ServiceExecutionException {
-		User create = UserService.getInstance().create(new User("Mathieu", "THEBAUD", "mail@test.com", "123456", "math", "pass", false));
+		try {
+			ReservationService.getInstance().create(new Reservation(new Date(2015-1900, 9, 5), new Date(2015-1900, 9, 10)), 8L, 1L);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		LOGGER.info("Added");
 		LOGGER.info("Test ok, connected to database");
 	}

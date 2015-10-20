@@ -130,6 +130,10 @@ public class User implements MergeableEntity<User> {
 		return admin;
 	}
 
+	public String getFullname() {
+		return this.firstName + " " + this.lastName;
+	}
+
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
 	}

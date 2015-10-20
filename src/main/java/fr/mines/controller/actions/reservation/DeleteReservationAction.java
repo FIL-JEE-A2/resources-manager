@@ -1,6 +1,5 @@
 package fr.mines.controller.actions.reservation;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -8,38 +7,13 @@ import org.slf4j.LoggerFactory;
 
 import fr.mines.controller.ActionCategory;
 import fr.mines.controller.FrontActionI;
+import fr.mines.controller.HttpServletRequestDecorator;
 import fr.mines.entitites.Reservation;
-import fr.mines.entitites.Resource;
 import fr.mines.service.ReservationService;
-import fr.mines.service.ResourceService;
 import fr.mines.service.ServiceExecutionException;
 
 public class DeleteReservationAction implements FrontActionI {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DeleteReservationAction.class);
-
-	@Override
-	public String handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		if (request.getParameter("id") != null) {
-			Long reservationID = Long.parseLong(request.getParameter("id"));
-			LOGGER.info("Will ask for the reservation remove \"{}\"", request.getParameter("id"));
-			Reservation reservation = ReservationService.getInstance().get(reservationID);
-			request.setAttribute("reservationToDelete", reservation);
-			if (request.getParameter("delete") != null) {
-				try {
-					Reservation removedReservation = ReservationService.getInstance().remove(reservationID);
-					request.setAttribute("reservationDeleted", true);
-					request.setAttribute("reservationDeletedResourceName", removedReservation.getResource().getName());
-					request.setAttribute("reservationDeletedStart", removedReservation.getReservationStart());
-					request.setAttribute("reservationDeletedStop", removedReservation.getReservationStop());
-				} catch (ServiceExecutionException e) {
-					LOGGER.warn("Reservation can't be removed", e);
-					request.setAttribute("reservationDeleteError", true);
-					request.setAttribute("reservationDeleteErrorMessage", e.getMessage());
-				}
-			}
-		}
-		return "/jsp/pages/resources/delete-reservation.jsp";
-	}
 
 	@Override
 	public String getID() {
@@ -61,4 +35,27 @@ public class DeleteReservationAction implements FrontActionI {
 		return ActionCategory.RESERVATION;
 	}
 
+	@Override
+	public String handle(HttpServletRequestDecorator request, HttpServletResponse response) throws Exception {
+		if (request.isSet("id")) {
+			Long reservationID = Long.parseLong(request.param("id"));
+			LOGGER.info("Will ask for the reservation remove \"{}\"", request.param("id"));
+			Reservation reservation = ReservationService.getInstance().get(reservationID);
+			request.attr("reservationToDelete", reservation);
+			if (request.isSet("delete")) {
+				try {
+					Reservation removedReservation = ReservationService.getInstance().remove(reservationID);
+					request.attr("reservationDeleted", true);
+					request.attr("reservationDeletedResourceName", removedReservation.getResource().getName());
+					request.attr("reservationDeletedStart", removedReservation.getReservationStart());
+					request.attr("reservationDeletedStop", removedReservation.getReservationStop());
+				} catch (ServiceExecutionException e) {
+					LOGGER.warn("Reservation can't be removed", e);
+					request.attr("reservationDeleteError", true);
+					request.attr("reservationDeleteErrorMessage", e.getMessage());
+				}
+			}
+		}
+		return "/jsp/pages/resources/delete-reservation.jsp";
+	}
 }
