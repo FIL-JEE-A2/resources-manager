@@ -49,10 +49,12 @@ public class AddReservationAction extends AbstractFrontAction {
 			Date reservationStop = Reservation.FIELD_DATE_FORMAT.parse(request.param("reservationStop"));
 
 			Reservation reservation = new Reservation(reservationStart, reservationStop);
+			reservation.setUser(userService.get(userID));
+			reservation.setResource(resourceService.get(resourceID));
 			request.attr("previousReservation", reservation);
 			LOGGER.info("Reservation {}", reservation);
 			try {
-				reservationService.create(reservation, userID, resourceID);
+				reservationService.create(reservation);
 				request.attr("reservationAdded", true);
 				request.attr("reservationAddedResourceName", reservation.getResource().getName());
 				request.attr("reservationAddedStart", reservation.getReservationStartLabel());

@@ -7,44 +7,42 @@ import fr.mines.entitites.Reservation;
 import fr.mines.entitites.Resource;
 import fr.mines.entitites.User;
 
-public class ReservationService {
+public class ReservationService extends AbstractService<Reservation, Long, ReservationDao>{
 
 	private static ReservationService instance;
 
-	private ReservationDao reservationDao;
+	public static ReservationService getInstance()
+	{
+		return instance == null ? instance = new ReservationService() : instance;
+	}
 
 	private ReservationService() {
-		reservationDao = ReservationDao.getInstance();
+		super(ReservationDao.getInstance());
 	}
 
-	public Reservation create(Reservation reservation, Long userID, Long resourceID) throws ServiceExecutionException {
-		User user = UserService.getInstance().get(userID);
-		reservation.setUser(user);
-		Resource resource = ResourceService.getInstance().get(resourceID);
-		reservation.setResource(resource);
-		checkReservationCreate(reservation);
-		return this.reservationDao.create(reservation);
+	@Override
+	protected void checkCreate(Reservation toCreate) throws ServiceExecutionException
+	{
+		checkReservationDate(toCreate);
+		checkReservationConflict(toCreate);
 	}
 
-	private void checkReservationCreate(Reservation reservation) throws ServiceExecutionException {
-		checkReservationDate(reservation);
-		checkReservationConflict(reservation);
-	}
-
-	private void checkReservationModify(Reservation current, Long previousId) throws ServiceExecutionException {
-		checkReservationDate(current);
-		checkReservationConflictWithoutPrevious(current, previousId);
+	@Override
+	protected void checkUpdate(Reservation toUpdate, Long idToUpdate) throws ServiceExecutionException
+	{
+		checkReservationDate(toUpdate);
+		checkReservationConflictWithoutPrevious(toUpdate, idToUpdate);
 	}
 
 	private void checkReservationConflictWithoutPrevious(Reservation reservation, Long previousID) throws ServiceExecutionException {
-		List<Reservation> conflictReservations = ReservationDao.getInstance().getReservationByDateAndResourceExcludePrevious(previousID,
+		List<Reservation> conflictReservations = dao.getReservationByDateAndResourceExcludePrevious(previousID,
 				reservation.getResource().getId(), reservation.getReservationStart(), reservation.getReservationStop());
 		createConflictListException(conflictReservations);
 	}
 
 	private void checkReservationDate(Reservation reservation) throws ServiceExecutionException {
 		if (!reservation.getReservationStart().before(reservation.getReservationStop())) {
-			throw new ServiceExecutionException("La date du début de réservation doit être avant la date de fin de réservation");
+			throw new ServiceExecutionException("La date du dï¿½but de rï¿½servation doit ï¿½tre avant la date de fin de rï¿½servation");
 		}
 	}
 
@@ -57,7 +55,7 @@ public class ReservationService {
 	private void createConflictListException(List<Reservation> conflictReservations) throws ServiceExecutionException {
 		if (!conflictReservations.isEmpty()) {
 			StringBuilder msg = new StringBuilder();
-			msg.append("La réservation ne peut pas être effectuée, car la ressource est déjà réservée sur ce créneau :");
+			msg.append("La rï¿½servation ne peut pas ï¿½tre effectuï¿½e, car la ressource est dï¿½jï¿½ rï¿½servï¿½e sur ce crï¿½neau :");
 			msg.append("<ul>");
 			for (Reservation conflictRes : conflictReservations) {
 				msg.append("<li>").append("Du ").append(conflictRes.getReservationStartLabel()).append(" au ")
@@ -67,30 +65,5 @@ public class ReservationService {
 			msg.append("</ul>");
 			throw new ServiceExecutionException(msg.toString());
 		}
-	}
-
-	public Reservation update(Long id, Reservation toUpdate, Long userId, Long resourceId) throws ServiceExecutionException {
-		User user = UserService.getInstance().get(userId);
-		toUpdate.setUser(user);
-		Resource resource = ResourceService.getInstance().get(resourceId);
-		toUpdate.setResource(resource);
-		checkReservationModify(toUpdate, id);
-		return this.reservationDao.update(id, toUpdate);
-	}
-
-	public Reservation remove(Long id) throws ServiceExecutionException {
-		return this.reservationDao.remove(id);
-	}
-
-	public static ReservationService getInstance() {
-		return instance == null ? instance = new ReservationService() : instance;
-	}
-
-	public Reservation get(Long id) throws ServiceExecutionException {
-		return this.reservationDao.get(id);
-	}
-
-	public List<Reservation> getAll() throws ServiceExecutionException {
-		return this.reservationDao.getAll();
 	}
 }

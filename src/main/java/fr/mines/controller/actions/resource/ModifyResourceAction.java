@@ -28,10 +28,11 @@ public class ModifyResourceAction extends AbstractFrontAction
 				Long managerID = Long.parseLong(rq.param("managerUser"));
 				Long resourceTypeID = Long.parseLong(rq.param("resourceType"));
 				LOGGER.info("Will update the resource \"{}\"", rq.param("id"));
-				Resource updateResource = new Resource(rq.param("resourceName"), rq.param("resourceDescription"),
-						rq.param("resourceLocalisation"), null, null);
+				Resource updateResource = new Resource(rq.param("resourceName"),
+						rq.param("resourceDescription"), rq.param("resourceLocalisation"),
+						userService.get(managerID), resourceTypeService.get(resourceTypeID));
 				try {
-					resourceService.update(resourceID, updateResource, managerID, resourceTypeID);
+					resourceService.update(resourceID, updateResource);
 					rq.attr("resourceModified", true);
 					rq.attr("resourceModifiedName", updateResource.getName());
 				} catch (ServiceExecutionException e) {
