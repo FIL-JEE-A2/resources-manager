@@ -3,6 +3,7 @@ package fr.mines.controller.actions.resource_type;
 import fr.mines.controller.ActionCategory;
 import fr.mines.controller.FrontActionI;
 import fr.mines.controller.HttpServletRequestDecorator;
+import fr.mines.controller.actions.AbstractFrontAction;
 import fr.mines.entitites.Resource;
 import fr.mines.entitites.ResourceType;
 import fr.mines.service.ResourceTypeService;
@@ -14,12 +15,12 @@ import java.util.List;
 /**
  * Created by valentin on 19/10/15.
  */
-public class ListResourceTypeAction implements FrontActionI {
-
+public class ListResourceTypeAction extends AbstractFrontAction
+{
     @Override
-    public String handle(HttpServletRequestDecorator rq, HttpServletResponse response) throws Exception {
-        List<ResourceType> resourceTypesList = ResourceTypeService.getInstance().getAll();
-        rq.attr("resourceTypeList", resourceTypesList);
+    public String handle(HttpServletRequestDecorator rq, HttpServletResponse response) throws Exception
+    {
+        rq.attr("resourceTypeList", resourceTypeService.getAll());
         return "/jsp/pages/resource-type/list-resource-type.jsp";
     }
 

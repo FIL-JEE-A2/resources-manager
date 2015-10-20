@@ -7,7 +7,7 @@ import fr.mines.controller.ActionCategory;
 import fr.mines.controller.FrontActionI;
 import fr.mines.controller.HttpServletRequestDecorator;
 
-public class HomeAction implements FrontActionI {
+public class HomeAction extends AbstractFrontAction {
 
 	@Override
 	public String handle(HttpServletRequestDecorator request, HttpServletResponse response) throws Exception {

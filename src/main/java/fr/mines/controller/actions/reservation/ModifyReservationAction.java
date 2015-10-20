@@ -42,9 +42,9 @@ public class ModifyReservationAction implements FrontActionI {
 
 				Date reservationStart = new Date(request.getParameter("reservationStart"));
 				Date reservationStop = new Date(request.getParameter("reservationStop"));
-				//
-				//				Reservation updateReservation = new Reservation(reservationStart, reservationStop, (User) request.getAttribute("user"),
-				//						(Resource) request.getAttribute("resource"));
+
+				Reservation updateReservation = null;//new Reservation(reservationStart, reservationStop, (User) request.getAttribute("user"),
+						//(Resource) request.getAttribute("resource"));
 				try {
 					ReservationService.getInstance().update(reservationID, updateReservation, userID, resourceID);
 					request.setAttribute("reservationModified", true);

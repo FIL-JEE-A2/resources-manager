@@ -1,10 +1,6 @@
-<%@ page
-        language="java"
-        contentType="text/html; charset=utf-8"
-        pageEncoding="utf-8" %>
-<%@ taglib
-        uri="http://java.sun.com/jsp/jstl/core"
-        prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <div>
     <!-- Affichage des erreurs -->
     <c:if test="${error}">
@@ -51,29 +47,31 @@
             </fieldset>
             <fieldset>
                 <legend>Ressources liées</legend>
-                <c:if test="${resourceType.resources != null}">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Localisation</th>
-                            <th>Description</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach items="${resourceType.resources}" var="resource">
+                <c:choose>
+                    <c:when test="${resourceType.resources != null && fn:length(resourceType.resources) > 0}">
+                        <table class="table">
+                            <thead>
                             <tr>
-                                <td>${resource.name}</td>
-                                <td>${resource.localisation}</td>
-                                <td>${resource.description}</td>
+                                <th>Nom</th>
+                                <th>Localisation</th>
+                                <th>Description</th>
                             </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </c:if>
-                <c:if test="${resourceType.resources == null}">
-                    <p>Aucune ressource actuellement ratachée à ce type.</p>
-                </c:if>
+                            </thead>
+                            <tbody>
+                            <c:forEach items="${resourceType.resources}" var="resource">
+                                <tr>
+                                    <td>${resource.name}</td>
+                                    <td>${resource.localisation}</td>
+                                    <td>${resource.description}</td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </c:when>
+                    <c:otherwise>
+                        <p>Aucune ressource actuellement ratachée à ce type.</p>
+                    </c:otherwise>
+                </c:choose>
             </fieldset>
             <!-- Button add/cancel -->
             <div class=text-right>

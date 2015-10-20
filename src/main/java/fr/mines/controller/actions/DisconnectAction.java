@@ -7,7 +7,7 @@ import fr.mines.controller.ActionCategory;
 import fr.mines.controller.FrontActionI;
 import fr.mines.controller.HttpServletRequestDecorator;
 
-public class DisconnectAction implements FrontActionI {
+public class DisconnectAction extends AbstractFrontAction {
 
 	@Override
 	public String handle(HttpServletRequestDecorator rq, HttpServletResponse response) throws Exception {

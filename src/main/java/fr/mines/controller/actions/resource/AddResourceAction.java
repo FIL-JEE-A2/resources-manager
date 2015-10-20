@@ -1,25 +1,18 @@
 package fr.mines.controller.actions.resource;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import fr.mines.controller.ActionCategory;
 import fr.mines.controller.HttpServletRequestDecorator;
+import fr.mines.controller.actions.AbstractFrontAction;
+import fr.mines.entitites.Resource;
+import fr.mines.entitites.ResourceType;
+import fr.mines.service.ServiceExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.mines.controller.ActionCategory;
-import fr.mines.controller.FrontActionI;
-import fr.mines.entitites.Resource;
-import fr.mines.entitites.ResourceType;
-import fr.mines.entitites.User;
-import fr.mines.service.ResourceService;
-import fr.mines.service.ResourceTypeService;
-import fr.mines.service.ServiceExecutionException;
-import fr.mines.service.UserService;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
-public class AddResourceAction implements FrontActionI {
+public class AddResourceAction extends AbstractFrontAction{
 	private static final Logger LOGGER = LoggerFactory.getLogger(AddResourceAction.class);
 
 	@Override
@@ -31,7 +24,7 @@ public class AddResourceAction implements FrontActionI {
 					rq.param("resourceLocalisation"), null, null);
 			rq.attr("previousResource", resource);
 			try {
-				ResourceService.getInstance().create(resource, managerID, resourceTypeID);
+				resourceService.create(resource, managerID, resourceTypeID);
 				rq.attr("resourceAdded", true);
 				rq.attr("resourceAddedName", resource.getName());
 			} catch (ServiceExecutionException e) {
@@ -40,10 +33,8 @@ public class AddResourceAction implements FrontActionI {
 				rq.attr("resourceAddErrorMessage", e.getMessage());
 			}
 		}
-		List<User> userList = UserService.getInstance().getAll();
-		rq.attr("userList", userList);
-		List<ResourceType> resourceTypeList = ResourceTypeService.getInstance().getAll();
-		rq.attr("resourceTypeList", resourceTypeList);
+		rq.attr("userList", userService.getAll());
+		rq.attr("resourceTypeList", resourceTypeService.getAll());
 		return "/jsp/pages/resources/add-modify-resource.jsp";
 	}
 
