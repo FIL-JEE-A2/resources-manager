@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.Query;
 
 import fr.mines.entitites.Reservation;
+import fr.mines.entitites.Resource;
 
 public class ReservationDao extends AbstractDao<Reservation, Long> {
 	private static ReservationDao instance;
@@ -24,4 +25,10 @@ public class ReservationDao extends AbstractDao<Reservation, Long> {
 		return selectQuery.getResultList();
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Reservation> getReservationByUser(Long userID) {
+		Query selectQuery = this.getEntityManager().createQuery("SELECT r FROM Reservation r JOIN r.user m WHERE m.id=:userID");
+		selectQuery.setParameter("userID", userID);
+		return selectQuery.getResultList();
+	}
 }
