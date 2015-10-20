@@ -5,11 +5,20 @@
 <%@ taglib
 	uri="http://java.sun.com/jsp/jstl/core"
 	prefix="c"%>
-
 <script type="text/javascript">
 	$(function() {
 		$('#dateDebutReservation').datetimepicker();
 		$('#dateFinReservation').datetimepicker();
+		$('#dateDebutReservation')
+				.data("DateTimePicker")
+				.date(
+						new Date(
+								parseInt('${previousReservation.reservationStartMillis}')));
+		$('#dateFinReservation')
+				.data("DateTimePicker")
+				.date(
+						new Date(
+								parseInt('${previousReservation.reservationStopMillis}')));
 	});
 </script>
 
@@ -40,7 +49,7 @@
 			<strong>Erreur à la modification de la réservation de
 				${reservationAddedResourceName}</strong><br>${reservationModifyErrorMessage}</div>
 	</c:if>
-	<h2>${modifyReservation?'Modifier':'Créer'}la réservation</h2>
+	<h2>${modifyReservation?'Modifier':'Créer'}laréservation</h2>
 	<form
 		id="addmodifyreservation"
 		method="post"
@@ -53,7 +62,7 @@
 					var="resource">
 					<option
 						value="${resource.id}"
-						${(resource.id==previousResource.resource.id)?'selected="selected"':''}>${resource.name}</option>
+						${(resource.id==previousReservation.resource.id)?'selected="selected"':''}>${resource.name}</option>
 				</c:forEach>
 			</select>
 		</div>

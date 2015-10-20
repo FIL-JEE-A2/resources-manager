@@ -47,8 +47,8 @@ public class DeleteReservationAction implements FrontActionI {
 					Reservation removedReservation = ReservationService.getInstance().remove(reservationID);
 					request.attr("reservationDeleted", true);
 					request.attr("reservationDeletedResourceName", removedReservation.getResource().getName());
-					request.attr("reservationDeletedStart", removedReservation.getReservationStart());
-					request.attr("reservationDeletedStop", removedReservation.getReservationStop());
+					request.attr("reservationDeletedStart", removedReservation.getReservationStartLabel());
+					request.attr("reservationDeletedStop", removedReservation.getReservationStopLabel());
 				} catch (ServiceExecutionException e) {
 					LOGGER.warn("Reservation can't be removed", e);
 					request.attr("reservationDeleteError", true);
@@ -56,6 +56,6 @@ public class DeleteReservationAction implements FrontActionI {
 				}
 			}
 		}
-		return "/jsp/pages/resources/delete-reservation.jsp";
+		return "/jsp/pages/reservations/delete-reservation.jsp";
 	}
 }

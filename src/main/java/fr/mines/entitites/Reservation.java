@@ -89,6 +89,14 @@ public class Reservation implements MergeableEntity<Reservation> {
 		return reservationStop != null ? DATE_FORMAT.format(reservationStop) : "";
 	}
 
+	public String getReservationStartMillis() {
+		return reservationStart != null ? "" + reservationStart.getTime() : "";
+	}
+
+	public String getReservationStopMillis() {
+		return reservationStop != null ? "" + reservationStop.getTime() : "";
+	}
+
 	public void setResource(Resource resource) {
 		this.resource = resource;
 	}

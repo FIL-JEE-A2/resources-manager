@@ -42,9 +42,9 @@ public class ModifyReservationAction implements FrontActionI {
 
 				Date reservationStart = new Date(request.getParameter("reservationStart"));
 				Date reservationStop = new Date(request.getParameter("reservationStop"));
-
-				Reservation updateReservation = new Reservation(reservationStart, reservationStop, (User) request.getAttribute("user"),
-						(Resource) request.getAttribute("resource"));
+				//
+				//				Reservation updateReservation = new Reservation(reservationStart, reservationStop, (User) request.getAttribute("user"),
+				//						(Resource) request.getAttribute("resource"));
 				try {
 					ReservationService.getInstance().update(reservationID, updateReservation, userID, resourceID);
 					request.setAttribute("reservationModified", true);
@@ -87,8 +87,9 @@ public class ModifyReservationAction implements FrontActionI {
 
 	@Override
 	public String handle(HttpServletRequestDecorator request, HttpServletResponse response) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		List<Resource> resourceList = ResourceService.getInstance().getAll();
+		request.attr("resourceList", resourceList);
+		return "/jsp/pages/reservations/add-modify-reservation.jsp";
 	}
 
 }

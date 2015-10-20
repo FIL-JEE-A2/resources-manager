@@ -51,7 +51,7 @@ public class AddReservationAction implements FrontActionI {
 			Date reservationStop = Reservation.FIELD_DATE_FORMAT.parse(request.param("reservationStop"));
 
 			Reservation reservation = new Reservation(reservationStart, reservationStop);
-			request.attr("previousResource", reservation);
+			request.attr("previousReservation", reservation);
 			LOGGER.info("Reservation {}", reservation);
 			try {
 				ReservationService.getInstance().create(reservation, userID, resourceID);

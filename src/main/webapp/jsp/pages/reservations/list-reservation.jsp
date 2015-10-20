@@ -42,7 +42,7 @@
 						href="modify-resource?id=${reservation.id}"
 						role="button"><i class="fa fa-pencil"></i></a> <a
 						class="btn btn-default"
-						href="delete-resource?id=${reservation.id}"
+						href="delete-reservation?id=${reservation.id}"
 						role="button"><i class="fa fa-trash-o"></i></a>
 					</td>
 				</tr>

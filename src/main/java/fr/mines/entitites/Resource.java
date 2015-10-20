@@ -34,7 +34,6 @@ public class Resource implements MergeableEntity<Resource> {
 	@JoinColumn(name = "USER_ID")
 	private User manager;
 
-	//TODO : delete
 	@OneToOne
 	@JoinColumn(name = "RESOURCE_TYPE_ID")
 	private ResourceType resourceType;
