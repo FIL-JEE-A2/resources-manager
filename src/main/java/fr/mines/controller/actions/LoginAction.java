@@ -10,7 +10,7 @@ import fr.mines.controller.HttpServletRequestDecorator;
 import fr.mines.entitites.User;
 import fr.mines.service.UserService;
 
-public class LoginAction implements FrontActionI {
+public class LoginAction extends AbstractFrontAction {
 
 	@Override
 	public String handle(HttpServletRequestDecorator rq, HttpServletResponse response) throws Exception {

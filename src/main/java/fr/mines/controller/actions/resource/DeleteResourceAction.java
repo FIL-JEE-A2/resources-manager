@@ -1,19 +1,17 @@
 package fr.mines.controller.actions.resource;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import fr.mines.controller.ActionCategory;
 import fr.mines.controller.HttpServletRequestDecorator;
+import fr.mines.controller.actions.AbstractFrontAction;
+import fr.mines.entitites.Resource;
+import fr.mines.service.ServiceExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.mines.controller.ActionCategory;
-import fr.mines.controller.FrontActionI;
-import fr.mines.entitites.Resource;
-import fr.mines.service.ResourceService;
-import fr.mines.service.ServiceExecutionException;
+import javax.servlet.http.HttpServletResponse;
 
-public class DeleteResourceAction implements FrontActionI {
+public class DeleteResourceAction extends AbstractFrontAction
+{
 	private static final Logger LOGGER = LoggerFactory.getLogger(DeleteResourceAction.class);
 
 	@Override
@@ -21,11 +19,10 @@ public class DeleteResourceAction implements FrontActionI {
 		if (rq.isSet("id")) {
 			Long resourceID = Long.parseLong(rq.param("id"));
 			LOGGER.info("Will ask for the resource remove \"{}\"", rq.param("id"));
-			Resource resource = ResourceService.getInstance().get(resourceID);
-			rq.attr("resourceToDelete", resource);
+			rq.attr("resourceToDelete", resourceService.get(resourceID));
 			if (rq.isSet("delete")) {
 				try {
-					Resource removedResource = ResourceService.getInstance().remove(resourceID);
+					Resource removedResource = resourceService.remove(resourceID);
 					rq.attr("resourceDeleted", true);
 					rq.attr("resourceDeletedName", removedResource.getName());
 				} catch (ServiceExecutionException e) {

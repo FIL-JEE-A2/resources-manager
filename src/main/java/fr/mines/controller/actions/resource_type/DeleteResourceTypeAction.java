@@ -3,21 +3,20 @@ package fr.mines.controller.actions.resource_type;
 import fr.mines.controller.ActionCategory;
 import fr.mines.controller.FrontActionI;
 import fr.mines.controller.HttpServletRequestDecorator;
+import fr.mines.controller.actions.AbstractFrontAction;
 import fr.mines.entitites.ResourceType;
 import fr.mines.service.ResourceTypeService;
 import fr.mines.service.ServiceExecutionException;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by valentin on 19/10/15.
  */
-public class DeleteResourceTypeAction implements FrontActionI
+public class DeleteResourceTypeAction extends AbstractFrontAction
 {
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(AddResourceTypeAction.class);
-    private HttpServletRequest request;
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(DeleteResourceTypeAction.class);
 
     @Override
     public String handle(HttpServletRequestDecorator rq, HttpServletResponse response) throws Exception
@@ -26,7 +25,7 @@ public class DeleteResourceTypeAction implements FrontActionI
         else
         {
             Long id = Long.decode(rq.param("id"));
-            ResourceType rt = ResourceTypeService.getInstance().get(id);
+            ResourceType rt = resourceTypeService.get(id);
             if (rt == null) rq.attr("noId", true);
             else
             {
@@ -39,7 +38,7 @@ public class DeleteResourceTypeAction implements FrontActionI
 
                     try
                     {
-                        ResourceTypeService.getInstance().remove(id);
+                        resourceTypeService.remove(id);
                         rq.attr("success", true);
                         rq.attr("resourceTypeName", rt.getType());
                     } catch (ServiceExecutionException e)

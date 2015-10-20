@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.mines.controller.HttpServletRequestDecorator;
+import fr.mines.controller.actions.AbstractFrontAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +14,8 @@ import fr.mines.entitites.User;
 import fr.mines.service.ServiceExecutionException;
 import fr.mines.service.UserService;
 
-public class AddUserAction implements FrontActionI {
+public class AddUserAction extends AbstractFrontAction
+{
 	private static final Logger LOGGER = LoggerFactory.getLogger(AddUserAction.class);
 
 	@Override
@@ -26,7 +28,7 @@ public class AddUserAction implements FrontActionI {
 					Boolean.parseBoolean(rq.param("userIsAdmin")));
 			rq.attr("previousUser", user);
 			try {
-				UserService.getInstance().create(user);
+				userService.create(user);
 				rq.attr("userAdded", true);
 				rq.attr("userAddedName", user.getFirstName() + " " + user.getLastName() + " (" + user.getLogin() + ")");
 			} catch (ServiceExecutionException e) {

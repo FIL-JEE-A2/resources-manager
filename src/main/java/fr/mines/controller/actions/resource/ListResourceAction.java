@@ -8,15 +8,16 @@ import javax.servlet.http.HttpServletResponse;
 import fr.mines.controller.ActionCategory;
 import fr.mines.controller.FrontActionI;
 import fr.mines.controller.HttpServletRequestDecorator;
+import fr.mines.controller.actions.AbstractFrontAction;
 import fr.mines.entitites.Resource;
 import fr.mines.service.ResourceService;
 
-public class ListResourceAction implements FrontActionI {
-
+public class ListResourceAction extends AbstractFrontAction
+{
 	@Override
-	public String handle(HttpServletRequestDecorator rq, HttpServletResponse response) throws Exception {
-		List<Resource> resourceList = ResourceService.getInstance().getAll();
-		rq.attr("resourceList", resourceList);
+	public String handle(HttpServletRequestDecorator rq, HttpServletResponse response) throws Exception
+	{
+		rq.attr("resourceList", resourceService.getAll());
 		return "/jsp/pages/resources/list-resource.jsp";
 	}
 

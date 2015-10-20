@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.mines.controller.HttpServletRequestDecorator;
+import fr.mines.controller.actions.AbstractFrontAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +14,8 @@ import fr.mines.entitites.User;
 import fr.mines.service.ServiceExecutionException;
 import fr.mines.service.UserService;
 
-public class ModifyUserAction implements FrontActionI {
+public class ModifyUserAction extends AbstractFrontAction
+{
 	private static final Logger LOGGER = LoggerFactory.getLogger(ModifyUserAction.class);
 
 	@Override
@@ -24,8 +26,7 @@ public class ModifyUserAction implements FrontActionI {
 			Long userID = Long.parseLong(rq.param("id"));
 			//Set the modified user
 			LOGGER.info("Modify the user \"{}\"", rq.param("id"));
-			User user = UserService.getInstance().get(userID);
-			rq.attr("previousUser", user);
+			rq.attr("previousUser", userService.get(userID));
 			//Update in DB
 			if (rq.isSet("userLastName")) {
 				LOGGER.info("Will update the user \"{}\"", rq.param("id"));
@@ -33,7 +34,7 @@ public class ModifyUserAction implements FrontActionI {
 						rq.param("userEmail"), rq.param("userPhone"), rq.param("userLogin"),
 						rq.param("userPassword"), Boolean.parseBoolean(rq.param("userIsAdmin")));
 				try {
-					UserService.getInstance().update(userID, updateUser);
+					userService.update(userID, updateUser);
 					rq.attr("userModified", true);
 					rq.attr("userModifiedName",
 							updateUser.getFirstName() + " " + updateUser.getLastName() + " (" + updateUser.getLogin() + ")");

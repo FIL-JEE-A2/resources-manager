@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.mines.controller.HttpServletRequestDecorator;
+import fr.mines.controller.actions.AbstractFrontAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +14,8 @@ import fr.mines.entitites.User;
 import fr.mines.service.ServiceExecutionException;
 import fr.mines.service.UserService;
 
-public class DeleteUserAction implements FrontActionI {
+public class DeleteUserAction extends AbstractFrontAction
+{
 	private static final Logger LOGGER = LoggerFactory.getLogger(DeleteUserAction.class);
 
 	@Override
@@ -22,11 +24,10 @@ public class DeleteUserAction implements FrontActionI {
 			Long userID = Long.parseLong(rq.param("id"));
 			//Set the modified user
 			LOGGER.info("Will ask for the user remove the user \"{}\"", rq.param("id"));
-			User user = UserService.getInstance().get(userID);
-			rq.attr("userToDelete", user);
+			rq.attr("userToDelete", userService.get(userID));
 			if (rq.isSet("delete")) {
 				try {
-					User removedUser = UserService.getInstance().remove(userID);
+					User removedUser = userService.remove(userID);
 					rq.attr("userDeleted", true);
 					rq.attr("userDeletedName",
 							removedUser.getFirstName() + " " + removedUser.getLastName() + " (" + removedUser.getLogin() + ")");
