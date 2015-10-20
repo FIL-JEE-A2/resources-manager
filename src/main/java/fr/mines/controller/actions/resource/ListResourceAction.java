@@ -7,15 +7,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import fr.mines.controller.ActionCategory;
 import fr.mines.controller.FrontActionI;
+import fr.mines.controller.HttpServletRequestDecorator;
 import fr.mines.entitites.Resource;
 import fr.mines.service.ResourceService;
 
 public class ListResourceAction implements FrontActionI {
 
 	@Override
-	public String handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public String handle(HttpServletRequestDecorator rq, HttpServletResponse response) throws Exception {
 		List<Resource> resourceList = ResourceService.getInstance().getAll();
-		request.setAttribute("resourceList", resourceList);
+		rq.attr("resourceList", resourceList);
 		return "/jsp/pages/resources/list-resource.jsp";
 	}
 

@@ -14,7 +14,7 @@ public interface FrontActionI {
 	 * @return the JSP path, that will be displayed inside a template if {@link #isTemplateView()} return true
 	 * @throws Exception if the action can't be done
 	 */
-	public String handle(HttpServletRequest request, HttpServletResponse response) throws Exception;
+	public String handle(HttpServletRequestDecorator request, HttpServletResponse response) throws Exception;
 
 	/**
 	 * @return the action ID

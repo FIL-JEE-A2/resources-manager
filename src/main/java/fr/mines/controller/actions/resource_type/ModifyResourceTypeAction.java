@@ -2,7 +2,7 @@ package fr.mines.controller.actions.resource_type;
 
 import fr.mines.controller.ActionCategory;
 import fr.mines.controller.FrontActionI;
-import fr.mines.entitites.Resource;
+import fr.mines.controller.HttpServletRequestDecorator;
 import fr.mines.entitites.ResourceType;
 import fr.mines.service.ResourceTypeService;
 import fr.mines.service.ServiceExecutionException;
@@ -20,37 +20,36 @@ public class ModifyResourceTypeAction implements FrontActionI
     private HttpServletRequest request;
 
     @Override
-    public String handle(HttpServletRequest rq, HttpServletResponse rp) throws Exception
+    public String handle(HttpServletRequestDecorator rq, HttpServletResponse response) throws Exception
     {
-        request = rq;
-        attr("modification", true);
+        rq.attr("modification", true);
 
-        if (!isSet("id")) attr("noId", true);
+        if (!rq.isSet("id")) rq.attr("noId", true);
         else
         {
-            Long id = Long.decode(param("id"));
+            Long id = Long.decode(rq.param("id"));
             ResourceType rt = ResourceTypeService.getInstance().get(id);
-            if (rt == null) attr("noId", true);
+            if (rt == null) rq.attr("noId", true);
             else
             {
-                attr("resourceType", rt);
+                rq.attr("resourceType", rt);
 
                 //Modification d'un type de ressource
-                if (isSet("typeName"))
+                if (rq.isSet("typeName"))
                 {
-                    LOGGER.info("Modify resource type \"{}\"", param("typeName"));
+                    LOGGER.info("Modify resource type \"{}\"", rq.param("typeName"));
 
-                    ResourceType updatedRt = new ResourceType(param("typeName"));
+                    ResourceType updatedRt = new ResourceType(rq.param("typeName"));
                     try
                     {
                         ResourceTypeService.getInstance().update(id, updatedRt);
-                        attr("success", true);
-                        attr("resourceTypeName", updatedRt.getType());
+                        rq.attr("success", true);
+                        rq.attr("resourceTypeName", updatedRt.getType());
                     } catch (ServiceExecutionException e)
                     {
                         LOGGER.warn("Problem while modifying the resource type", e);
-                        attr("error", true);
-                        attr("errorMessage", e.getMessage());
+                        rq.attr("error", true);
+                        rq.attr("errorMessage", e.getMessage());
                     }
                 } else LOGGER.info("No resource type to modify");
             }
@@ -81,25 +80,5 @@ public class ModifyResourceTypeAction implements FrontActionI
     public ActionCategory getCategory()
     {
         return ActionCategory.RESSOURCE_TYPE;
-    }
-
-    private boolean isSet(String param)
-    {
-        return request.getParameter(param) != null;
-    }
-
-    private String param(String param)
-    {
-        return request.getParameter(param);
-    }
-
-    private Object attr(String attr)
-    {
-        return request.getAttribute(attr);
-    }
-
-    private void attr(String attr, Object value)
-    {
-        request.setAttribute(attr, value);
     }
 }

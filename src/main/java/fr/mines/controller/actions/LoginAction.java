@@ -6,27 +6,28 @@ import javax.servlet.http.HttpSession;
 
 import fr.mines.controller.ActionCategory;
 import fr.mines.controller.FrontActionI;
+import fr.mines.controller.HttpServletRequestDecorator;
 import fr.mines.entitites.User;
 import fr.mines.service.UserService;
 
 public class LoginAction implements FrontActionI {
 
 	@Override
-	public String handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String userLogin = request.getParameter("userId");
-		String userPassword = request.getParameter("userPassword");
-		String unauthorizedAction = request.getParameter("unauthorizedAction");
+	public String handle(HttpServletRequestDecorator rq, HttpServletResponse response) throws Exception {
+		String userLogin = rq.param("userId");
+		String userPassword = rq.param("userPassword");
+		String unauthorizedAction = rq.param("unauthorizedAction");
 		if (Boolean.parseBoolean(unauthorizedAction)) {
-			request.setAttribute("unauthorizedAction", true);
+			rq.attr("unauthorizedAction", true);
 		}
 		if (userLogin != null) {
 			User connectedUser = UserService.getInstance().checkPassword(userLogin, userPassword);
 			if (connectedUser != null) {
-				request.setAttribute("loginSuccess", true);
-				HttpSession session = request.getSession(true);
+				rq.attr("loginSuccess", true);
+				HttpSession session = rq.request().getSession(true);
 				session.setAttribute("user", connectedUser);
 			} else {
-				request.setAttribute("loginFailed", true);
+				rq.attr("loginFailed", true);
 			}
 		}
 		return "/jsp/pages/login.jsp";

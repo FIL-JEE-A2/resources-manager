@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.mines.controller.HttpServletRequestDecorator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,27 +23,27 @@ public class AddResourceAction implements FrontActionI {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AddResourceAction.class);
 
 	@Override
-	public String handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		if (request.getParameter("resourceName") != null) {
-			Long managerID = Long.parseLong(request.getParameter("managerUser"));
-			Long resourceTypeID = Long.parseLong(request.getParameter("resourceType"));
-			Resource resource = new Resource(request.getParameter("resourceName"), request.getParameter("resourceDescription"),
-					request.getParameter("resourceLocalisation"), null, null);
-			request.setAttribute("previousResource", resource);
+	public String handle(HttpServletRequestDecorator rq, HttpServletResponse response) throws Exception {
+		if (rq.isSet("resourceName")) {
+			Long managerID = Long.parseLong(rq.param("managerUser"));
+			Long resourceTypeID = Long.parseLong(rq.param("resourceType"));
+			Resource resource = new Resource(rq.param("resourceName"), rq.param("resourceDescription"),
+					rq.param("resourceLocalisation"), null, null);
+			rq.attr("previousResource", resource);
 			try {
 				ResourceService.getInstance().create(resource, managerID, resourceTypeID);
-				request.setAttribute("resourceAdded", true);
-				request.setAttribute("resourceAddedName", resource.getName());
+				rq.attr("resourceAdded", true);
+				rq.attr("resourceAddedName", resource.getName());
 			} catch (ServiceExecutionException e) {
 				LOGGER.warn("Problem while adding the resource", e);
-				request.setAttribute("resourceAddError", true);
-				request.setAttribute("resourceAddErrorMessage", e.getMessage());
+				rq.attr("resourceAddError", true);
+				rq.attr("resourceAddErrorMessage", e.getMessage());
 			}
 		}
 		List<User> userList = UserService.getInstance().getAll();
-		request.setAttribute("userList", userList);
+		rq.attr("userList", userList);
 		List<ResourceType> resourceTypeList = ResourceTypeService.getInstance().getAll();
-		request.setAttribute("resourceTypeList", resourceTypeList);
+		rq.attr("resourceTypeList", resourceTypeList);
 		return "/jsp/pages/resources/add-modify-resource.jsp";
 	}
 

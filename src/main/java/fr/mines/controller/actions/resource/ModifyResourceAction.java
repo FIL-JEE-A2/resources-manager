@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.mines.controller.HttpServletRequestDecorator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,36 +23,36 @@ public class ModifyResourceAction implements FrontActionI {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ModifyResourceAction.class);
 
 	@Override
-	public String handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		if (request.getParameter("id") != null) {
-			request.setAttribute("modifyResource", true);
-			Long resourceID = Long.parseLong(request.getParameter("id"));
+	public String handle(HttpServletRequestDecorator rq, HttpServletResponse response) throws Exception {
+		if (rq.isSet("id")) {
+			rq.attr("modifyResource", true);
+			Long resourceID = Long.parseLong(rq.param("id"));
 			//Set the modified user
-			LOGGER.info("Modify the resource \"{}\"", request.getParameter("id"));
+			LOGGER.info("Modify the resource \"{}\"", rq.param("id"));
 			Resource resource = ResourceService.getInstance().get(resourceID);
-			request.setAttribute("previousResource", resource);
+			rq.attr("previousResource", resource);
 			//Update in DB
-			if (request.getParameter("resourceName") != null) {
-				Long managerID = Long.parseLong(request.getParameter("managerUser"));
-				Long resourceTypeID = Long.parseLong(request.getParameter("resourceType"));
-				LOGGER.info("Will update the resource \"{}\"", request.getParameter("id"));
-				Resource updateResource = new Resource(request.getParameter("resourceName"), request.getParameter("resourceDescription"),
-						request.getParameter("resourceLocalisation"), null, null);
+			if (rq.isSet("resourceName")) {
+				Long managerID = Long.parseLong(rq.param("managerUser"));
+				Long resourceTypeID = Long.parseLong(rq.param("resourceType"));
+				LOGGER.info("Will update the resource \"{}\"", rq.param("id"));
+				Resource updateResource = new Resource(rq.param("resourceName"), rq.param("resourceDescription"),
+						rq.param("resourceLocalisation"), null, null);
 				try {
 					ResourceService.getInstance().update(resourceID, updateResource, managerID, resourceTypeID);
-					request.setAttribute("resourceModified", true);
-					request.setAttribute("resourceModifiedName", updateResource.getName());
+					rq.attr("resourceModified", true);
+					rq.attr("resourceModifiedName", updateResource.getName());
 				} catch (ServiceExecutionException e) {
 					LOGGER.warn("Problem while modify the resource", e);
-					request.setAttribute("resourceModifyError", true);
-					request.setAttribute("resourceModifyErrorMessage", e.getMessage());
+					rq.attr("resourceModifyError", true);
+					rq.attr("resourceModifyErrorMessage", e.getMessage());
 				}
 			}
 		}
 		List<User> userList = UserService.getInstance().getAll();
-		request.setAttribute("userList", userList);
+		rq.attr("userList", userList);
 		List<ResourceType> resourceTypeList = ResourceTypeService.getInstance().getAll();
-		request.setAttribute("resourceTypeList", resourceTypeList);
+		rq.attr("resourceTypeList", resourceTypeList);
 		return "/jsp/pages/resources/add-modify-resource.jsp";
 	}
 
