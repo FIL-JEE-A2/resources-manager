@@ -46,7 +46,7 @@ public class ResourceTypeService {
 
     private void checkResourceTypeConstraint(ResourceType resourceType, Long id) throws ServiceExecutionException {
         ResourceType byTypeName = resourceTypeDao.getByTypeName(resourceType.getType());
-        if(byTypeName != null && (id == null || id.equals(byTypeName.getId())))
+        if(byTypeName != null && (id == null || !id.equals(byTypeName.getId())))
             throw new ServiceExecutionException("Le type de ressource " + resourceType.getType() + " existe déjà !");
     }
 
