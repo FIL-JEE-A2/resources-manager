@@ -9,15 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.mines.controller.ActionCategory;
-import fr.mines.controller.FrontActionI;
 import fr.mines.controller.HttpServletRequestDecorator;
+import fr.mines.controller.actions.AbstractFrontAction;
 import fr.mines.entitites.Reservation;
 import fr.mines.entitites.Resource;
-import fr.mines.service.ReservationService;
-import fr.mines.service.ResourceService;
 import fr.mines.service.ServiceExecutionException;
 
-public class AddReservationAction implements FrontActionI {
+public class AddReservationAction extends AbstractFrontAction {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AddReservationAction.class);
 
 	@Override
@@ -54,7 +52,7 @@ public class AddReservationAction implements FrontActionI {
 			request.attr("previousReservation", reservation);
 			LOGGER.info("Reservation {}", reservation);
 			try {
-				ReservationService.getInstance().create(reservation, userID, resourceID);
+				reservationService.create(reservation, userID, resourceID);
 				request.attr("reservationAdded", true);
 				request.attr("reservationAddedResourceName", reservation.getResource().getName());
 				request.attr("reservationAddedStart", reservation.getReservationStartLabel());
@@ -66,7 +64,7 @@ public class AddReservationAction implements FrontActionI {
 				request.attr("reservationAddErrorMessage", e.getMessage());
 			}
 		}
-		List<Resource> resourceList = ResourceService.getInstance().getAll();
+		List<Resource> resourceList = resourceService.getAll();
 		request.attr("resourceList", resourceList);
 		return "/jsp/pages/reservations/add-modify-reservation.jsp";
 	}

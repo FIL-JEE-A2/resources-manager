@@ -9,21 +9,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.mines.controller.ActionCategory;
-import fr.mines.controller.FrontActionI;
 import fr.mines.controller.HttpServletRequestDecorator;
+import fr.mines.controller.actions.AbstractFrontAction;
 import fr.mines.entitites.Reservation;
 import fr.mines.entitites.Resource;
-import fr.mines.service.ReservationService;
-import fr.mines.service.ResourceService;
 import fr.mines.service.ServiceExecutionException;
 
-public class ModifyReservationAction implements FrontActionI {
+public class ModifyReservationAction extends AbstractFrontAction{
 	private static final Logger LOGGER = LoggerFactory.getLogger(ModifyReservationAction.class);
 
 	public String handle(HttpServletRequestDecorator request, HttpServletResponse response) throws Exception {
 		if (request.isSet("id")) {
 			Long reservationID = Long.parseLong(request.param("id"));
-			Reservation previousReservation = ReservationService.getInstance().get(reservationID);
+			Reservation previousReservation = reservationService.get(reservationID);
 			request.attr("previousReservation", previousReservation);
 			if (request.isSet("selectedResource")) {
 				Long userID = request.connectedUser().getId();
@@ -34,7 +32,7 @@ public class ModifyReservationAction implements FrontActionI {
 				Reservation reservationToUpdate = new Reservation(reservationStart, reservationStop);
 				//Try to update
 				try {
-					ReservationService.getInstance().update(reservationID, reservationToUpdate, userID, resourceID);
+					reservationService.update(reservationID, reservationToUpdate, userID, resourceID);
 					request.attr("reservationModified", true);
 					request.attr("reservationModifiedResourceName",
 							reservationToUpdate.getResource() != null ? reservationToUpdate.getResource().getName() : "inconnue");
@@ -47,7 +45,7 @@ public class ModifyReservationAction implements FrontActionI {
 				}
 			}
 		}
-		List<Resource> resourceList = ResourceService.getInstance().getAll();
+		List<Resource> resourceList = resourceService.getAll();
 		request.attr("resourceList", resourceList);
 		return "/jsp/pages/reservations/add-modify-reservation.jsp";
 	}

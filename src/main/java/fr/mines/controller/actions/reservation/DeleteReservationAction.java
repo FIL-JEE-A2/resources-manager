@@ -6,13 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.mines.controller.ActionCategory;
-import fr.mines.controller.FrontActionI;
 import fr.mines.controller.HttpServletRequestDecorator;
+import fr.mines.controller.actions.AbstractFrontAction;
 import fr.mines.entitites.Reservation;
-import fr.mines.service.ReservationService;
 import fr.mines.service.ServiceExecutionException;
 
-public class DeleteReservationAction implements FrontActionI {
+public class DeleteReservationAction extends AbstractFrontAction {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DeleteReservationAction.class);
 
 	@Override
@@ -40,11 +39,11 @@ public class DeleteReservationAction implements FrontActionI {
 		if (request.isSet("id")) {
 			Long reservationID = Long.parseLong(request.param("id"));
 			LOGGER.info("Will ask for the reservation remove \"{}\"", request.param("id"));
-			Reservation reservation = ReservationService.getInstance().get(reservationID);
+			Reservation reservation = reservationService.get(reservationID);
 			request.attr("reservationToDelete", reservation);
 			if (request.isSet("delete")) {
 				try {
-					Reservation removedReservation = ReservationService.getInstance().remove(reservationID);
+					Reservation removedReservation = reservationService.remove(reservationID);
 					request.attr("reservationDeleted", true);
 					request.attr("reservationDeletedResourceName", removedReservation.getResource().getName());
 					request.attr("reservationDeletedStart", removedReservation.getReservationStartLabel());

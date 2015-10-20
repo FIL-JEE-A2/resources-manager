@@ -5,12 +5,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.mines.controller.ActionCategory;
-import fr.mines.controller.FrontActionI;
 import fr.mines.controller.HttpServletRequestDecorator;
+import fr.mines.controller.actions.AbstractFrontAction;
 import fr.mines.entitites.Reservation;
-import fr.mines.service.ReservationService;
 
-public class ListReservationAction implements FrontActionI {
+public class ListReservationAction extends AbstractFrontAction {
 
 	@Override
 	public String getID() {
@@ -34,7 +33,7 @@ public class ListReservationAction implements FrontActionI {
 
 	@Override
 	public String handle(HttpServletRequestDecorator request, HttpServletResponse response) throws Exception {
-		List<Reservation> reservationList = ReservationService.getInstance().getAll();
+		List<Reservation> reservationList = reservationService.getAll();
 		request.attr("reservationList", reservationList);
 		return "/jsp/pages/reservations/list-reservation.jsp";
 	}
