@@ -100,7 +100,7 @@ public class FrontController extends HttpServlet {
 	private void executeAction(HttpServletRequest request, HttpServletResponse response, FrontActionI action) {
 		LOGGER.info("Execute the action {}", action.getID());
 		try {
-			String dispatchUrl = action.handle(request, response);
+			String dispatchUrl = action.handle(new HttpServletRequestDecorator(request), response);
 			LOGGER.debug(dispatchUrl);
 			//Check security
 			boolean authorizedAction = true;

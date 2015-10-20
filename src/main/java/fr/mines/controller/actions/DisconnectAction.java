@@ -5,12 +5,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import fr.mines.controller.ActionCategory;
 import fr.mines.controller.FrontActionI;
+import fr.mines.controller.HttpServletRequestDecorator;
 
 public class DisconnectAction implements FrontActionI {
 
 	@Override
-	public String handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		request.getSession(true).invalidate();
+	public String handle(HttpServletRequestDecorator rq, HttpServletResponse response) throws Exception {
+		rq.request().getSession(true).invalidate();
 		return "/jsp/pages/disconnected.jsp";
 	}
 

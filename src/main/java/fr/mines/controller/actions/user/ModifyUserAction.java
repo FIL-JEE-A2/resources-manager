@@ -3,6 +3,7 @@ package fr.mines.controller.actions.user;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.mines.controller.HttpServletRequestDecorator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,30 +17,30 @@ public class ModifyUserAction implements FrontActionI {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ModifyUserAction.class);
 
 	@Override
-	public String handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public String handle(HttpServletRequestDecorator rq, HttpServletResponse response) throws Exception {
 		//Set the user if there is no current update
-		if (request.getParameter("id") != null) {
-			request.setAttribute("modifyUser", true);
-			Long userID = Long.parseLong(request.getParameter("id"));
+		if (rq.isSet("id")) {
+			rq.attr("modifyUser", true);
+			Long userID = Long.parseLong(rq.param("id"));
 			//Set the modified user
-			LOGGER.info("Modify the user \"{}\"", request.getParameter("id"));
+			LOGGER.info("Modify the user \"{}\"", rq.param("id"));
 			User user = UserService.getInstance().get(userID);
-			request.setAttribute("previousUser", user);
+			rq.attr("previousUser", user);
 			//Update in DB
-			if (request.getParameter("userLastName") != null) {
-				LOGGER.info("Will update the user \"{}\"", request.getParameter("id"));
-				User updateUser = new User(request.getParameter("userFirstName"), request.getParameter("userLastName"),
-						request.getParameter("userEmail"), request.getParameter("userPhone"), request.getParameter("userLogin"),
-						request.getParameter("userPassword"), Boolean.parseBoolean(request.getParameter("userIsAdmin")));
+			if (rq.isSet("userLastName")) {
+				LOGGER.info("Will update the user \"{}\"", rq.param("id"));
+				User updateUser = new User(rq.param("userFirstName"), rq.param("userLastName"),
+						rq.param("userEmail"), rq.param("userPhone"), rq.param("userLogin"),
+						rq.param("userPassword"), Boolean.parseBoolean(rq.param("userIsAdmin")));
 				try {
 					UserService.getInstance().update(userID, updateUser);
-					request.setAttribute("userModified", true);
-					request.setAttribute("userModifiedName",
+					rq.attr("userModified", true);
+					rq.attr("userModifiedName",
 							updateUser.getFirstName() + " " + updateUser.getLastName() + " (" + updateUser.getLogin() + ")");
 				} catch (ServiceExecutionException e) {
 					LOGGER.warn("Problem while modify the user", e);
-					request.setAttribute("userModifyError", true);
-					request.setAttribute("userModifyErrorMessage", e.getMessage());
+					rq.attr("userModifyError", true);
+					rq.attr("userModifyErrorMessage", e.getMessage());
 				}
 			}
 		}

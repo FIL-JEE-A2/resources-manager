@@ -3,6 +3,7 @@ package fr.mines.controller.actions.resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.mines.controller.HttpServletRequestDecorator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,21 +17,21 @@ public class DeleteResourceAction implements FrontActionI {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DeleteResourceAction.class);
 
 	@Override
-	public String handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		if (request.getParameter("id") != null) {
-			Long resourceID = Long.parseLong(request.getParameter("id"));
-			LOGGER.info("Will ask for the resource remove \"{}\"", request.getParameter("id"));
+	public String handle(HttpServletRequestDecorator rq, HttpServletResponse response) throws Exception {
+		if (rq.isSet("id")) {
+			Long resourceID = Long.parseLong(rq.param("id"));
+			LOGGER.info("Will ask for the resource remove \"{}\"", rq.param("id"));
 			Resource resource = ResourceService.getInstance().get(resourceID);
-			request.setAttribute("resourceToDelete", resource);
-			if (request.getParameter("delete") != null) {
+			rq.attr("resourceToDelete", resource);
+			if (rq.isSet("delete")) {
 				try {
 					Resource removedResource = ResourceService.getInstance().remove(resourceID);
-					request.setAttribute("resourceDeleted", true);
-					request.setAttribute("resourceDeletedName", removedResource.getName());
+					rq.attr("resourceDeleted", true);
+					rq.attr("resourceDeletedName", removedResource.getName());
 				} catch (ServiceExecutionException e) {
 					LOGGER.warn("Resource can't be removed", e);
-					request.setAttribute("resourceDeleteError", true);
-					request.setAttribute("resourceDeleteErrorMessage", e.getMessage());
+					rq.attr("resourceDeleteError", true);
+					rq.attr("resourceDeleteErrorMessage", e.getMessage());
 				}
 			}
 		}

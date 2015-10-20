@@ -3,6 +3,7 @@ package fr.mines.controller.actions.user;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.mines.controller.HttpServletRequestDecorator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,23 +17,23 @@ public class DeleteUserAction implements FrontActionI {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DeleteUserAction.class);
 
 	@Override
-	public String handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		if (request.getParameter("id") != null) {
-			Long userID = Long.parseLong(request.getParameter("id"));
+	public String handle(HttpServletRequestDecorator rq, HttpServletResponse response) throws Exception {
+		if (rq.isSet("id")) {
+			Long userID = Long.parseLong(rq.param("id"));
 			//Set the modified user
-			LOGGER.info("Will ask for the user remove the user \"{}\"", request.getParameter("id"));
+			LOGGER.info("Will ask for the user remove the user \"{}\"", rq.param("id"));
 			User user = UserService.getInstance().get(userID);
-			request.setAttribute("userToDelete", user);
-			if (request.getParameter("delete") != null) {
+			rq.attr("userToDelete", user);
+			if (rq.isSet("delete")) {
 				try {
 					User removedUser = UserService.getInstance().remove(userID);
-					request.setAttribute("userDeleted", true);
-					request.setAttribute("userDeletedName",
+					rq.attr("userDeleted", true);
+					rq.attr("userDeletedName",
 							removedUser.getFirstName() + " " + removedUser.getLastName() + " (" + removedUser.getLogin() + ")");
 				} catch (ServiceExecutionException e) {
 					LOGGER.warn("User can't be removed", e);
-					request.setAttribute("userDeleteError", true);
-					request.setAttribute("userDeleteErrorMessage", e.getMessage());
+					rq.attr("userDeleteError", true);
+					rq.attr("userDeleteErrorMessage", e.getMessage());
 				}
 			}
 		}
