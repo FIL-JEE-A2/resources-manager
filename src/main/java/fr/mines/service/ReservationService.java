@@ -31,8 +31,19 @@ public class ReservationService {
 		checkReservationConflict(reservation);
 	}
 
+	private void checkReservationModify(Reservation current, Long previousId) throws ServiceExecutionException {
+		checkReservationDate(current);
+		checkReservationConflictWithoutPrevious(current, previousId);
+	}
+
+	private void checkReservationConflictWithoutPrevious(Reservation reservation, Long previousID) throws ServiceExecutionException {
+		List<Reservation> conflictReservations = ReservationDao.getInstance().getReservationByDateAndResourceExcludePrevious(previousID,
+				reservation.getResource().getId(), reservation.getReservationStart(), reservation.getReservationStop());
+		createConflictListException(conflictReservations);
+	}
+
 	private void checkReservationDate(Reservation reservation) throws ServiceExecutionException {
-		if(!reservation.getReservationStart().before(reservation.getReservationStop())){
+		if (!reservation.getReservationStart().before(reservation.getReservationStop())) {
 			throw new ServiceExecutionException("La date du début de réservation doit être avant la date de fin de réservation");
 		}
 	}
@@ -40,6 +51,10 @@ public class ReservationService {
 	private void checkReservationConflict(Reservation reservation) throws ServiceExecutionException {
 		List<Reservation> conflictReservations = ReservationDao.getInstance().getReservationByDateAndResource(reservation.getResource().getId(),
 				reservation.getReservationStart(), reservation.getReservationStop());
+		createConflictListException(conflictReservations);
+	}
+
+	private void createConflictListException(List<Reservation> conflictReservations) throws ServiceExecutionException {
 		if (!conflictReservations.isEmpty()) {
 			StringBuilder msg = new StringBuilder();
 			msg.append("La réservation ne peut pas être effectuée, car la ressource est déjà réservée sur ce créneau :");
@@ -59,6 +74,7 @@ public class ReservationService {
 		toUpdate.setUser(user);
 		Resource resource = ResourceService.getInstance().get(resourceId);
 		toUpdate.setResource(resource);
+		checkReservationModify(toUpdate, id);
 		return this.reservationDao.update(id, toUpdate);
 	}
 

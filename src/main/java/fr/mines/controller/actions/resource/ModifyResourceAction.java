@@ -1,24 +1,15 @@
 package fr.mines.controller.actions.resource;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import fr.mines.controller.HttpServletRequestDecorator;
-import fr.mines.controller.actions.AbstractFrontAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.mines.controller.ActionCategory;
-import fr.mines.controller.FrontActionI;
+import fr.mines.controller.HttpServletRequestDecorator;
+import fr.mines.controller.actions.AbstractFrontAction;
 import fr.mines.entitites.Resource;
-import fr.mines.entitites.ResourceType;
-import fr.mines.entitites.User;
-import fr.mines.service.ResourceService;
-import fr.mines.service.ResourceTypeService;
 import fr.mines.service.ServiceExecutionException;
-import fr.mines.service.UserService;
 
 public class ModifyResourceAction extends AbstractFrontAction
 {

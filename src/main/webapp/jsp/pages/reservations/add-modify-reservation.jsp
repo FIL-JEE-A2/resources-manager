@@ -32,7 +32,7 @@
 	<c:if test="${reservationModified}">
 		<div
 			class="alert alert-success"
-			role="alert">Réservation pour ${reservationAddedResourceName}
+			role="alert">Réservation pour ${reservationModifiedResourceName}
 			modifiée</div>
 	</c:if>
 	<c:if test="${reservationAddError}">
@@ -47,9 +47,9 @@
 			class="alert alert-danger"
 			role="alert">
 			<strong>Erreur à la modification de la réservation de
-				${reservationAddedResourceName}</strong><br>${reservationModifyErrorMessage}</div>
+				${reservationModifiedResourceName}</strong><br>${reservationModifyErrorMessage}</div>
 	</c:if>
-	<h2>${modifyReservation?'Modifier':'Créer'}laréservation</h2>
+	<h2>${modifyReservation?'Modifier':'Créer'} la réservation</h2>
 	<form
 		id="addmodifyreservation"
 		method="post"

@@ -44,4 +44,19 @@ public class ReservationDao extends AbstractDao<Reservation, Long> {
 		selectQuery.setParameter("stopDate", stopDate);
 		return selectQuery.getResultList();
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<Reservation> getReservationByDateAndResourceExcludePrevious(Long previousReservationId, Long resourceID, Date startDate,
+			Date stopDate) {
+		Query selectQuery = this.getEntityManager()
+				.createQuery("SELECT r FROM Reservation r JOIN r.resource res WHERE "//
+						+ "res.id=:resourceID AND "//
+						+ "((r.reservationStart >= :startDate AND r.reservationStart <= :stopDate)"//
+						+ "OR r.reservationStop <= :stopDate) AND " + "r.id != :previousID");
+		selectQuery.setParameter("resourceID", resourceID);
+		selectQuery.setParameter("startDate", startDate);
+		selectQuery.setParameter("stopDate", stopDate);
+		selectQuery.setParameter("previousID", previousReservationId);
+		return selectQuery.getResultList();
+	}
 }

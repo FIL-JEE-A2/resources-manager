@@ -39,7 +39,7 @@
 						href="display-user?id=${user.id}"
 						role="button"><i class="fa fa-info-circle"></i></a> --> <a
 						class="btn btn-default"
-						href="modify-resource?id=${reservation.id}"
+						href="modify-reservation?id=${reservation.id}"
 						role="button"><i class="fa fa-pencil"></i></a> <a
 						class="btn btn-default"
 						href="delete-reservation?id=${reservation.id}"
