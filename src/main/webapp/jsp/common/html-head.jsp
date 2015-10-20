@@ -20,9 +20,6 @@
 	href="${pageContext.request.contextPath}/style/font-awesome/css/font-awesome.min.css">
 <link
 	rel="stylesheet"
-	href="${pageContext.request.contextPath}/style/datetimepicker/css/bootstrap-datetimepicker-standalone.css">
-<link
-	rel="stylesheet"
 	href="${pageContext.request.contextPath}/style/datetimepicker/css/bootstrap-datetimepicker.min.css">
 <script
 	type="text/javascript"
