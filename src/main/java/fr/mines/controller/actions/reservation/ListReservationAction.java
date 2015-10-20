@@ -16,7 +16,7 @@ public class ListReservationAction implements FrontActionI {
 	public String handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		List<Reservation> reservationList = ReservationService.getInstance().getAll();
 		request.setAttribute("reservationList", reservationList);
-		return "/jsp/pages/resources/list-reservation.jsp";
+		return "/jsp/pages/reservations/list-reservation.jsp";
 	}
 
 	@Override

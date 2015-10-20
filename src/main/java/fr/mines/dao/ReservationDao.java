@@ -5,7 +5,6 @@ import java.util.List;
 import javax.persistence.Query;
 
 import fr.mines.entitites.Reservation;
-import fr.mines.entitites.Resource;
 
 public class ReservationDao extends AbstractDao<Reservation, Long> {
 	private static ReservationDao instance;

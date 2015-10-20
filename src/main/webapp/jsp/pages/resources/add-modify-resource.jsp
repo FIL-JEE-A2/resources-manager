@@ -60,6 +60,7 @@
 				form="addmodifyresource"
 				class="form-control"
 				rows="4"
+				placeholder="Description détaillée de la ressource..."
 				name="resourceDescription"
 				id="resourceDescription">${previousResource.description}</textarea>
 		</div>

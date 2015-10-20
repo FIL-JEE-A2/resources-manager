@@ -1,5 +1,7 @@
 package fr.mines.entitites;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -14,6 +16,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "RESERVATION")
 public class Reservation implements MergeableEntity<Reservation> {
+	private final static DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID")
@@ -78,6 +81,14 @@ public class Reservation implements MergeableEntity<Reservation> {
 		return resource;
 	}
 
+	public String getReservationStartLabel() {
+		return reservationStart != null ? DATE_FORMAT.format(reservationStart) : "";
+	}
+
+	public String getReservationStopLabel() {
+		return reservationStop != null ? DATE_FORMAT.format(reservationStop) : "";
+	}
+
 	public void setResource(Resource resource) {
 		this.resource = resource;
 	}
@@ -88,5 +99,11 @@ public class Reservation implements MergeableEntity<Reservation> {
 		other.setReservationStop(this.reservationStop);
 		other.setResource(this.resource);
 		other.setUser(this.user);
+	}
+
+	@Override
+	public String toString() {
+		return "Reservation [id=" + id + ", reservationStart=" + reservationStart + ", reservationStop=" + reservationStop + ", user=" + user
+				+ ", resource=" + resource + "]";
 	}
 }

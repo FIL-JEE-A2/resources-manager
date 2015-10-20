@@ -1,7 +1,8 @@
-package fr.mines.controller.actions.resourceType;
+package fr.mines.controller.actions.resource_type;
 
 import fr.mines.controller.ActionCategory;
 import fr.mines.controller.FrontActionI;
+import fr.mines.entitites.Resource;
 import fr.mines.entitites.ResourceType;
 import fr.mines.service.ResourceTypeService;
 import fr.mines.service.ServiceExecutionException;
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by valentin on 19/10/15.
  */
-public class DeleteResourceTypeAction implements FrontActionI
+public class ModifyResourceTypeAction implements FrontActionI
 {
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(AddResourceTypeAction.class);
     private HttpServletRequest request;
@@ -22,6 +23,7 @@ public class DeleteResourceTypeAction implements FrontActionI
     public String handle(HttpServletRequest rq, HttpServletResponse rp) throws Exception
     {
         request = rq;
+        attr("modification", true);
 
         if (!isSet("id")) attr("noId", true);
         else
@@ -34,32 +36,33 @@ public class DeleteResourceTypeAction implements FrontActionI
                 attr("resourceType", rt);
 
                 //Modification d'un type de ressource
-                if (isSet("delete"))
+                if (isSet("typeName"))
                 {
-                    LOGGER.info("Delete resource type \"{}\"", param("typeName"));
+                    LOGGER.info("Modify resource type \"{}\"", param("typeName"));
 
+                    ResourceType updatedRt = new ResourceType(param("typeName"));
                     try
                     {
-                        ResourceTypeService.getInstance().remove(id);
+                        ResourceTypeService.getInstance().update(id, updatedRt);
                         attr("success", true);
-                        attr("resourceTypeName", rt.getType());
+                        attr("resourceTypeName", updatedRt.getType());
                     } catch (ServiceExecutionException e)
                     {
-                        LOGGER.warn("Problem while removing the resource type", e);
+                        LOGGER.warn("Problem while modifying the resource type", e);
                         attr("error", true);
                         attr("errorMessage", e.getMessage());
                     }
-                } else LOGGER.info("No resource type to remove");
+                } else LOGGER.info("No resource type to modify");
             }
         }
 
-        return "/jsp/pages/resource-type/delete-resource-type.jsp";
+        return "/jsp/pages/resource-type/add-modify-resource-type.jsp";
     }
 
     @Override
     public String getID()
     {
-        return "delete-resource-type";
+        return "modify-resource-type";
     }
 
     @Override

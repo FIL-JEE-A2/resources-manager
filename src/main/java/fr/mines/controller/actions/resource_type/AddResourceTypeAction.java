@@ -1,4 +1,4 @@
-package fr.mines.controller.actions.resourceType;
+package fr.mines.controller.actions.resource_type;
 
 import fr.mines.controller.ActionCategory;
 import fr.mines.controller.FrontActionI;

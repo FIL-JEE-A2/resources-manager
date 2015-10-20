@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,19 +24,29 @@ import fr.mines.service.ServiceExecutionException;
 public class AddReservationAction implements FrontActionI {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AddReservationAction.class);
 
+	private User getConnectedUser(HttpServletRequest request) {
+		HttpSession session = request.getSession(true);
+		User user = (User) session.getAttribute("user");
+		if (user != null) {
+			return user;
+		} else return null;
+	}
+
 	@Override
 	public String handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		if (request.getParameter("resourceName") != null) {
-			Long userID = Long.parseLong(request.getParameter("user"));
-			Long resourceID = Long.parseLong(request.getParameter("resource"));
-			
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		if (request.getParameter("selectedResource") != null) {
+
+			Long userID = getConnectedUser(request).getId();
+			Long resourceID = Long.parseLong(request.getParameter("selectedResource"));
+
+			DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 			Date reservationStart = df.parse(request.getParameter("reservationStart"));
 			Date reservationStop = df.parse(request.getParameter("reservationStop"));
-			
-			Reservation reservation = new Reservation(reservationStart, reservationStop,
-					(User) request.getAttribute("reservationUser"), (Resource) request.getAttribute("reservationResource"));
+
+			Reservation reservation = new Reservation(reservationStart, reservationStop, (User) request.getAttribute("reservationUser"),
+					(Resource) request.getAttribute("reservationResource"));
 			request.setAttribute("previousResource", reservation);
+			LOGGER.info("Reservation {}", reservation);
 			try {
 				ReservationService.getInstance().create(reservation, userID, resourceID);
 				request.setAttribute("reservationAdded", true);
@@ -50,7 +61,7 @@ public class AddReservationAction implements FrontActionI {
 		}
 		List<Resource> resourceList = ResourceService.getInstance().getAll();
 		request.setAttribute("resourceList", resourceList);
-		return "/jsp/pages/resources/add-modify-reservation.jsp";
+		return "/jsp/pages/reservations/add-modify-reservation.jsp";
 	}
 
 	@Override
