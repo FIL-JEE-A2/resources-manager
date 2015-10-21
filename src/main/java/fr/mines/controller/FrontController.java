@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -89,7 +90,8 @@ public class FrontController extends HttpServlet {
 		if (action != null) {
 			executeAction(request, response, action);
 		} else {
-			LOGGER.info("Unknown action id {}", actionId);
+			if(actionId == null) executeAction(request, response, actions.get("home"));
+			else handleError(new NotFoundException("La page demandée est introuvable."), request, response);
 		}
 	}
 
@@ -127,14 +129,25 @@ public class FrontController extends HttpServlet {
 				response.sendRedirect(request.getContextPath() + "/pages/login?unauthorizedAction=true");
 			}
 		} catch (Exception e) {
-			LOGGER.warn("Redirect user to error page", e);
-			try {
-				request.setAttribute("errorType", e.getClass().getName());
-				request.setAttribute("errorMessage", e.getMessage());
-				getServletContext().getRequestDispatcher("/jsp/pages/error-report.jsp").forward(request, response);
-			} catch (Exception e1) {
-				LOGGER.error("Couldn't redirect to error page", e1);
-			}
+			handleError(e, request, response);
+		}
+	}
+
+	/**
+	 * Handle a exception and redirect to a dedicated error page (/jsp/pages/error-report.jps)
+	 * @param e the exception to handle
+	 * @param request the request to forward
+	 * @param response the response to forward
+	 */
+	private void handleError(Exception e, HttpServletRequest request, HttpServletResponse response)
+	{
+		LOGGER.warn("Redirect user to error page", e);
+		try {
+			request.setAttribute("errorType", e.getClass().getName());
+			request.setAttribute("errorMessage", e.getMessage());
+			getServletContext().getRequestDispatcher("/jsp/pages/error-report.jsp").forward(request, response);
+		} catch (Exception e1) {
+			LOGGER.error("Couldn't redirect to error page", e1);
 		}
 	}
 
