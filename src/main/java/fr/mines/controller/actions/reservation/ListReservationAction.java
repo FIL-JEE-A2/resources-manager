@@ -33,8 +33,7 @@ public class ListReservationAction extends AbstractFrontAction {
 
 	@Override
 	public String handle(HttpServletRequestDecorator request, HttpServletResponse response) throws Exception {
-		List<Reservation> reservationList = reservationService.getAll();
-		request.attr("reservationList", reservationList);
+		request.attr("reservationList", reservationService.getAll());
 		return "/jsp/pages/reservations/list-reservation.jsp";
 	}
 

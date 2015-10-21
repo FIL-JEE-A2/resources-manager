@@ -39,8 +39,7 @@ public class DeleteReservationAction extends AbstractFrontAction {
 		if (request.isSet("id")) {
 			Long reservationID = Long.parseLong(request.param("id"));
 			LOGGER.info("Will ask for the reservation remove \"{}\"", request.param("id"));
-			Reservation reservation = reservationService.get(reservationID);
-			request.attr("reservationToDelete", reservation);
+			request.attr("reservationToDelete", reservationService.get(reservationID));
 			if (request.isSet("delete")) {
 				try {
 					Reservation removedReservation = reservationService.remove(reservationID);
