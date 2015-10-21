@@ -69,15 +69,6 @@ public abstract class AbstractDao<T extends MergeableEntity<T>, K> {
 		return list;
 	}
 
-	// TODO : Suprimer si définitivement inutile
-	//	protected void closeEntityManager() {
-	//		EntityManager em = this.entityManagerThreadLocal.get();
-	//		if (em != null) {
-	//			em.close();
-	//			this.entityManagerThreadLocal.set(null);
-	//		}
-	//	}
-
 	protected abstract List<T> getAllImpl();
 
 	public List<T> getAll() {

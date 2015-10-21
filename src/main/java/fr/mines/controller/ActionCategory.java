@@ -8,7 +8,7 @@ public enum ActionCategory {
 			"ressourceTypeCateogory"), NONE(null);
 	private String tabId;
 
-	private ActionCategory(String tabIdP) {
+	ActionCategory(String tabIdP) {
 		this.tabId = tabIdP;
 	}
 
