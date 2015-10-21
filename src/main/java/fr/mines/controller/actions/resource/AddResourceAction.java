@@ -19,11 +19,12 @@ public class AddResourceAction extends AbstractFrontAction{
 		if (rq.isSet("resourceName")) {
 			Long managerID = Long.parseLong(rq.param("managerUser"));
 			Long resourceTypeID = Long.parseLong(rq.param("resourceType"));
-			Resource resource = new Resource(rq.param("resourceName"), rq.param("resourceDescription"),
-					rq.param("resourceLocalisation"), null, null);
+			Resource resource = new Resource(rq.param("resourceName"),
+                    rq.param("resourceDescription"), rq.param("resourceLocalisation"),
+                    userService.get(managerID), resourceTypeService.get(resourceTypeID));
 			rq.attr("previousResource", resource);
 			try {
-				resourceService.create(resource, managerID, resourceTypeID);
+				resourceService.create(resource);
 				rq.attr("resourceAdded", true);
 				rq.attr("resourceAddedName", resource.getName());
 			} catch (ServiceExecutionException e) {

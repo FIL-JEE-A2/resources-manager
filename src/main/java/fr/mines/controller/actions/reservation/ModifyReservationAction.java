@@ -30,9 +30,11 @@ public class ModifyReservationAction extends AbstractFrontAction{
 				Date reservationStart = Reservation.FIELD_DATE_FORMAT.parse(request.param("reservationStart"));
 				Date reservationStop = Reservation.FIELD_DATE_FORMAT.parse(request.param("reservationStop"));
 				Reservation reservationToUpdate = new Reservation(reservationStart, reservationStop);
+				reservationToUpdate.setUser(userService.get(userID));
+				reservationToUpdate.setResource(resourceService.get(resourceID));
 				//Try to update
 				try {
-					reservationService.update(reservationID, reservationToUpdate, userID, resourceID);
+					reservationService.update(reservationID, reservationToUpdate);
 					request.attr("reservationModified", true);
 					request.attr("reservationModifiedResourceName",
 							reservationToUpdate.getResource() != null ? reservationToUpdate.getResource().getName() : "inconnue");

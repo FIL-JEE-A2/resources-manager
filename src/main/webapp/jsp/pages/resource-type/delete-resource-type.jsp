@@ -23,6 +23,7 @@
         <c:if test="${error}">
             <div class="alert alert-danger" role="alert">
                 <strong>Erreur à la suppression de du type de ressource</strong>
+                <br>${errorMessage}
             </div>
         </c:if>
 
