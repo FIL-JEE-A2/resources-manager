@@ -87,9 +87,10 @@ public class FrontController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String actionId = this.getActionId(request.getPathInfo());
 		FrontActionI action = actions.get(actionId);
-		if (action != null) {
-			executeAction(request, response, action);
-		} else {
+
+		if (action != null) executeAction(request, response, action);
+		else
+		{
 			if(actionId == null) executeAction(request, response, actions.get("home"));
 			else handleError(new NotFoundException("La page demandée est introuvable."), request, response);
 		}
@@ -101,30 +102,25 @@ public class FrontController extends HttpServlet {
 
 	private void executeAction(HttpServletRequest request, HttpServletResponse response, FrontActionI action) {
 		LOGGER.info("Execute the action {}", action.getID());
-		try {
-			String dispatchUrl = action.handle(new HttpServletRequestDecorator(request), response);
-			LOGGER.debug(dispatchUrl);
+		HttpServletRequestDecorator rq = new HttpServletRequestDecorator(request);
+		try
+		{
 			//Check security
-			boolean authorizedAction = true;
-			if (action.isSecured()) {
-				HttpSession session = request.getSession(true);
-				User user = (User) session.getAttribute("user");
-				if (user == null) {
-					authorizedAction = false;
-				}
-			}
-			if (authorizedAction) {
+			if (!action.isSecured() || rq.connectedUser() != null)
+			{
+				String dispatchUrl = action.handle(rq, response);
 				ActionCategory category = action.getCategory();
-				if (category.getTabId() != null) {
-					request.setAttribute(category.getTabId(), true);
-				}
-				if (action.isTemplateView()) {
-					request.setAttribute("pageUrl", dispatchUrl);
+
+				if (category.getTabId() != null) rq.attr(category.getTabId(), true);
+				if (action.isTemplateView())
+				{
+					rq.attr("pageUrl", dispatchUrl);
 					getServletContext().getRequestDispatcher(RMConstant.MAIN_TEMPLATE_JSP).forward(request, response);
-				} else {
-					getServletContext().getRequestDispatcher(dispatchUrl).forward(request, response);
 				}
-			} else {
+				else getServletContext().getRequestDispatcher(dispatchUrl).forward(request, response);
+			}
+			else
+			{
 				LOGGER.info("The action {} is not authorized, redirect to login page", action.getID());
 				response.sendRedirect(request.getContextPath() + "/pages/login?unauthorizedAction=true");
 			}
@@ -157,10 +153,7 @@ public class FrontController extends HttpServlet {
 	 * @return the action from the path, or null if action was not found
 	 */
 	private String getActionId(String pathInfo) {
-		if (pathInfo != null) {
-			if (pathInfo.startsWith("/"))
-				pathInfo = pathInfo.substring(1, pathInfo.length());
-		}
+		if (pathInfo != null && pathInfo.startsWith("/")) pathInfo = pathInfo.substring(1, pathInfo.length());
 		return pathInfo;
 	}
 }
