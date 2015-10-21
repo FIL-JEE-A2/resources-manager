@@ -21,8 +21,7 @@ public class ModifyReservationAction extends AbstractFrontAction{
 	public String handle(HttpServletRequestDecorator request, HttpServletResponse response) throws Exception {
 		if (request.isSet("id")) {
 			Long reservationID = Long.parseLong(request.param("id"));
-			Reservation previousReservation = reservationService.get(reservationID);
-			request.attr("previousReservation", previousReservation);
+			request.attr("previousReservation", reservationService.get(reservationID));
 			if (request.isSet("selectedResource")) {
 				Long userID = request.connectedUser().getId();
 				Long resourceID = Long.parseLong(request.param("selectedResource"));

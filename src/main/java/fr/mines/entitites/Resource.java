@@ -63,6 +63,19 @@ public class Resource implements MergeableEntity<Resource> {
 		this.setReservations(reservations);
 	}
 
+	@Override
+	public String toString()
+	{
+		return "Resource{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", description='" + description + '\'' +
+				", localisation='" + localisation + '\'' +
+				", manager=" + manager +
+				", resourceType=" + resourceType +
+				'}';
+	}
+
 	public Long getId() {
 		return id;
 	}

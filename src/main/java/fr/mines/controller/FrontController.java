@@ -1,41 +1,15 @@
 package fr.mines.controller;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import fr.mines.RMConstant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import javassist.NotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import fr.mines.RMConstant;
-import fr.mines.controller.actions.DisconnectAction;
-import fr.mines.controller.actions.HomeAction;
-import fr.mines.controller.actions.LoginAction;
-import fr.mines.controller.actions.reservation.AddReservationAction;
-import fr.mines.controller.actions.reservation.DeleteReservationAction;
-import fr.mines.controller.actions.reservation.ListReservationAction;
-import fr.mines.controller.actions.reservation.ModifyReservationAction;
-import fr.mines.controller.actions.resource.AddResourceAction;
-import fr.mines.controller.actions.resource.DeleteResourceAction;
-import fr.mines.controller.actions.resource.ListResourceAction;
-import fr.mines.controller.actions.resource.ModifyResourceAction;
-import fr.mines.controller.actions.resource_type.AddResourceTypeAction;
-import fr.mines.controller.actions.resource_type.DeleteResourceTypeAction;
-import fr.mines.controller.actions.resource_type.ListResourceTypeAction;
-import fr.mines.controller.actions.resource_type.ModifyResourceTypeAction;
-import fr.mines.controller.actions.user.AddUserAction;
-import fr.mines.controller.actions.user.DeleteUserAction;
-import fr.mines.controller.actions.user.ListUserAction;
-import fr.mines.controller.actions.user.ModifyUserAction;
-import fr.mines.entitites.User;
+import java.io.IOException;
 
 /**
  * Test front controller
@@ -47,84 +21,34 @@ public class FrontController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	// ======== PAGES ============
-	private static final Map<String, FrontActionI> actions = new HashMap<>();
-
-	static {
-		//Login
-		addAction(new LoginAction());
-		addAction(new DisconnectAction());
-		//Home
-		addAction(new HomeAction());
-		//User
-		addAction(new ListUserAction());
-		addAction(new AddUserAction());
-		addAction(new ModifyUserAction());
-		addAction(new DeleteUserAction());
-		//Resource
-		addAction(new ListResourceAction());
-		addAction(new AddResourceAction());
-		addAction(new DeleteResourceAction());
-		addAction(new ModifyResourceAction());
-		//ResourceType
-		addAction(new ListResourceTypeAction());
-		addAction(new AddResourceTypeAction());
-		addAction(new ModifyResourceTypeAction());
-		addAction(new DeleteResourceTypeAction());
-		//Reservation
-		addAction(new ListReservationAction());
-		addAction(new AddReservationAction());
-		addAction(new ModifyReservationAction());
-		addAction(new DeleteReservationAction());
-	}
-
-	static void addAction(FrontActionI action) {
-		actions.put(action.getID(), action);
-	}
-
-	// ===========================
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String actionId = this.getActionId(request.getPathInfo());
-		FrontActionI action = actions.get(actionId);
-		if (action != null) {
-			executeAction(request, response, action);
-		} else {
-			if(actionId == null) executeAction(request, response, actions.get("home"));
-			else handleError(new NotFoundException("La page demandée est introuvable."), request, response);
-		}
-	}
+	private final ActionManager actionManager = new ActionManager();
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
 
-	private void executeAction(HttpServletRequest request, HttpServletResponse response, FrontActionI action) {
-		LOGGER.info("Execute the action {}", action.getID());
-		try {
-			String dispatchUrl = action.handle(new HttpServletRequestDecorator(request), response);
-			LOGGER.debug(dispatchUrl);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+		HttpServletRequestDecorator rq = new HttpServletRequestDecorator(request);
+		try
+		{
+			FrontActionI action = actionManager.getAction(request.getPathInfo());
+			LOGGER.info("Execute the action {}", action.getID());
 			//Check security
-			boolean authorizedAction = true;
-			if (action.isSecured()) {
-				HttpSession session = request.getSession(true);
-				User user = (User) session.getAttribute("user");
-				if (user == null) {
-					authorizedAction = false;
-				}
-			}
-			if (authorizedAction) {
+			if (!action.isSecured() || rq.connectedUser() != null)
+			{
+				String dispatchUrl = action.handle(rq, response);
 				ActionCategory category = action.getCategory();
-				if (category.getTabId() != null) {
-					request.setAttribute(category.getTabId(), true);
-				}
-				if (action.isTemplateView()) {
-					request.setAttribute("pageUrl", dispatchUrl);
+
+				if (category.getTabId() != null) rq.attr(category.getTabId(), true);
+				if (action.isTemplateView())
+				{
+					rq.attr("pageUrl", dispatchUrl);
 					getServletContext().getRequestDispatcher(RMConstant.MAIN_TEMPLATE_JSP).forward(request, response);
-				} else {
-					getServletContext().getRequestDispatcher(dispatchUrl).forward(request, response);
 				}
-			} else {
+				else getServletContext().getRequestDispatcher(dispatchUrl).forward(request, response);
+			}
+			else
+			{
 				LOGGER.info("The action {} is not authorized, redirect to login page", action.getID());
 				response.sendRedirect(request.getContextPath() + "/pages/login?unauthorizedAction=true");
 			}
@@ -134,7 +58,7 @@ public class FrontController extends HttpServlet {
 	}
 
 	/**
-	 * Handle a exception and redirect to a dedicated error page (/jsp/pages/error-report.jps)
+	 * Handle an exception and redirect to a dedicated error page (/jsp/pages/error-report.jps)
 	 * @param e the exception to handle
 	 * @param request the request to forward
 	 * @param response the response to forward
@@ -149,18 +73,5 @@ public class FrontController extends HttpServlet {
 		} catch (Exception e1) {
 			LOGGER.error("Couldn't redirect to error page", e1);
 		}
-	}
-
-	/**
-	 * To get the action name from a path
-	 * @param pathInfo the complete path to analyze
-	 * @return the action from the path, or null if action was not found
-	 */
-	private String getActionId(String pathInfo) {
-		if (pathInfo != null) {
-			if (pathInfo.startsWith("/"))
-				pathInfo = pathInfo.substring(1, pathInfo.length());
-		}
-		return pathInfo;
 	}
 }

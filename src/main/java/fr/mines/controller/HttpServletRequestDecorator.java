@@ -36,10 +36,16 @@ public class HttpServletRequestDecorator {
 	}
 
 	public User connectedUser() {
-		HttpSession session = request.getSession(true);
-		User user = (User) session.getAttribute("user");
-		if (user != null) {
-			return user;
-		} else return null;
+		return (User) session().getAttribute("user");
+	}
+
+	public void connectedUser(User user)
+	{
+		session().setAttribute("user", user);
+	}
+
+	public HttpSession session()
+	{
+		return request().getSession(true);
 	}
 }

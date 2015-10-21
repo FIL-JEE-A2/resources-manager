@@ -9,7 +9,7 @@ public class DisconnectAction extends AbstractFrontAction {
 
 	@Override
 	public String handle(HttpServletRequestDecorator rq, HttpServletResponse response) throws Exception {
-		rq.request().getSession(true).invalidate();
+		rq.session().invalidate();
 		return "/jsp/pages/disconnected.jsp";
 	}
 

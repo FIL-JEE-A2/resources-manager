@@ -17,10 +17,7 @@ public class ResourceDao extends AbstractDao<Resource, Long> {
 	}
 
 	public static ResourceDao getInstance() {
-		if (instance == null) {
-			instance = new ResourceDao();
-		}
-		return instance;
+		return instance == null ? instance = new ResourceDao() : instance;
 	}
 
 	@SuppressWarnings("unchecked")

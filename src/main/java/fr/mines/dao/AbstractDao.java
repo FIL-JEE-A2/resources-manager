@@ -60,28 +60,14 @@ public abstract class AbstractDao<T extends MergeableEntity<T>, K> {
 	}
 
 	protected T refresh(T entity) {
-		if (entity != null) {
-			this.getEntityManager().refresh(entity);
-			return entity;
-		} else {
-			return null;
-		}
+		if (entity != null) this.getEntityManager().refresh(entity);
+		return entity;
 	}
 
 	protected List<T> refreshAll(List<T> list) {
-		for (T t : list) {
-			refresh(t);
-		}
+		for (T t : list) refresh(t);
 		return list;
 	}
-
-	//	protected void closeEntityManager() {
-	//		EntityManager em = this.entityManagerThreadLocal.get();
-	//		if (em != null) {
-	//			em.close();
-	//			this.entityManagerThreadLocal.set(null);
-	//		}
-	//	}
 
 	protected abstract List<T> getAllImpl();
 

@@ -32,7 +32,6 @@ public class ResourceTypeDao extends AbstractDao<ResourceType, Long> {
 	@SuppressWarnings("unchecked")
 	public List<ResourceType> getAllImpl() {
 		Query selectQuery = this.getEntityManager().createQuery("SELECT rt FROM ResourceType rt");
-		List<ResourceType> resultList = selectQuery.getResultList();
-		return resultList;
+		return selectQuery.getResultList();
 	}
 }
