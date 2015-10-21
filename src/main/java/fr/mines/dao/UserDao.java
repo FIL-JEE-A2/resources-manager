@@ -20,10 +20,7 @@ public class UserDao extends AbstractDao<User, Long> {
 	private static UserDao instance;
 
 	public static UserDao getInstance() {
-		if (instance == null) {
-			instance = new UserDao();
-		}
-		return instance;
+		return instance == null ? instance = new UserDao() : instance;
 	}
 
 	public User getByMail(String mail) {
