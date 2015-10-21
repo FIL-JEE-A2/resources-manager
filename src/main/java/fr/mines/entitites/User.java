@@ -71,6 +71,21 @@ public class User implements MergeableEntity<User> {
 		user.setReservations(reservations);
 	}
 
+	@Override
+	public String toString()
+	{
+		return "User{" +
+				"id=" + id +
+				", firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
+				", mail='" + mail + '\'' +
+				", phone='" + phone + '\'' +
+				", login='" + login + '\'' +
+				", password='" + password + '\'' +
+				", admin=" + admin +
+				'}';
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}

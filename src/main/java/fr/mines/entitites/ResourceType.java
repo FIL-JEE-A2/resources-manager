@@ -35,6 +35,15 @@ public class ResourceType implements MergeableEntity<ResourceType> {
 		this.resources = resources;
 	}
 
+	@Override
+	public String toString()
+	{
+		return "ResourceType{" +
+				"id=" + id +
+				", type='" + type + '\'' +
+				'}';
+	}
+
 	public ResourceType(String type) {
 		this(type, new ArrayList<Resource>());
 	}

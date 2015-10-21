@@ -110,8 +110,14 @@ public class Reservation implements MergeableEntity<Reservation> {
 	}
 
 	@Override
-	public String toString() {
-		return "Reservation [id=" + id + ", reservationStart=" + reservationStart + ", reservationStop=" + reservationStop + ", user=" + user
-				+ ", resource=" + resource + "]";
+	public String toString()
+	{
+		return "Reservation{" +
+				"id=" + id +
+				", reservationStart=" + reservationStart +
+				", reservationStop=" + reservationStop +
+				", user=" + user +
+				", resource=" + resource +
+				'}';
 	}
 }
