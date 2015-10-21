@@ -4,8 +4,6 @@ import java.util.List;
 
 import fr.mines.dao.ReservationDao;
 import fr.mines.entitites.Reservation;
-import fr.mines.entitites.Resource;
-import fr.mines.entitites.User;
 
 public class ReservationService extends AbstractService<Reservation, Long, ReservationDao>{
 

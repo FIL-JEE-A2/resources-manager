@@ -1,16 +1,10 @@
 package fr.mines.controller.actions.resource_type;
 
+import javax.servlet.http.HttpServletResponse;
+
 import fr.mines.controller.ActionCategory;
-import fr.mines.controller.FrontActionI;
 import fr.mines.controller.HttpServletRequestDecorator;
 import fr.mines.controller.actions.AbstractFrontAction;
-import fr.mines.entitites.Resource;
-import fr.mines.entitites.ResourceType;
-import fr.mines.service.ResourceTypeService;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * Created by valentin on 19/10/15.

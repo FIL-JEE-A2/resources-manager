@@ -1,16 +1,10 @@
 package fr.mines.controller.actions.resource;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.mines.controller.ActionCategory;
-import fr.mines.controller.FrontActionI;
 import fr.mines.controller.HttpServletRequestDecorator;
 import fr.mines.controller.actions.AbstractFrontAction;
-import fr.mines.entitites.Resource;
-import fr.mines.service.ResourceService;
 
 public class ListResourceAction extends AbstractFrontAction
 {

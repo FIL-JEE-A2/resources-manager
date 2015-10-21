@@ -34,7 +34,7 @@
 					<td>${user.login}</td>
 					<td>${user.mail}</td>
 					<td>${user.phone}</td>
-					<td>${user.firstName}${user.lastName}</td>
+					<td>${user.fullname}</td>
 					<td><input
 						type="checkbox"
 						disabled="disabled"

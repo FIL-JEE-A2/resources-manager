@@ -1,10 +1,8 @@
 package fr.mines.controller.actions;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.mines.controller.ActionCategory;
-import fr.mines.controller.FrontActionI;
 import fr.mines.controller.HttpServletRequestDecorator;
 
 public class HomeAction extends AbstractFrontAction {

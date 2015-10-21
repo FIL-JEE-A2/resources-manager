@@ -1,11 +1,9 @@
 package fr.mines.controller.actions;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import fr.mines.controller.ActionCategory;
-import fr.mines.controller.FrontActionI;
 import fr.mines.controller.HttpServletRequestDecorator;
 import fr.mines.entitites.User;
 import fr.mines.service.UserService;
