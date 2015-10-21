@@ -13,22 +13,21 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="RESOURCE_TYPE")
+@Table(name = "RESOURCE_TYPE")
 public class ResourceType implements MergeableEntity<ResourceType> {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="ID")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ID")
 	private Long id;
-	
-	@Column(name="TYPE", unique = true)
+
+	@Column(name = "TYPE", unique = true)
 	private String type;
-	
+
 	@OneToMany
-	@JoinColumn(name="RESOURCE_TYPE_ID")
+	@JoinColumn(name = "RESOURCE_TYPE_ID")
 	private Collection<Resource> resources;
-	
-	public ResourceType() {
-	}
+
+	public ResourceType() {}
 
 	public ResourceType(String type, Collection<Resource> resources) {
 		super();
@@ -36,8 +35,7 @@ public class ResourceType implements MergeableEntity<ResourceType> {
 		this.resources = resources;
 	}
 
-	public ResourceType(String type)
-	{
+	public ResourceType(String type) {
 		this(type, new ArrayList<Resource>());
 	}
 
@@ -65,8 +63,8 @@ public class ResourceType implements MergeableEntity<ResourceType> {
 		this.resources = resources;
 	}
 
-	public void copyIn(ResourceType resourceType)
-	{
+	public void copyIn(ResourceType resourceType) {
 		resourceType.setType(type);
+		resourceType.setResources(resources);
 	}
 }

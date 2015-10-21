@@ -20,7 +20,7 @@ public class ReservationDao extends AbstractDao<Reservation, Long> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Reservation> getAll() {
+	public List<Reservation> getAllImpl() {
 		Query selectQuery = this.getEntityManager().createQuery("SELECT r FROM Reservation r");
 		return selectQuery.getResultList();
 	}
@@ -29,7 +29,7 @@ public class ReservationDao extends AbstractDao<Reservation, Long> {
 	public List<Reservation> getReservationByUser(Long userID) {
 		Query selectQuery = this.getEntityManager().createQuery("SELECT r FROM Reservation r JOIN r.user m WHERE m.id=:userID");
 		selectQuery.setParameter("userID", userID);
-		return selectQuery.getResultList();
+		return refreshAll(selectQuery.getResultList());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -42,7 +42,7 @@ public class ReservationDao extends AbstractDao<Reservation, Long> {
 		selectQuery.setParameter("resourceID", resourceID);
 		selectQuery.setParameter("startDate", startDate);
 		selectQuery.setParameter("stopDate", stopDate);
-		return selectQuery.getResultList();
+		return refreshAll(selectQuery.getResultList());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -57,6 +57,6 @@ public class ReservationDao extends AbstractDao<Reservation, Long> {
 		selectQuery.setParameter("startDate", startDate);
 		selectQuery.setParameter("stopDate", stopDate);
 		selectQuery.setParameter("previousID", previousReservationId);
-		return selectQuery.getResultList();
+		return refreshAll(selectQuery.getResultList());
 	}
 }

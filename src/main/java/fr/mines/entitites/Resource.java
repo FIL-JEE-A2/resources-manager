@@ -60,6 +60,7 @@ public class Resource implements MergeableEntity<Resource> {
 		previousUser.setLocalisation(localisation);
 		previousUser.setResourceType(resourceType);
 		previousUser.setManager(manager);
+		this.setReservations(reservations);
 	}
 
 	public Long getId() {

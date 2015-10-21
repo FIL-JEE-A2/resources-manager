@@ -30,7 +30,7 @@ public class UserDao extends AbstractDao<User, Long> {
 		Query query = this.getEntityManager().createQuery("SELECT u FROM User u WHERE u.mail=:mail");
 		query.setParameter("mail", mail);
 		try {
-			return (User) query.getSingleResult();
+			return refresh((User) query.getSingleResult());
 		} catch (NoResultException nre) {
 			return null;
 		}
@@ -40,14 +40,14 @@ public class UserDao extends AbstractDao<User, Long> {
 		Query query = this.getEntityManager().createQuery("SELECT u FROM User u WHERE u.login=:login");
 		query.setParameter("login", login);
 		try {
-			return (User) query.getSingleResult();
+			return refresh((User) query.getSingleResult());
 		} catch (NoResultException nre) {
 			return null;
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<User> getAll() {
+	public List<User> getAllImpl() {
 		Query selectQuery = this.getEntityManager().createQuery("SELECT u FROM User u");
 		return selectQuery.getResultList();
 	}

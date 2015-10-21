@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.FlushModeType;
 
 import fr.mines.entitites.MergeableEntity;
 import fr.mines.persistence.JPAUtils;
@@ -21,6 +22,7 @@ public abstract class AbstractDao<T extends MergeableEntity<T>, K> {
 		EntityManager entityManager = this.entityManagerThreadLocal.get();
 		if (entityManager == null) {
 			entityManager = JPAUtils.createEntityManager();
+			entityManager.setFlushMode(FlushModeType.COMMIT);
 			entityManagerThreadLocal.set(entityManager);
 		}
 		return entityManager;
@@ -53,9 +55,38 @@ public abstract class AbstractDao<T extends MergeableEntity<T>, K> {
 	}
 
 	public T get(K id) {
-		return this.getEntityManager().find(type, id);
+		T found = this.getEntityManager().find(type, id);
+		return refresh(found);
 	}
 
-	public abstract List<T> getAll();
+	protected T refresh(T entity) {
+		if (entity != null) {
+			this.getEntityManager().refresh(entity);
+			return entity;
+		} else {
+			return null;
+		}
+	}
+
+	protected List<T> refreshAll(List<T> list) {
+		for (T t : list) {
+			refresh(t);
+		}
+		return list;
+	}
+
+	//	protected void closeEntityManager() {
+	//		EntityManager em = this.entityManagerThreadLocal.get();
+	//		if (em != null) {
+	//			em.close();
+	//			this.entityManagerThreadLocal.set(null);
+	//		}
+	//	}
+
+	protected abstract List<T> getAllImpl();
+
+	public List<T> getAll() {
+		return refreshAll(getAllImpl());
+	}
 
 }

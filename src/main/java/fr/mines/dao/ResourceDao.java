@@ -24,7 +24,7 @@ public class ResourceDao extends AbstractDao<Resource, Long> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Resource> getAll() {
+	public List<Resource> getAllImpl() {
 		Query selectQuery = this.getEntityManager().createQuery("SELECT r FROM Resource r");
 		return selectQuery.getResultList();
 	}
@@ -33,6 +33,6 @@ public class ResourceDao extends AbstractDao<Resource, Long> {
 	public List<Resource> getResourceByManager(Long managerID) {
 		Query selectQuery = this.getEntityManager().createQuery("SELECT r FROM Resource r JOIN r.manager m WHERE m.id=:managerID");
 		selectQuery.setParameter("managerID", managerID);
-		return selectQuery.getResultList();
+		return refreshAll(selectQuery.getResultList());
 	}
 }

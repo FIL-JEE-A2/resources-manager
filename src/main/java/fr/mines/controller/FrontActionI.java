@@ -1,8 +1,5 @@
 package fr.mines.controller;
 
-import fr.mines.service.ResourceTypeService;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**

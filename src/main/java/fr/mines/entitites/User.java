@@ -68,6 +68,7 @@ public class User implements MergeableEntity<User> {
 		user.setPassword(password);
 		user.setPhone(phone);
 		user.setMail(mail);
+		user.setReservations(reservations);
 	}
 
 	public String getFirstName() {

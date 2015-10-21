@@ -1,16 +1,15 @@
 package fr.mines.controller.actions.resource;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import fr.mines.controller.ActionCategory;
 import fr.mines.controller.HttpServletRequestDecorator;
 import fr.mines.controller.actions.AbstractFrontAction;
 import fr.mines.entitites.Resource;
-import fr.mines.entitites.ResourceType;
 import fr.mines.service.ServiceExecutionException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 public class AddResourceAction extends AbstractFrontAction{
 	private static final Logger LOGGER = LoggerFactory.getLogger(AddResourceAction.class);

@@ -1,10 +1,9 @@
 package fr.mines.service;
 
-import fr.mines.dao.ResourceTypeDao;
-import fr.mines.entitites.Resource;
-import fr.mines.entitites.ResourceType;
-
 import java.util.List;
+
+import fr.mines.dao.ResourceTypeDao;
+import fr.mines.entitites.ResourceType;
 
 /**
  * Created by valentin on 19/10/15.
