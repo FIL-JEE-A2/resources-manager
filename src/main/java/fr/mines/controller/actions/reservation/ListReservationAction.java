@@ -1,13 +1,11 @@
 package fr.mines.controller.actions.reservation;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
 
 import fr.mines.controller.ActionCategory;
+import fr.mines.controller.ActionSecurity;
 import fr.mines.controller.HttpServletRequestDecorator;
 import fr.mines.controller.actions.AbstractFrontAction;
-import fr.mines.entitites.Reservation;
 
 public class ListReservationAction extends AbstractFrontAction {
 
@@ -22,8 +20,8 @@ public class ListReservationAction extends AbstractFrontAction {
 	}
 
 	@Override
-	public boolean isSecured() {
-		return true;
+	public ActionSecurity getSecurityLevel() {
+		return ActionSecurity.BASIC;
 	}
 
 	@Override

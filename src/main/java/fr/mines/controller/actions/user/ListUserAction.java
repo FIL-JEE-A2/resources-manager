@@ -1,16 +1,11 @@
 package fr.mines.controller.actions.user;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.mines.controller.ActionCategory;
-import fr.mines.controller.FrontActionI;
+import fr.mines.controller.ActionSecurity;
 import fr.mines.controller.HttpServletRequestDecorator;
 import fr.mines.controller.actions.AbstractFrontAction;
-import fr.mines.entitites.User;
-import fr.mines.service.UserService;
 
 public class ListUserAction extends AbstractFrontAction
 {
@@ -32,8 +27,8 @@ public class ListUserAction extends AbstractFrontAction
 	}
 
 	@Override
-	public boolean isSecured() {
-		return true;
+	public ActionSecurity getSecurityLevel() {
+		return ActionSecurity.ADMIN;
 	}
 
 	@Override

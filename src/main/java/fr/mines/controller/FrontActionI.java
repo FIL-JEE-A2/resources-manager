@@ -26,10 +26,10 @@ public interface FrontActionI {
 	public boolean isTemplateView();
 
 	/**
-	 * @return if a user must be logged to execute the action
+	 * @return the action security level
 	 */
-	public boolean isSecured();
-	
+	public ActionSecurity getSecurityLevel();
+
 	/**
 	 * @return the action category : use to select active tab
 	 */

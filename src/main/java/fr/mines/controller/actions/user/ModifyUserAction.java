@@ -1,18 +1,16 @@
 package fr.mines.controller.actions.user;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import fr.mines.controller.HttpServletRequestDecorator;
-import fr.mines.controller.actions.AbstractFrontAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.mines.controller.ActionCategory;
-import fr.mines.controller.FrontActionI;
+import fr.mines.controller.ActionSecurity;
+import fr.mines.controller.HttpServletRequestDecorator;
+import fr.mines.controller.actions.AbstractFrontAction;
 import fr.mines.entitites.User;
 import fr.mines.service.ServiceExecutionException;
-import fr.mines.service.UserService;
 
 public class ModifyUserAction extends AbstractFrontAction
 {
@@ -59,8 +57,8 @@ public class ModifyUserAction extends AbstractFrontAction
 	}
 
 	@Override
-	public boolean isSecured() {
-		return true;
+	public ActionSecurity getSecurityLevel() {
+		return ActionSecurity.ADMIN;
 	}
 	
 	@Override

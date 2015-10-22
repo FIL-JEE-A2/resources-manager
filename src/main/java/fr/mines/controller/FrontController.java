@@ -29,26 +29,23 @@ public class FrontController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 		HttpServletRequestDecorator rq = new HttpServletRequestDecorator(request);
-		try
-		{
+		try {
 			FrontActionI action = actionManager.getAction(request.getPathInfo());
 			LOGGER.info("Execute the action {}", action.getID());
 			//Check security
-			if (!action.isSecured() || rq.connectedUser() != null)
-			{
+			boolean securityOk = action.getSecurityLevel() == ActionSecurity.NONE
+					|| (rq.connectedUser() != null && (rq.connectedUser().isAdmin() || action.getSecurityLevel() == ActionSecurity.BASIC));
+			if (securityOk) {
 				String dispatchUrl = action.handle(rq, response);
 				ActionCategory category = action.getCategory();
 
-				if (category.getTabId() != null) rq.attr(category.getTabId(), true);
-				if (action.isTemplateView())
-				{
+				if (category.getTabId() != null)
+					rq.attr(category.getTabId(), true);
+				if (action.isTemplateView()) {
 					rq.attr("pageUrl", dispatchUrl);
 					getServletContext().getRequestDispatcher(RMConstant.MAIN_TEMPLATE_JSP).forward(request, response);
-				}
-				else getServletContext().getRequestDispatcher(dispatchUrl).forward(request, response);
-			}
-			else
-			{
+				} else getServletContext().getRequestDispatcher(dispatchUrl).forward(request, response);
+			} else {
 				LOGGER.info("The action {} is not authorized, redirect to login page", action.getID());
 				response.sendRedirect(request.getContextPath() + "/pages/login?unauthorizedAction=true");
 			}
@@ -63,8 +60,7 @@ public class FrontController extends HttpServlet {
 	 * @param request the request to forward
 	 * @param response the response to forward
 	 */
-	private void handleError(Exception e, HttpServletRequest request, HttpServletResponse response)
-	{
+	private void handleError(Exception e, HttpServletRequest request, HttpServletResponse response) {
 		LOGGER.warn("Redirect user to error page", e);
 		try {
 			request.setAttribute("errorType", e.getClass().getName());

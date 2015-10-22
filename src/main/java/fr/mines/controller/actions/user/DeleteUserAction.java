@@ -1,21 +1,18 @@
 package fr.mines.controller.actions.user;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import fr.mines.controller.HttpServletRequestDecorator;
-import fr.mines.controller.actions.AbstractFrontAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.mines.controller.ActionCategory;
-import fr.mines.controller.FrontActionI;
+import fr.mines.controller.ActionSecurity;
+import fr.mines.controller.HttpServletRequestDecorator;
+import fr.mines.controller.actions.AbstractFrontAction;
 import fr.mines.entitites.User;
 import fr.mines.service.ServiceExecutionException;
-import fr.mines.service.UserService;
 
-public class DeleteUserAction extends AbstractFrontAction
-{
+public class DeleteUserAction extends AbstractFrontAction {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DeleteUserAction.class);
 
 	@Override
@@ -29,8 +26,7 @@ public class DeleteUserAction extends AbstractFrontAction
 				try {
 					User removedUser = userService.remove(userID);
 					rq.attr("userDeleted", true);
-					rq.attr("userDeletedName",
-							removedUser.getFirstName() + " " + removedUser.getLastName() + " (" + removedUser.getLogin() + ")");
+					rq.attr("userDeletedName", removedUser.getFirstName() + " " + removedUser.getLastName() + " (" + removedUser.getLogin() + ")");
 				} catch (ServiceExecutionException e) {
 					LOGGER.warn("User can't be removed", e);
 					rq.attr("userDeleteError", true);
@@ -52,9 +48,10 @@ public class DeleteUserAction extends AbstractFrontAction
 	}
 
 	@Override
-	public boolean isSecured() {
-		return true;
+	public ActionSecurity getSecurityLevel() {
+		return ActionSecurity.ADMIN;
 	}
+
 	@Override
 	public ActionCategory getCategory() {
 		return ActionCategory.USER;

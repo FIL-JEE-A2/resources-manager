@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.mines.controller.ActionCategory;
+import fr.mines.controller.ActionSecurity;
 import fr.mines.controller.HttpServletRequestDecorator;
 import fr.mines.controller.actions.AbstractFrontAction;
 import fr.mines.entitites.Reservation;
@@ -62,8 +63,8 @@ public class ModifyReservationAction extends AbstractFrontAction{
 	}
 
 	@Override
-	public boolean isSecured() {
-		return true;
+	public ActionSecurity getSecurityLevel() {
+		return ActionSecurity.BASIC;
 	}
 
 	@Override

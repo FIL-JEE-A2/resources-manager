@@ -1,6 +1,7 @@
 package fr.mines.controller.actions.resource;
 
 import fr.mines.controller.ActionCategory;
+import fr.mines.controller.ActionSecurity;
 import fr.mines.controller.HttpServletRequestDecorator;
 import fr.mines.controller.actions.AbstractFrontAction;
 import fr.mines.entitites.Resource;
@@ -46,8 +47,8 @@ public class DeleteResourceAction extends AbstractFrontAction
 	}
 
 	@Override
-	public boolean isSecured() {
-		return true;
+	public ActionSecurity getSecurityLevel() {
+		return ActionSecurity.ADMIN;
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package fr.mines.controller.actions;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.mines.controller.ActionCategory;
+import fr.mines.controller.ActionSecurity;
 import fr.mines.controller.HttpServletRequestDecorator;
 
 public class DisconnectAction extends AbstractFrontAction {
@@ -24,8 +25,8 @@ public class DisconnectAction extends AbstractFrontAction {
 	}
 
 	@Override
-	public boolean isSecured() {
-		return false;
+	public ActionSecurity getSecurityLevel() {
+		return ActionSecurity.NONE;
 	}
 
 	@Override

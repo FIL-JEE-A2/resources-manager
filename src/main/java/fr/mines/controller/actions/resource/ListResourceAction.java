@@ -3,14 +3,13 @@ package fr.mines.controller.actions.resource;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.mines.controller.ActionCategory;
+import fr.mines.controller.ActionSecurity;
 import fr.mines.controller.HttpServletRequestDecorator;
 import fr.mines.controller.actions.AbstractFrontAction;
 
-public class ListResourceAction extends AbstractFrontAction
-{
+public class ListResourceAction extends AbstractFrontAction {
 	@Override
-	public String handle(HttpServletRequestDecorator rq, HttpServletResponse response) throws Exception
-	{
+	public String handle(HttpServletRequestDecorator rq, HttpServletResponse response) throws Exception {
 		rq.attr("resourceList", resourceService.getAll());
 		return "/jsp/pages/resources/list-resource.jsp";
 	}
@@ -26,8 +25,8 @@ public class ListResourceAction extends AbstractFrontAction
 	}
 
 	@Override
-	public boolean isSecured() {
-		return true;
+	public ActionSecurity getSecurityLevel() {
+		return ActionSecurity.ADMIN;
 	}
 
 	@Override

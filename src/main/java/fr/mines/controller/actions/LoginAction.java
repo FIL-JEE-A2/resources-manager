@@ -1,12 +1,11 @@
 package fr.mines.controller.actions;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import fr.mines.controller.ActionCategory;
+import fr.mines.controller.ActionSecurity;
 import fr.mines.controller.HttpServletRequestDecorator;
 import fr.mines.entitites.User;
-import fr.mines.service.UserService;
 
 public class LoginAction extends AbstractFrontAction {
 
@@ -42,8 +41,8 @@ public class LoginAction extends AbstractFrontAction {
 	}
 
 	@Override
-	public boolean isSecured() {
-		return false;
+	public ActionSecurity getSecurityLevel() {
+		return ActionSecurity.NONE;
 	}
 
 	@Override
