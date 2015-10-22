@@ -47,7 +47,7 @@ public class FrontController extends HttpServlet {
 				} else getServletContext().getRequestDispatcher(dispatchUrl).forward(request, response);
 			} else {
 				LOGGER.info("The action {} is not authorized, redirect to login page", action.getID());
-				response.sendRedirect(request.getContextPath() + "/pages/login?unauthorizedAction=true");
+				response.sendRedirect(request.getContextPath() + "/pages/login?unauthorizedAction=true&requestedAction="+action.getID());
 			}
 		} catch (Exception e) {
 			handleError(e, request, response);

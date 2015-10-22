@@ -24,7 +24,7 @@
 		</c:if>
 
 		<c:if test="${loginSuccess}">
-			<c:redirect url="home" />
+			<c:redirect url="${requestedAction}" />
 		</c:if>
 
 

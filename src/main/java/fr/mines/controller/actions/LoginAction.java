@@ -11,19 +11,20 @@ public class LoginAction extends AbstractFrontAction {
 
 	@Override
 	public String handle(HttpServletRequestDecorator rq, HttpServletResponse response) throws Exception {
-		if(Boolean.parseBoolean(rq.param("unauthorizedAction")))
+		if (Boolean.parseBoolean(rq.param("unauthorizedAction")))
 			rq.attr("unauthorizedAction", true);
 
-		if(rq.isSet("userId"))
-		{
+		if (rq.isSet("userId")) {
 			User connectedUser = userService.checkPassword(rq.param("userId"), rq.param("userPassword"));
-			if (connectedUser != null)
-			{
+			if (connectedUser != null) {
+				if (rq.isSet("requestedAction")) {
+					rq.attr("requestedAction", rq.param("requestedAction"));
+				} else {
+					rq.attr("requestedAction", "home");
+				}
 				rq.attr("loginSuccess", true);
 				rq.connectedUser(connectedUser);
-			}
-			else
-			{
+			} else {
 				rq.attr("loginFailed", true);
 			}
 		}
