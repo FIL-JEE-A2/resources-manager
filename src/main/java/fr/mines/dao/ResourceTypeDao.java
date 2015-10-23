@@ -20,10 +20,10 @@ public class ResourceTypeDao extends AbstractDao<ResourceType, Long> {
 	}
 
 	public ResourceType getByTypeName(String typeName) {
-		Query query = this.getEntityManager().createQuery("SELECT rt FROM ResourceType rt WHERE rt.type=:typeName");
+		Query query = entityManager().createQuery("SELECT rt FROM ResourceType rt WHERE rt.type=:typeName");
 		query.setParameter("typeName", typeName);
 		try {
-			return refresh((ResourceType) query.getSingleResult());
+			return (ResourceType) query.getSingleResult();
 		} catch (NoResultException nre) {
 			return null;
 		}
@@ -31,7 +31,7 @@ public class ResourceTypeDao extends AbstractDao<ResourceType, Long> {
 
 	@SuppressWarnings("unchecked")
 	public List<ResourceType> getAllImpl() {
-		Query selectQuery = this.getEntityManager().createQuery("SELECT rt FROM ResourceType rt");
+		Query selectQuery = entityManager().createQuery("SELECT rt FROM ResourceType rt");
 		return selectQuery.getResultList();
 	}
 }

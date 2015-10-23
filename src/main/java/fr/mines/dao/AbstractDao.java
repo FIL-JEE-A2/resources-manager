@@ -11,34 +11,27 @@ import fr.mines.persistence.JPAUtils;
 
 public abstract class AbstractDao<T extends MergeableEntity<T>, K> {
 	private Class<T> type;
-	private ThreadLocal<EntityManager> entityManagerThreadLocal;
 
 	protected AbstractDao(Class<T> typeP) {
 		this.type = typeP;
-		this.entityManagerThreadLocal = new ThreadLocal<>();
 	}
 
-	protected EntityManager getEntityManager() {
-		EntityManager entityManager = this.entityManagerThreadLocal.get();
-		if (entityManager == null) {
-			entityManager = JPAUtils.createEntityManager();
-			entityManager.setFlushMode(FlushModeType.COMMIT);
-			entityManagerThreadLocal.set(entityManager);
-		}
-		return entityManager;
+	protected EntityManager entityManager()
+	{
+		return JPAUtils.getEntityManager();
 	}
 
 	public T create(T item) {
-		EntityTransaction transaction = this.getEntityManager().getTransaction();
+		EntityTransaction transaction = entityManager().getTransaction();
 		transaction.begin();
-		this.getEntityManager().persist(item);
+		entityManager().persist(item);
 		transaction.commit();
 		return item;
 	}
 
 	public T update(K id, T item) {
-		T previousItem = this.getEntityManager().find(type, id);
-		EntityTransaction transaction = this.getEntityManager().getTransaction();
+		T previousItem = entityManager().find(type, id);
+		EntityTransaction transaction = entityManager().getTransaction();
 		transaction.begin();
 		item.copyIn(previousItem);
 		transaction.commit();
@@ -46,21 +39,21 @@ public abstract class AbstractDao<T extends MergeableEntity<T>, K> {
 	}
 
 	public T remove(K id) {
-		T previousItem = this.getEntityManager().find(type, id);
-		EntityTransaction transaction = this.getEntityManager().getTransaction();
+		T previousItem = entityManager().find(type, id);
+		EntityTransaction transaction = entityManager().getTransaction();
 		transaction.begin();
-		this.getEntityManager().remove(previousItem);
+		entityManager().remove(previousItem);
 		transaction.commit();
 		return previousItem;
 	}
 
 	public T get(K id) {
-		T found = this.getEntityManager().find(type, id);
-		return refresh(found);
+		return entityManager().find(type, id);
 	}
 
+	/* TODO : Supprimer si définitivement inutile
 	protected T refresh(T entity) {
-		if (entity != null) this.getEntityManager().refresh(entity);
+		if (entity != null) entityManager().refresh(entity);
 		return entity;
 	}
 
@@ -68,11 +61,12 @@ public abstract class AbstractDao<T extends MergeableEntity<T>, K> {
 		for (T t : list) refresh(t);
 		return list;
 	}
+	*/
 
 	protected abstract List<T> getAllImpl();
 
 	public List<T> getAll() {
-		return refreshAll(getAllImpl());
+		return getAllImpl();
 	}
 
 }

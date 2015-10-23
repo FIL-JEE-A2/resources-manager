@@ -8,17 +8,9 @@ import javax.persistence.Persistence;
  * Useful class to provide entity manager from persistence unit.
  */
 public class JPAUtils {
-	private static EntityManagerFactory entityManagerFactory;
+	public static final ThreadLocal<EntityManager> ENTITY_MANAGERS = new ThreadLocal<EntityManager>();
 
-	static {
-		entityManagerFactory = Persistence.createEntityManagerFactory("main-persistence");
-	}
-
-	public static EntityManager createEntityManager() {
-		return entityManagerFactory.createEntityManager();
-	}
-
-	public static EntityManagerFactory getEntityManagerFactory() {
-		return entityManagerFactory;
+	public static EntityManager getEntityManager() {
+		return ENTITY_MANAGERS.get();
 	}
 }
