@@ -24,20 +24,20 @@ public class UserDao extends AbstractDao<User, Long> {
 	}
 
 	public User getByMail(String mail) {
-		Query query = this.getEntityManager().createQuery("SELECT u FROM User u WHERE u.mail=:mail");
+		Query query = entityManager().createQuery("SELECT u FROM User u WHERE u.mail=:mail");
 		query.setParameter("mail", mail);
 		try {
-			return refresh((User) query.getSingleResult());
+			return (User) query.getSingleResult();
 		} catch (NoResultException nre) {
 			return null;
 		}
 	}
 
 	public User getByLogin(String login) {
-		Query query = this.getEntityManager().createQuery("SELECT u FROM User u WHERE u.login=:login");
+		Query query = entityManager().createQuery("SELECT u FROM User u WHERE u.login=:login");
 		query.setParameter("login", login);
 		try {
-			return refresh((User) query.getSingleResult());
+			return (User) query.getSingleResult();
 		} catch (NoResultException nre) {
 			return null;
 		}
@@ -45,7 +45,7 @@ public class UserDao extends AbstractDao<User, Long> {
 
 	@SuppressWarnings("unchecked")
 	public List<User> getAllImpl() {
-		Query selectQuery = this.getEntityManager().createQuery("SELECT u FROM User u");
+		Query selectQuery = entityManager().createQuery("SELECT u FROM User u");
 		return selectQuery.getResultList();
 	}
 
