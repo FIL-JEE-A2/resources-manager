@@ -1,5 +1,6 @@
 package fr.mines.service;
 
+import java.util.Date;
 import java.util.List;
 
 import fr.mines.dao.ReservationDao;
@@ -64,4 +65,13 @@ public class ReservationService extends AbstractService<Reservation, Long, Reser
 			throw new ServiceExecutionException(msg.toString());
 		}
 	}
+	
+	public List<Reservation> getReservationWithFilter(String resource, String dateStartOperator, Date dateStart, String dateStopOperator, Date dateStop, String userFirstName, String userLastName) {
+		if(resource==null && dateStart==null && dateStop==null && userFirstName==null && userLastName==null) {
+			return dao.getAll();
+		} else {
+			return dao.getReservationWithFilter(resource, dateStartOperator, dateStart, dateStopOperator, dateStop, userFirstName, userLastName);
+		}
+	}
+	
 }

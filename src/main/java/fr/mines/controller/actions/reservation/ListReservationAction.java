@@ -1,6 +1,8 @@
 package fr.mines.controller.actions.reservation;
 
-import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -33,7 +35,29 @@ public class ListReservationAction extends AbstractFrontAction {
 
 	@Override
 	public String handle(HttpServletRequestDecorator request, HttpServletResponse response) throws Exception {
-		request.attr("reservationList", reservationService.getAll());
+		if (request.isSet("filter")) {
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			
+			String resource = request.param("resource");
+			Date dateStart = null;
+			String dateStartOperator = null;
+			if (!request.param("dateStart").equals("")) {
+				dateStartOperator = request.param("dateStartOperator");
+				dateStart = df.parse(request.param("dateStart"));
+			}
+			Date dateStop = null;
+			String dateStopOperator = null;
+			if (!request.param("dateStop").equals("")) {
+				dateStopOperator = request.param("dateStopOperator");
+				dateStop = df.parse(request.param("dateStop"));
+			}
+			String userFirstName = request.param("userFirstName");
+			String userLastName = request.param("userLastName");
+			
+			request.attr("reservationList", reservationService.getReservationWithFilter(resource, dateStartOperator, dateStart, dateStopOperator, dateStop, userFirstName, userLastName));
+		} else {
+			request.attr("reservationList", reservationService.getAll());
+		}
 		return "/jsp/pages/reservations/list-reservation.jsp";
 	}
 
