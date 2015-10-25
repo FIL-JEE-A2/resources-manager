@@ -59,6 +59,7 @@
 								type="password"
 								class="form-control"
 								id="userPassword"
+								name="userPassword"
 								placeholder="Mot de passe">
 						</div>
 					</div>
