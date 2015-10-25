@@ -27,3 +27,12 @@
 	text-align: center;
 	padding: 5px;
 }
+
+.filterField {
+	width: 130px;
+	margin-left: 20px;
+}
+
+.filterFieldList {
+	margin-left: 20px;
+}

@@ -70,6 +70,8 @@ public class UserService extends AbstractService<User, Long, UserDao> {
 			String userpass = user.getPassword();
 			if (userpass != null && userpass.equals(password))
 				return user;
+			else
+				return null;
 		}
 		return user;
 	}

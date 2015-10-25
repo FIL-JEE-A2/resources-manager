@@ -60,4 +60,35 @@ public class ReservationDao extends AbstractDao<Reservation, Long> {
 
 		return selectQuery.getResultList();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Reservation> getReservationWithFilter(String resource, String dateStartOperator, Date dateStart, String dateStopOperator, Date dateStop, String userFirstName, String userLastName) {
+		StringBuilder querySB = new StringBuilder();
+		
+		// Construction de la requête en fonction des données reçues
+		querySB.append("SELECT r FROM Reservation r JOIN r.resource res JOIN r.user u WHERE ");
+		querySB.append("res.name LIKE :resource ");		
+		if (dateStart != null) {
+			querySB.append("AND r.reservationStart ").append(dateStartOperator).append(" :dateStart ");
+		}
+		if (dateStop != null) {
+			querySB.append("AND r.reservationStop ").append(dateStopOperator).append(" :dateStop ");
+		}		
+		querySB.append("AND u.firstName LIKE :userFirstName ");
+		querySB.append("AND u.lastName LIKE :userLastName ");
+		
+		// Attribution des paramètres
+		Query selectQuery = entityManager().createQuery(querySB.toString());
+		selectQuery.setParameter("resource", "%"+resource+"%");
+		if (dateStart != null) {
+			selectQuery.setParameter("dateStart", dateStart);
+		}
+		if (dateStop != null) {
+			selectQuery.setParameter("dateStop", dateStop);
+		}
+		selectQuery.setParameter("userFirstName", "%"+userFirstName+"%");
+		selectQuery.setParameter("userLastName", "%"+userLastName+"%");
+		
+		return selectQuery.getResultList();
+	}
 }
