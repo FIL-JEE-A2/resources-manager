@@ -45,10 +45,10 @@ public class ReservationDao extends AbstractDao<Reservation, Long> {
 	@SuppressWarnings("unchecked")
 	public List<Reservation> getReservationByDateAndResource(Long resourceID, Date startDate, Date stopDate) {
 		Query selectQuery = entityManager()
-				.createQuery("SELECT r FROM Reservation r JOIN r.resource res WHERE "//
+				.createQuery("SELECT DISTINCT r FROM Reservation r LEFT JOIN r.resource res WHERE "//
 						+ "res.id=:resourceID AND "//
-						+ "((r.reservationStart >= :startDate AND r.reservationStart <= :stopDate)"//
-						+ "OR r.reservationStop <= :stopDate)");
+						+ "(r.reservationStart >= :startDate AND (r.reservationStop <= :stopDate OR r.reservationStart <= :stopDate)) OR"//
+						+ "(r.reservationStart <= :startDate AND r.reservationStop >= :startDate)");
 		selectQuery.setParameter("resourceID", resourceID);
 		selectQuery.setParameter("startDate", startDate);
 		selectQuery.setParameter("stopDate", stopDate);
