@@ -35,6 +35,7 @@ public class ModifyResourceTypeAction extends AbstractFrontAction {
 					ResourceType updatedRt = new ResourceType(rq.param("typeName"));
 					try {
 						resourceTypeService.update(id, updatedRt);
+						rq.attr("resourceType", resourceTypeService.get(id));
 						rq.attr("success", true);
 						rq.attr("resourceTypeName", updatedRt.getType());
 					} catch (ServiceExecutionException e) {

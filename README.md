@@ -12,6 +12,8 @@ Identifiants par défaut (mots de passe vide par défaut)
 * "admin"/"" 
 * "michel"/""
 
+*Testé sur Tomcat 7.0.65 et 8.0.26*
+
 ## Compilation dans Eclipse ##
 
 ### En cas de ClassNotFound au lancement ###

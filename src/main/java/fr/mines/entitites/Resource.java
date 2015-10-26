@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -34,7 +35,7 @@ public class Resource implements MergeableEntity<Resource> {
 	@JoinColumn(name = "USER_ID")
 	private User manager;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "RESOURCE_TYPE_ID")
 	private ResourceType resourceType;
 
@@ -60,7 +61,7 @@ public class Resource implements MergeableEntity<Resource> {
 		previousUser.setLocalisation(localisation);
 		previousUser.setResourceType(resourceType);
 		previousUser.setManager(manager);
-		this.setReservations(reservations);
+		previousUser.setReservations(reservations);
 	}
 
 	@Override

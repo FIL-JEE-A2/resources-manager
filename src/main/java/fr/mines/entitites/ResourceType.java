@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -23,8 +22,7 @@ public class ResourceType implements MergeableEntity<ResourceType> {
 	@Column(name = "TYPE", unique = true)
 	private String type;
 
-	@OneToMany
-	@JoinColumn(name = "RESOURCE_TYPE_ID")
+	@OneToMany(mappedBy = "resourceType")
 	private Collection<Resource> resources;
 
 	public ResourceType() {}
@@ -36,12 +34,8 @@ public class ResourceType implements MergeableEntity<ResourceType> {
 	}
 
 	@Override
-	public String toString()
-	{
-		return "ResourceType{" +
-				"id=" + id +
-				", type='" + type + '\'' +
-				'}';
+	public String toString() {
+		return "ResourceType{" + "id=" + id + ", type='" + type + '\'' + '}';
 	}
 
 	public ResourceType(String type) {

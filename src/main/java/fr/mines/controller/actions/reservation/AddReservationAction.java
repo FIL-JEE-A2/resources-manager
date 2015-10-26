@@ -66,6 +66,7 @@ public class AddReservationAction extends AbstractFrontAction {
 			//Create reservation if possible
 			if (rq.isSet("reservedResource")) {
 				Long resourceID = Long.parseLong(rq.param("reservedResource"));
+				LOGGER.info("Reserved resource ID : {}",resourceID);
 				Reservation reservation = new Reservation(reservationStart, reservationStop);
 				reservation.setUser(userService.get(rq.connectedUser().getId()));
 				reservation.setResource(resourceService.get(resourceID));
