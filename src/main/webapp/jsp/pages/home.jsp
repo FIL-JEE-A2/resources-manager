@@ -13,6 +13,11 @@
 		Vous avez <span class="badge">${nbReservations}</span> réservations
 	</button>
 </a>
+<a href="add-reservation">
+	<button class="btn btn-default" type="button">
+		<i class="fa fa-plus-circle"></i> Reserver une ressource
+	</button>
+</a>
 
 <hr>
 
@@ -41,9 +46,3 @@
 		</tr>
 	</c:forEach>
 </table>
-
-<a href="add-reservation">
-	<button class="btn btn-default" type="button">
-		<i class="fa fa-plus-circle"></i> Reserver une ressource
-	</button>
-</a>

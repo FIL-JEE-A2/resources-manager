@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,8 +49,14 @@ public class AddReservationAction extends AbstractFrontAction {
 		//List resource between two dates
 		if (rq.isSet("reservationStart")) {
 			Long resourceTypeID = Long.parseLong(rq.param("selectedResourceType"));
-			Date reservationStart = Reservation.FIELD_DATE_FORMAT.parse(rq.param("reservationStart"));
-			Date reservationStop = Reservation.FIELD_DATE_FORMAT.parse(rq.param("reservationStop"));
+			String reservationStartString = rq.param("reservationStart");
+			String reservationStopString = rq.param("reservationStop");
+			if (StringUtils.isBlank(reservationStartString) || StringUtils.isBlank(reservationStopString)) {
+				rq.attr("reservationResearchError", true);
+				rq.attr("reservationResearchErrorMessage", "Les dates saisies sont invalides");
+			}
+			Date reservationStart = Reservation.FIELD_DATE_FORMAT.parse(reservationStartString);
+			Date reservationStop = Reservation.FIELD_DATE_FORMAT.parse(reservationStopString);
 
 			//Set filter param
 			rq.attr("selectedResourceType", resourceTypeID);
@@ -85,7 +92,7 @@ public class AddReservationAction extends AbstractFrontAction {
 				LOGGER.warn("Problem while searching the reservation", e);
 				rq.attr("reservationResearchError", true);
 				rq.attr("reservationResearchErrorMessage", e.getMessage());
-				
+
 			}
 		}
 		return "/jsp/pages/reservations/add-modify-reservation.jsp";

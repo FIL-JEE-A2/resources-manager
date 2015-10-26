@@ -96,12 +96,12 @@
 					<button
 						type="submit"
 						class="btn btn-default">Rechercher les ressources
-						disponnibles</button>
+						disponibles</button>
 				</div>
 			</div>
 		</div>
 		<c:if test="${resourceSearched}">
-			<h2>Ressources disponnibles</h2>
+			<h2>Ressources disponibles</h2>
 			<table class="table">
 				<thead>
 					<tr>
@@ -121,15 +121,15 @@
 							<td>${resource.resourceType.type}</td>
 							<td>${resource.description}</td>
 							<td>${resource.localisation}</td>
-							<td><input
-								type="hidden"
-								name="reservedResource"
-								value="${resource.id}">
+							<td>
 								<button
 									type="submit"
-									class="btn btn-default">
+									class="btn btn-default"
+									name="reservedResource"
+									value="${resource.id}">
 									<i class="glyphicon glyphicon-circle-arrow-right"></i> Réserver
-								</button></td>
+								</button>
+							</td>
 						</tr>
 					</c:forEach>
 				</tbody>
