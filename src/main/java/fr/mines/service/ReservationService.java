@@ -64,4 +64,19 @@ public class ReservationService extends AbstractService<Reservation, Long, Reser
 			throw new ServiceExecutionException(msg.toString());
 		}
 	}
+
+	public List<Reservation> getByUser(Long userId)
+	{
+		return dao.getReservationByUser(userId);
+	}
+
+	public List<Reservation> getByUser(Long userId, int limit)
+	{
+		return dao.getReservationByUser(userId, limit);
+	}
+
+	public Long getNbByUser(Long id)
+	{
+		return dao.getNbReservationByUser(id);
+	}
 }
