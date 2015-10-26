@@ -50,10 +50,10 @@ public class ReservationService extends AbstractService<Reservation, Long, Reser
 		calendar.set(Calendar.MILLISECOND, 0);
 		Date today = calendar.getTime();
 		if (start.before(today)) {
-			throw new ServiceExecutionException("Vous ne pouvez pas rÃ©server une ressource sur une pÃ©riode qui commence avant la date actuelle");
+			throw new ServiceExecutionException("Vous ne pouvez pas réserver une ressource sur une période qui commence avant la date actuelle");
 		}
 		if (!start.before(stop)) {
-			throw new ServiceExecutionException("La date du dÃ©but de rÃ©servation doit Ãªtre avant la date de fin de rÃ©servation");
+			throw new ServiceExecutionException("La date du début de réservation doit être avant la date de fin de réservation");
 		}
 	}
 
@@ -66,7 +66,7 @@ public class ReservationService extends AbstractService<Reservation, Long, Reser
 	private void createConflictListException(List<Reservation> conflictReservations) throws ServiceExecutionException {
 		if (!conflictReservations.isEmpty()) {
 			StringBuilder msg = new StringBuilder();
-			msg.append("La rï¿½servation ne peut pas ï¿½tre effectuï¿½e, car la ressource est dï¿½jï¿½ rï¿½servï¿½e sur ce crï¿½neau :");
+			msg.append("La réservation ne peut pas être effectuée, car la ressource est déjà réservée sur ce créneau :");
 			msg.append("<ul>");
 			for (Reservation conflictRes : conflictReservations) {
 				msg.append("<li>").append("Du ").append(conflictRes.getReservationStartLabel()).append(" au ")

@@ -3,8 +3,6 @@ package fr.mines.service;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import fr.mines.dao.ResourceDao;
 import fr.mines.dao.UserDao;
@@ -16,7 +14,6 @@ import fr.mines.entitites.User;
  * Service to manage application users
  */
 public class UserService extends AbstractService<User, Long, UserDao> {
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 	private static UserService instance;
 
 	private UserService() {
@@ -39,7 +36,7 @@ public class UserService extends AbstractService<User, Long, UserDao> {
 		if (!reservations.isEmpty()) {
 			StringBuilder msg = new StringBuilder();
 			msg.append("Impossible de supprimer l'utilisateur ").append(user.getFullname())
-					.append(", il existe des rÃ©servations associÃ©es Ã  l'utilisateur : ");
+					.append(", il existe des réservations associées Ã  l'utilisateur : ");
 			msg.append("<ul>");
 			for (Reservation reservation : reservations) {
 				msg.append("<li>").append(reservation.getResource().getName()).append(" du ").append(reservation.getReservationStartLabel())
@@ -54,7 +51,7 @@ public class UserService extends AbstractService<User, Long, UserDao> {
 		List<Resource> resourceByManager = ResourceDao.getInstance().getResourceByManager(userID);
 		if (!resourceByManager.isEmpty()) {
 			StringBuilder msg = new StringBuilder();
-			msg.append("L'utilisateur ne peut pas Ãªtre supprimÃ© car il est le responsable des ressources :");
+			msg.append("L'utilisateur ne peut pas être supprimé car il est le responsable des ressources :");
 			msg.append("<ul>");
 			for (Resource resource : resourceByManager) {
 				msg.append("<li>").append(resource.getName()).append("</li>");
@@ -79,26 +76,26 @@ public class UserService extends AbstractService<User, Long, UserDao> {
 	@Override
 	protected void checkCreate(User toCreate) throws ServiceExecutionException {
 		if (StringUtils.isEmpty(toCreate.getLogin()))
-			throw new ServiceExecutionException("Le login de l'utilisateur ne peut pas ï¿½tre vide");
+			throw new ServiceExecutionException("Le login de l'utilisateur ne peut pas être vide");
 		if (StringUtils.isEmpty(toCreate.getPassword()))
-			throw new ServiceExecutionException("Le mot de passe de l'utilisateur ne peut pas ï¿½tre vide");
+			throw new ServiceExecutionException("Le mot de passe de l'utilisateur ne peut pas être vide");
 		if (dao.getByLogin(toCreate.getLogin()) != null)
-			throw new ServiceExecutionException("Il existe dï¿½jï¿½ un utilisateur avec le login \"" + toCreate.getLogin() + "\"");
+			throw new ServiceExecutionException("Il existe déjà un utilisateur avec le login \"" + toCreate.getLogin() + "\"");
 		if (dao.getByMail(toCreate.getMail()) != null)
-			throw new ServiceExecutionException("Il existe dï¿½jï¿½ un utilisateur avec le mail \"" + toCreate.getMail() + "\"");
+			throw new ServiceExecutionException("Il existe déjà un utilisateur avec le mail \"" + toCreate.getMail() + "\"");
 	}
 
 	@Override
 	protected void checkUpdate(User toUpdate, Long id) throws ServiceExecutionException {
 		if (StringUtils.isEmpty(toUpdate.getLogin()))
-			throw new ServiceExecutionException("Le login de l'utilisateur ne peut pas ï¿½tre vide");
+			throw new ServiceExecutionException("Le login de l'utilisateur ne peut pas être vide");
 		if (StringUtils.isEmpty(toUpdate.getPassword()))
-			throw new ServiceExecutionException("Le mot de passe de l'utilisateur ne peut pas ï¿½tre vide");
+			throw new ServiceExecutionException("Le mot de passe de l'utilisateur ne peut pas être vide");
 		User byLogin = dao.getByLogin(toUpdate.getLogin());
 		if (byLogin != null && !id.equals(byLogin.getId()))
-			throw new ServiceExecutionException("Il existe dÃ©jÃ  un utilisateur avec le login \"" + toUpdate.getLogin() + "\"");
+			throw new ServiceExecutionException("Il existe déjà  un utilisateur avec le login \"" + toUpdate.getLogin() + "\"");
 		User byMail = dao.getByMail(toUpdate.getMail());
 		if (byMail != null && !id.equals(byMail.getId()))
-			throw new ServiceExecutionException("Il existe dÃ©jÃ  un utilisateur avec le mail \"" + toUpdate.getMail() + "\"");
+			throw new ServiceExecutionException("Il existe déjà  un utilisateur avec le mail \"" + toUpdate.getMail() + "\"");
 	}
 }

@@ -5,9 +5,7 @@ import fr.mines.entitites.MergeableEntity;
 
 import java.util.List;
 
-/**
- * Created by valentin on 20/10/15.
- */
+
 public class AbstractService<T extends MergeableEntity<T>, K, DAO extends AbstractDao<T,K>>
 {
     protected DAO dao;

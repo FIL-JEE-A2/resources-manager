@@ -11,9 +11,6 @@ import fr.mines.controller.actions.AbstractFrontAction;
 import fr.mines.entitites.ResourceType;
 import fr.mines.service.ServiceExecutionException;
 
-/**
- * Created by valentin on 19/10/15.
- */
 public class AddResourceTypeAction extends AbstractFrontAction {
 	private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(AddResourceTypeAction.class);
 

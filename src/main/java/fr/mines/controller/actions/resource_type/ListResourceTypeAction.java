@@ -7,9 +7,6 @@ import fr.mines.controller.ActionSecurity;
 import fr.mines.controller.HttpServletRequestDecorator;
 import fr.mines.controller.actions.AbstractFrontAction;
 
-/**
- * Created by valentin on 19/10/15.
- */
 public class ListResourceTypeAction extends AbstractFrontAction {
 	@Override
 	public String handle(HttpServletRequestDecorator rq, HttpServletResponse response) throws Exception {

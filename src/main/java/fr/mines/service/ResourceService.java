@@ -25,7 +25,7 @@ public class ResourceService extends AbstractService<Resource, Long, ResourceDao
 		if (!reservations.isEmpty()) {
 			StringBuilder msg = new StringBuilder();
 			msg.append("Impossible de supprimer la ressource ").append(resource.getName())
-					.append(", il existe des rÃ©servations associÃ©es Ã  la ressource : ");
+					.append(", il existe des réservations associées à  la ressource : ");
 			msg.append("<ul>");
 			for (Reservation reservation : reservations) {
 				msg.append("<li>").append("Du ").append(reservation.getReservationStartLabel()).append(" au ")

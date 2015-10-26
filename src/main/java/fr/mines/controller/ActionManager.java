@@ -3,6 +3,7 @@ package fr.mines.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import fr.mines.controller.actions.ActionNotFoundException;
 import fr.mines.controller.actions.DisconnectAction;
 import fr.mines.controller.actions.HomeAction;
 import fr.mines.controller.actions.LoginAction;
@@ -23,7 +24,6 @@ import fr.mines.controller.actions.user.AddUserAction;
 import fr.mines.controller.actions.user.DeleteUserAction;
 import fr.mines.controller.actions.user.ListUserAction;
 import fr.mines.controller.actions.user.ModifyUserAction;
-import javassist.NotFoundException;
 
 public class ActionManager {
 	private final Map<String, FrontActionI> actions = new HashMap<>();
@@ -72,7 +72,7 @@ public class ActionManager {
 		return pathInfo;
 	}
 
-	public FrontActionI getAction(String pathInfo) throws NotFoundException {
+	public FrontActionI getAction(String pathInfo) throws ActionNotFoundException {
 		String actionId = getActionId(pathInfo);
 		if (actionId == null)
 			return actions.get("home");
@@ -81,6 +81,6 @@ public class ActionManager {
 		if (action != null)
 			return action;
 
-		throw new NotFoundException("La page demandÃ©e est introuvable.");
+		throw new ActionNotFoundException("La page demandée n'existe pas (" + actionId + ")");
 	}
 }
