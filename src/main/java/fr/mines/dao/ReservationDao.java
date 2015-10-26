@@ -82,7 +82,7 @@ public class ReservationDao extends AbstractDao<Reservation, Long> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Reservation> getReservationWithFilter(String resource, String dateStartOperator, Date dateStart, String dateStopOperator, Date dateStop, String userFirstName, String userLastName) {
+	public List<Reservation> getReservationWithFilter(String resource, String dateStartOperator, Date dateStart, String dateStopOperator, Date dateStop, String userFirstName, String userLastName, Long userID) {
 		StringBuilder querySB = new StringBuilder();
 		
 		// Construction de la requ�te en fonction des donn�es re�ues
@@ -96,6 +96,9 @@ public class ReservationDao extends AbstractDao<Reservation, Long> {
 		}		
 		querySB.append("AND u.firstName LIKE :userFirstName ");
 		querySB.append("AND u.lastName LIKE :userLastName ");
+		if (userID != null) {
+			querySB.append("AND u.id LIKE :userID ");
+		}
 		
 		// Attribution des param�tres
 		Query selectQuery = entityManager().createQuery(querySB.toString());
@@ -108,6 +111,9 @@ public class ReservationDao extends AbstractDao<Reservation, Long> {
 		}
 		selectQuery.setParameter("userFirstName", "%"+userFirstName+"%");
 		selectQuery.setParameter("userLastName", "%"+userLastName+"%");
+		if (userID != null) {
+			selectQuery.setParameter("userID", userID);
+		}
 		
 		return selectQuery.getResultList();
 	}
