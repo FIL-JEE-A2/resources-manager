@@ -92,7 +92,7 @@
 							placeholder="Nom"
 							value="${filterUserLastName}" >
 					</th>
-					<th>Actions</th>
+					<th></th>
 				</tr>
 			</thead>
 			
@@ -106,13 +106,7 @@
 						<td class="fieldListReserv">${reservation.reservationStopLabel}</td>
 						<td class="fieldListReserv">${reservation.user.firstName} ${reservation.user.lastName}</td>
 						<td class="actionsListReserv">
-							<!-- <a
-							class="btn btn-default"
-							href="display-user?id=${user.id}"
-							role="button"><i class="fa fa-info-circle"></i></a> --> <a
-							class="btn btn-default"
-							href="modify-reservation?id=${reservation.id}"
-							role="button"><i class="fa fa-pencil"></i></a> <a
+							<a
 							class="btn btn-default"
 							href="delete-reservation?id=${reservation.id}"
 							role="button"><i class="fa fa-trash-o"></i></a>

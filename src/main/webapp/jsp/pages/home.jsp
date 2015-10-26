@@ -24,7 +24,7 @@
 		<th>Ressource réservée</th>
 		<th>Début</th>
 		<th>Fin</th>
-		<th>Actions</th>
+		<th></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -42,7 +42,7 @@
 	</c:forEach>
 </table>
 
-<a href="add-reservations">
+<a href="add-reservation">
 	<button class="btn btn-default" type="button">
 		<i class="fa fa-plus-circle"></i> Reserver une ressource
 	</button>
