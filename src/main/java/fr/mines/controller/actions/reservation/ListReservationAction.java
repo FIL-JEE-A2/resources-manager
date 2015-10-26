@@ -11,6 +11,7 @@ import fr.mines.controller.ActionCategory;
 import fr.mines.controller.ActionSecurity;
 import fr.mines.controller.HttpServletRequestDecorator;
 import fr.mines.controller.actions.AbstractFrontAction;
+import fr.mines.entitites.User;
 
 public class ListReservationAction extends AbstractFrontAction {
 
@@ -36,6 +37,8 @@ public class ListReservationAction extends AbstractFrontAction {
 
 	@Override
 	public String handle(HttpServletRequestDecorator request, HttpServletResponse response) throws Exception {
+		User user = (User) request.session().getAttribute("user");
+		
 		if (request.isSet("filter")) {
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			
@@ -55,9 +58,34 @@ public class ListReservationAction extends AbstractFrontAction {
 			String userFirstName = request.param("userFirstName");
 			String userLastName = request.param("userLastName");
 			
-			request.attr("reservationList", reservationService.getReservationWithFilter(resource, dateStartOperator, dateStart, dateStopOperator, dateStop, userFirstName, userLastName));
+			request.attr("filterResource", request.param("resource"));
+			request.attr("filterDateStartOperator", request.param("dateStartOperator"));
+			request.attr("filterDateStart", request.param("dateStart"));
+			request.attr("filterDateStopOperator", request.param("dateStopOperator"));
+			request.attr("filterDateStop", request.param("dateStop"));
+			request.attr("filterUserFirstName", request.param("userFirstName"));
+			request.attr("filterUserLastName", request.param("userLastName"));
+			
+			if (user.isAdmin()) {
+				request.attr("reservationList", reservationService.getReservationWithFilter(resource, dateStartOperator, dateStart, dateStopOperator, dateStop, userFirstName, userLastName, null));
+			} else {
+				request.attr("reservationList", reservationService.getReservationWithFilter(resource, dateStartOperator, dateStart, dateStopOperator, dateStop, userFirstName, userLastName, user.getId()));
+			}
 		} else {
-			request.attr("reservationList", reservationService.getAll());
+			
+			request.attr("filterResource", request.param(""));
+			request.attr("filterDateStartOperator", request.param(""));
+			request.attr("filterDateStart", request.param(""));
+			request.attr("filterDateStopOperator", request.param(""));
+			request.attr("filterDateStop", request.param(""));
+			request.attr("filterUserFirstName", request.param(""));
+			request.attr("filterUserLastName", request.param(""));
+			
+			if (user.isAdmin()) {
+				request.attr("reservationList", reservationService.getAll());
+			} else{
+				request.attr("reservationList", reservationService.getByUser(user.getId()));
+			}
 		}
 		return "/jsp/pages/reservations/list-reservation.jsp";
 	}

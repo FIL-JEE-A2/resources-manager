@@ -29,10 +29,22 @@
 }
 
 .filterField {
-	width: 130px;
-	margin-left: 20px;
+	width: 95%;
+}
+
+.filterFieldDouble {
+	width: 45%;
 }
 
 .filterFieldList {
-	margin-left: 20px;
+	width: 42px;
+}
+
+.filterFieldDate {
+	width: 70%;
+}
+
+.actionsListReserv {
+	width: 100px;
+	height: 26px;
 }

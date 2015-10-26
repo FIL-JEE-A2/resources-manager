@@ -65,12 +65,31 @@ public class ReservationService extends AbstractService<Reservation, Long, Reser
 			throw new ServiceExecutionException(msg.toString());
 		}
 	}
+
+	public List<Reservation> getByUser(Long userId)
+	{
+		return dao.getReservationByUser(userId);
+	}
+
+	public List<Reservation> getByUser(Long userId, int limit)
+	{
+		return dao.getReservationByUser(userId, limit);
+	}
+
+	public Long getNbByUser(Long id)
+	{
+		return dao.getNbReservationByUser(id);
+	}
 	
-	public List<Reservation> getReservationWithFilter(String resource, String dateStartOperator, Date dateStart, String dateStopOperator, Date dateStop, String userFirstName, String userLastName) {
+	public List<Reservation> getReservationWithFilter(String resource, String dateStartOperator, Date dateStart, String dateStopOperator, Date dateStop, String userFirstName, String userLastName, Long userID) {
 		if(resource==null && dateStart==null && dateStop==null && userFirstName==null && userLastName==null) {
-			return dao.getAll();
+			if (userID == null) {
+				return dao.getAll();
+			} else {
+				return dao.getReservationByUser(userID);
+			}
 		} else {
-			return dao.getReservationWithFilter(resource, dateStartOperator, dateStart, dateStopOperator, dateStop, userFirstName, userLastName);
+			return dao.getReservationWithFilter(resource, dateStartOperator, dateStart, dateStopOperator, dateStop, userFirstName, userLastName, userID);
 		}
 	}
 	
