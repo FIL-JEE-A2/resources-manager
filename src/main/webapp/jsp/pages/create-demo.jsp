@@ -16,7 +16,7 @@
 				role="alert">
 				<strong>Attention</strong><br>La création de données de
 				démonstration pourrait altérer ou supprimer les données existantes.<br>Elle
-				ne doit pas être lancée deux fois sur une même base de donnée.<br>Être
+				ne doit pas être lancée deux fois sur une même base de donnée.<br>Êtes
 				vous sûr de vouloir vraiment créer les données de démonstration ?<br>
 			</div>
 			<form
