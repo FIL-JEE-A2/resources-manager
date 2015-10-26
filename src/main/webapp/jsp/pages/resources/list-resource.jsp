@@ -44,7 +44,7 @@
 						class="btn btn-default"
 						href="modify-resource?id=${resource.id}"
 						role="button"><i class="fa fa-pencil"></i></a> <a
-						class="btn btn-default"
+						class="btn btn-danger"
 						href="delete-resource?id=${resource.id}"
 						role="button"><i class="fa fa-trash-o"></i></a>
 					</td>

@@ -14,7 +14,7 @@
 		<jsp:include page="${pageUrl}" />
 	</div>
 	<div class="footer bg-primary">
-		<p>Ressource manager - 2015</p>
+		<p>Ressource manager - 2015<br>THEBAUD, COCAUD, GOURBILIERE  <i class="glyphicon glyphicon-copyright-mark"></i></p>
 	</div>
 </body>
 </html>

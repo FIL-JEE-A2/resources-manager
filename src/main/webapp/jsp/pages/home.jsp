@@ -10,7 +10,7 @@
 </h4>
 <a href="reservations">
 	<button class="btn btn-primary" type="button">
-		Vous avez <span class="badge">${nbReservations}</span> réservations
+		Vous avez <span class="badge">${nbReservations}</span> réservations en cours ou à venir
 	</button>
 </a>
 <a href="add-reservation">
@@ -39,7 +39,7 @@
 			<td>${reservation.reservationStartLabel}</td>
 			<td>${reservation.reservationStopLabel}</td>
 			<td>
-				<a class="btn btn-default" href="delete-reservation?id=${reservation.id}" role="button">
+				<a class="btn btn-danger" href="delete-reservation?id=${reservation.id}" role="button">
 					<i class="fa fa-trash-o"></i>
 				</a>
 			</td>

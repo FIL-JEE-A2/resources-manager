@@ -28,7 +28,8 @@
 		
 		<button
 			type="submit"
-			class="btn btn-default">Filtrer</button>
+			class="btn btn-default">
+			<i class="glyphicon glyphicon-search"></i> Filtrer</button>
 							
 		<!-- Display users -->
 		<table class="table">
@@ -107,7 +108,7 @@
 						<td class="fieldListReserv">${reservation.user.firstName} ${reservation.user.lastName}</td>
 						<td class="actionsListReserv">
 							<a
-							class="btn btn-default"
+							class="btn btn-danger"
 							href="delete-reservation?id=${reservation.id}"
 							role="button"><i class="fa fa-trash-o"></i></a>
 						</td>

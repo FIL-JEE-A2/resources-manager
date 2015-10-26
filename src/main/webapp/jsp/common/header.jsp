@@ -1,3 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<h1>Resources Manager</h1>
+<%@ page
+	language="java"
+	contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<h1>
+	<i class="glyphicon glyphicon-calendar"></i> Resources Manager
+</h1>

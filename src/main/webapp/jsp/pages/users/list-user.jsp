@@ -47,7 +47,7 @@
 						class="btn btn-default"
 						href="modify-user?id=${user.id}"
 						role="button"><i class="fa fa-pencil"></i></a> <a
-						class="btn btn-default"
+						class="btn btn-danger"
 						href="delete-user?id=${user.id}"
 						role="button"><i class="fa fa-trash-o"></i></a>
 					</td>

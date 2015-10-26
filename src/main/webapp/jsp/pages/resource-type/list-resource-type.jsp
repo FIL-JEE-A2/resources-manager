@@ -5,14 +5,8 @@
 <%@ taglib
         uri="http://java.sun.com/jsp/jstl/core"
         prefix="c"%>
-<%--
-  Created by IntelliJ IDEA.
-  User: valentin
-  Date: 19/10/15
-  Time: 12:03
---%>
 <div>
-  <h2>Liste des utilisateurs</h2>
+  <h2>Liste des types de ressource</h2>
   <!-- Add button -->
   <a
           class="btn btn-default"
@@ -37,7 +31,7 @@
         <a class="btn btn-default" href="modify-resource-type?id=${rt.id}" role="button">
           <i class="fa fa-pencil"></i>
         </a>
-        <a class="btn btn-default" href="delete-resource-type?id=${rt.id}" role="button">
+        <a class="btn btn-danger" href="delete-resource-type?id=${rt.id}" role="button">
           <i class="fa fa-trash-o"></i>
         </a>
       </td>
