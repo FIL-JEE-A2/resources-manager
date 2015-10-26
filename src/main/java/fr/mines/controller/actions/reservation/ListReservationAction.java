@@ -55,8 +55,23 @@ public class ListReservationAction extends AbstractFrontAction {
 			String userFirstName = request.param("userFirstName");
 			String userLastName = request.param("userLastName");
 			
+			request.attr("filterResource", request.param("resource"));
+			request.attr("filterDateStartOperator", request.param("dateStartOperator"));
+			request.attr("filterDateStart", request.param("dateStart"));
+			request.attr("filterDateStopOperator", request.param("dateStopOperator"));
+			request.attr("filterDateStop", request.param("dateStop"));
+			request.attr("filterUserFirstName", request.param("userFirstName"));
+			request.attr("filterUserLastName", request.param("userLastName"));
 			request.attr("reservationList", reservationService.getReservationWithFilter(resource, dateStartOperator, dateStart, dateStopOperator, dateStop, userFirstName, userLastName));
 		} else {
+			
+			request.attr("filterResource", request.param(""));
+			request.attr("filterDateStartOperator", request.param(""));
+			request.attr("filterDateStart", request.param(""));
+			request.attr("filterDateStopOperator", request.param(""));
+			request.attr("filterDateStop", request.param(""));
+			request.attr("filterUserFirstName", request.param(""));
+			request.attr("filterUserLastName", request.param(""));
 			request.attr("reservationList", reservationService.getAll());
 		}
 		return "/jsp/pages/reservations/list-reservation.jsp";

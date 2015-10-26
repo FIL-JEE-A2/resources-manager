@@ -36,60 +36,61 @@
 			<thead>
 				<tr>
 					<th>
-						Ressource réservée
+						<div class="filterName">Ressource</div>
 						<input
 							type="text"
 							id="resource"
 							name="resource"
 							class="filterField"
-							placeholder="Nom de la Ressource" >
+							placeholder="Nom de la Ressource"
+							value="${filterResource}" >
 					</th>
 					<th>
-						Début
+						<div class="filterName">Début</div>
 						<select
 							name="dateStartOperator"
 							class="filterFieldList" >
-							<option value=">">></option>
-							<option value=">=">>=</option>
-							<option value="<"><</option>
-							<option value="<="><=</option>
+							<option value=">=" ${(filterDateStartOperator=='>=')?'selected="selected"':'' }>>=</option>
+							<option value="<=" ${(filterDateStartOperator=='<=')?'selected="selected"':'' }><=</option>
 						</select>
 						<input
 							type="date"
 							id="dateStart"
 							name="dateStart"
-							class="filterField" >
+							class="filterFieldDate"
+							value="${filterDateStart}" >
 					</th>
 					<th>
-						Fin
+						<div class="filterName">Fin</div>
 						<select
 							name="dateStopOperator"
 							class="filterFieldList" >
-							<option value=">">></option>
-							<option value=">=">>=</option>
-							<option value="<"><</option>
-							<option value="<="><=</option>
+							<option value=">=" ${(filterDateStopOperator=='>=')?'selected="selected"':'' }>>=</option>
+							<option value="<=" ${(filterDateStopOperator=='<=')?'selected="selected"':'' }><=</option>
 						</select>
 						<input
 							type="date"
 							id="dateStop"
 							name="dateStop"
-							class="filterField" >
+							class="filterFieldDate"
+							value="${filterDateStop}" >
 					</th>
 					<th>
-						Utilisateur
+						<div class="filterName">Utilisateur</div>
 						<input
 							type="text"
 							id="userFirstName"
 							name="userFirstName"
-							class="filterField"
-							placeholder="Prénom" >
+							class="filterFieldDouble"
+							placeholder="Prénom"
+							value="${filterUserFirstName}" >
 						<input
 							type="text"
 							id="userLastName"
 							name="userLastName"
-							class="filterField"
-							placeholder="Nom" >
+							class="filterFieldDouble"
+							placeholder="Nom"
+							value="${filterUserLastName}" >
 					</th>
 					<th>Actions</th>
 				</tr>
@@ -99,12 +100,12 @@
 				<c:forEach
 					items="${reservationList}"
 					var="reservation">
-					<tr>
-						<td>${reservation.resource.name}</td>
-						<td>${reservation.reservationStartLabel}</td>
-						<td>${reservation.reservationStopLabel}</td>
-						<td>${reservation.user.firstName} ${reservation.user.lastName}</td>
-						<td>
+					<tr class="rowListReserv">
+						<td class="fieldListReserv">${reservation.resource.name}</td>
+						<td class="fieldListReserv">${reservation.reservationStartLabel}</td>
+						<td class="fieldListReserv">${reservation.reservationStopLabel}</td>
+						<td class="fieldListReserv">${reservation.user.firstName} ${reservation.user.lastName}</td>
+						<td class="actionsListReserv">
 							<!-- <a
 							class="btn btn-default"
 							href="display-user?id=${user.id}"
