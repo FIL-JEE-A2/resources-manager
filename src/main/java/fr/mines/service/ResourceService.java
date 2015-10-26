@@ -37,13 +37,7 @@ public class ResourceService extends AbstractService<Resource, Long, ResourceDao
 	}
 
 	public List<Resource> getFreeResourceByDateAndResourceType(Long resourceTypeId, Date startDate, Date stopDate) throws ServiceExecutionException {
-		checkReservationDate(startDate, stopDate);
+		ReservationService.checkReservationDate(startDate, stopDate);
 		return this.dao.getFreeResourceByDateAndResourceType(resourceTypeId, startDate, stopDate);
-	}
-
-	private void checkReservationDate(Date start, Date stop) throws ServiceExecutionException {
-		if (!start.before(stop)) {
-			throw new ServiceExecutionException("La date du début de r�servation doit être avant la date de fin de réservation");
-		}
 	}
 }

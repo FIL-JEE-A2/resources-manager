@@ -1,17 +1,17 @@
 package fr.mines.service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import fr.mines.dao.ReservationDao;
 import fr.mines.entitites.Reservation;
 
-public class ReservationService extends AbstractService<Reservation, Long, ReservationDao>{
+public class ReservationService extends AbstractService<Reservation, Long, ReservationDao> {
 
 	private static ReservationService instance;
 
-	public static ReservationService getInstance()
-	{
+	public static ReservationService getInstance() {
 		return instance == null ? instance = new ReservationService() : instance;
 	}
 
@@ -20,28 +20,40 @@ public class ReservationService extends AbstractService<Reservation, Long, Reser
 	}
 
 	@Override
-	protected void checkCreate(Reservation toCreate) throws ServiceExecutionException
-	{
+	protected void checkCreate(Reservation toCreate) throws ServiceExecutionException {
 		checkReservationDate(toCreate);
 		checkReservationConflict(toCreate);
 	}
 
 	@Override
-	protected void checkUpdate(Reservation toUpdate, Long idToUpdate) throws ServiceExecutionException
-	{
+	protected void checkUpdate(Reservation toUpdate, Long idToUpdate) throws ServiceExecutionException {
 		checkReservationDate(toUpdate);
 		checkReservationConflictWithoutPrevious(toUpdate, idToUpdate);
 	}
 
 	private void checkReservationConflictWithoutPrevious(Reservation reservation, Long previousID) throws ServiceExecutionException {
-		List<Reservation> conflictReservations = dao.getReservationByDateAndResourceExcludePrevious(previousID,
-				reservation.getResource().getId(), reservation.getReservationStart(), reservation.getReservationStop());
+		List<Reservation> conflictReservations = dao.getReservationByDateAndResourceExcludePrevious(previousID, reservation.getResource().getId(),
+				reservation.getReservationStart(), reservation.getReservationStop());
 		createConflictListException(conflictReservations);
 	}
 
 	private void checkReservationDate(Reservation reservation) throws ServiceExecutionException {
-		if (!reservation.getReservationStart().before(reservation.getReservationStop())) {
-			throw new ServiceExecutionException("La date du d�but de r�servation doit �tre avant la date de fin de r�servation");
+		checkReservationDate(reservation.getReservationStart(), reservation.getReservationStop());
+	}
+
+	public static void checkReservationDate(Date start, Date stop) throws ServiceExecutionException {
+		Calendar calendar = Calendar.getInstance();//User should be able to book at the current start even if its already started
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.HOUR, 0);
+		calendar.set(Calendar.AM_PM, Calendar.AM);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		Date today = calendar.getTime();
+		if (start.before(today)) {
+			throw new ServiceExecutionException("Vous ne pouvez pas réserver une ressource sur une période qui commence avant la date actuelle");
+		}
+		if (!start.before(stop)) {
+			throw new ServiceExecutionException("La date du début de réservation doit être avant la date de fin de réservation");
 		}
 	}
 
@@ -66,31 +78,30 @@ public class ReservationService extends AbstractService<Reservation, Long, Reser
 		}
 	}
 
-	public List<Reservation> getByUser(Long userId)
-	{
+	public List<Reservation> getByUser(Long userId) {
 		return dao.getReservationByUser(userId);
 	}
 
-	public List<Reservation> getByUser(Long userId, int limit)
-	{
+	public List<Reservation> getByUser(Long userId, int limit) {
 		return dao.getReservationByUser(userId, limit);
 	}
 
-	public Long getNbByUser(Long id)
-	{
+	public Long getNbByUser(Long id) {
 		return dao.getNbReservationByUser(id);
 	}
-	
-	public List<Reservation> getReservationWithFilter(String resource, String dateStartOperator, Date dateStart, String dateStopOperator, Date dateStop, String userFirstName, String userLastName, Long userID) {
-		if(resource==null && dateStart==null && dateStop==null && userFirstName==null && userLastName==null) {
+
+	public List<Reservation> getReservationWithFilter(String resource, String dateStartOperator, Date dateStart, String dateStopOperator,
+			Date dateStop, String userFirstName, String userLastName, Long userID) {
+		if (resource == null && dateStart == null && dateStop == null && userFirstName == null && userLastName == null) {
 			if (userID == null) {
 				return dao.getAll();
 			} else {
 				return dao.getReservationByUser(userID);
 			}
 		} else {
-			return dao.getReservationWithFilter(resource, dateStartOperator, dateStart, dateStopOperator, dateStop, userFirstName, userLastName, userID);
+			return dao.getReservationWithFilter(resource, dateStartOperator, dateStart, dateStopOperator, dateStop, userFirstName, userLastName,
+					userID);
 		}
 	}
-	
+
 }
