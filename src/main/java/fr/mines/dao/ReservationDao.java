@@ -27,8 +27,18 @@ public class ReservationDao extends AbstractDao<Reservation, Long> {
 
 	@SuppressWarnings("unchecked")
 	public List<Reservation> getReservationByUser(Long userID) {
-		Query selectQuery = entityManager().createQuery("SELECT r FROM Reservation r JOIN r.user m WHERE m.id=:userID");
+		Query selectQuery = entityManager().createQuery(
+				"SELECT r FROM Reservation r JOIN r.user m WHERE m.id=:userID");
 		selectQuery.setParameter("userID", userID);
+		return selectQuery.getResultList();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Reservation> getReservationByUser(Long userId, int limit)
+	{
+		Query selectQuery = entityManager().createQuery(
+				"SELECT r FROM Reservation r JOIN r.user m WHERE m.id=:userID ORDER BY r.reservationStart DESC")
+				.setParameter("userID", userId)
+				.setMaxResults(limit);
 		return selectQuery.getResultList();
 	}
 
@@ -60,12 +70,22 @@ public class ReservationDao extends AbstractDao<Reservation, Long> {
 
 		return selectQuery.getResultList();
 	}
+
+	public Long getNbReservationByUser(Long id)
+	{
+		return (Long) entityManager().createQuery(
+				"select count(r) from Reservation r join r.user m where " +
+						"m.id = :userId and " +
+						"r.reservationStop >= current_date()")
+				.setParameter("userId", id)
+				.getSingleResult();
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Reservation> getReservationWithFilter(String resource, String dateStartOperator, Date dateStart, String dateStopOperator, Date dateStop, String userFirstName, String userLastName) {
 		StringBuilder querySB = new StringBuilder();
 		
-		// Construction de la requête en fonction des données reçues
+		// Construction de la requï¿½te en fonction des donnï¿½es reï¿½ues
 		querySB.append("SELECT r FROM Reservation r JOIN r.resource res JOIN r.user u WHERE ");
 		querySB.append("res.name LIKE :resource ");		
 		if (dateStart != null) {
@@ -77,7 +97,7 @@ public class ReservationDao extends AbstractDao<Reservation, Long> {
 		querySB.append("AND u.firstName LIKE :userFirstName ");
 		querySB.append("AND u.lastName LIKE :userLastName ");
 		
-		// Attribution des paramètres
+		// Attribution des paramï¿½tres
 		Query selectQuery = entityManager().createQuery(querySB.toString());
 		selectQuery.setParameter("resource", "%"+resource+"%");
 		if (dateStart != null) {
