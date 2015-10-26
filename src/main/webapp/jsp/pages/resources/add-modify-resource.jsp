@@ -44,7 +44,7 @@
 		</div>
 		<div class="form-group">
 			<label for="resourceType">Type de ressource</label> <br> <select
-				name="resourceType">
+				name="resourceType" class="form-control">
 				<c:forEach
 					items="${resourceTypeList}"
 					var="resourceType">
@@ -66,7 +66,7 @@
 		</div>
 		<div class="form-group">
 			<label for="managerUser">Responsable de la ressource</label> <br>
-			<select name="managerUser">
+			<select name="managerUser" class="form-control">
 				<c:forEach
 					items="${userList}"
 					var="user">

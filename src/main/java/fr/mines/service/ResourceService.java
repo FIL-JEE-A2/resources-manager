@@ -1,6 +1,8 @@
 package fr.mines.service;
 
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 import fr.mines.dao.ResourceDao;
 import fr.mines.entitites.Reservation;
@@ -31,6 +33,17 @@ public class ResourceService extends AbstractService<Resource, Long, ResourceDao
 			}
 			msg.append("</ul>");
 			throw new ServiceExecutionException(msg.toString());
+		}
+	}
+
+	public List<Resource> getFreeResourceByDateAndResourceType(Long resourceTypeId, Date startDate, Date stopDate) throws ServiceExecutionException {
+		checkReservationDate(startDate, stopDate);
+		return this.dao.getFreeResourceByDateAndResourceType(resourceTypeId, startDate, stopDate);
+	}
+
+	private void checkReservationDate(Date start, Date stop) throws ServiceExecutionException {
+		if (!start.before(stop)) {
+			throw new ServiceExecutionException("La date du début de r�servation doit être avant la date de fin de réservation");
 		}
 	}
 }

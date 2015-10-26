@@ -1,5 +1,6 @@
 package fr.mines;
 
+import fr.mines.dao.ResourceDao;
 import fr.mines.entitites.Reservation;
 import fr.mines.entitites.Resource;
 import fr.mines.entitites.User;
@@ -11,16 +12,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+import java.util.List;
 
 public class TestLauncher {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TestLauncher.class);
 
 	public static void main(String[] args) throws ServiceExecutionException {
 		try {
-			Reservation resa = new Reservation(new Date(2015-1900, 9, 5), new Date(2015-1900, 9, 10));
-			resa.setUser(UserService.getInstance().get(8L));
-			resa.setResource(ResourceService.getInstance().get(1L));
-			ReservationService.getInstance().create(resa);
+			List<Resource> freeResourceByDateAndResourceType = ResourceDao.getInstance().getFreeResourceByDateAndResourceType(2L,
+					new Date(2015 - 1900, 9, 10), new Date(2015 - 1900, 9, 10));
+			for (Resource resource : freeResourceByDateAndResourceType) {
+				System.out.println(resource);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

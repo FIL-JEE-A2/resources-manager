@@ -65,7 +65,7 @@ public class ReservationDao extends AbstractDao<Reservation, Long> {
 	public List<Reservation> getReservationWithFilter(String resource, String dateStartOperator, Date dateStart, String dateStopOperator, Date dateStop, String userFirstName, String userLastName) {
 		StringBuilder querySB = new StringBuilder();
 		
-		// Construction de la requête en fonction des données reçues
+		// Construction de la requï¿½te en fonction des donnï¿½es reï¿½ues
 		querySB.append("SELECT r FROM Reservation r JOIN r.resource res JOIN r.user u WHERE ");
 		querySB.append("res.name LIKE :resource ");		
 		if (dateStart != null) {
@@ -77,7 +77,7 @@ public class ReservationDao extends AbstractDao<Reservation, Long> {
 		querySB.append("AND u.firstName LIKE :userFirstName ");
 		querySB.append("AND u.lastName LIKE :userLastName ");
 		
-		// Attribution des paramètres
+		// Attribution des paramï¿½tres
 		Query selectQuery = entityManager().createQuery(querySB.toString());
 		selectQuery.setParameter("resource", "%"+resource+"%");
 		if (dateStart != null) {
