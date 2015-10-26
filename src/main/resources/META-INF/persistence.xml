@@ -9,7 +9,7 @@
 		<properties>
 			<!-- Confiugration de la base -->
 			<property name="hibernate.connection.driver_class" value="org.h2.Driver" />
-			<property name="hibernate.connection.url" value="jdbc:h2:file:./database/resource-manager" />
+			<property name="hibernate.connection.url" value="jdbc:h2:file:./data/database/resource-manager" />
 			<property name="hibernate.connection.username" value="sa" />
 			<property name="hibernate.connection.password" value="" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
