@@ -6,6 +6,7 @@ import java.util.Map;
 import fr.mines.controller.actions.DisconnectAction;
 import fr.mines.controller.actions.HomeAction;
 import fr.mines.controller.actions.LoginAction;
+import fr.mines.controller.actions.demo.InitDemoAction;
 import fr.mines.controller.actions.reservation.AddReservationAction;
 import fr.mines.controller.actions.reservation.DeleteReservationAction;
 import fr.mines.controller.actions.reservation.ListReservationAction;
@@ -31,6 +32,7 @@ public class ActionManager {
 		//Login
 		addAction(new LoginAction());
 		addAction(new DisconnectAction());
+		addAction(new InitDemoAction());
 		//Home
 		addAction(new HomeAction());
 		//User
